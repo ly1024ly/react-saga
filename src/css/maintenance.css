@@ -1,0 +1,233 @@
+body .maintenance{
+	    font-family: "Helvetica Neue",Helvetica,"Nimbus Sans L",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft JhengHei","Source Han Sans CN","Source Han Sans SC","Wenquanyi Micro Hei","WenQuanYi Zen Hei",sans-serif;
+}
+.content{
+	
+}
+.head{
+	text-align: center;
+    line-height: 1.4;
+    font-size: 16px;
+    font-weight: normal;
+    color: #000000;
+    padding-bottom: 8px;
+    margin-bottom:5px;
+    border-bottom:1px dashed #ddd;
+}
+.explain{
+	line-height: 1.4;
+    font-size: 12px;
+    font-weight: normal;
+    color: #7C7C7C;
+    margin-top:4px;
+}
+.group{
+width: 100%!important;
+    padding: 5px 10px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.fbc_title{
+	line-height: 1.4;
+    font-size: 16px;
+    font-weight: normal;
+    color: #000000;
+    margin-top: 4px;
+}
+.name{
+	line-height: 1.5999999999999999;
+    font-size: 17px;
+    font-weight: normal;
+}
+.star{
+	line-height: 1.5999999999999999;
+    font-size: 17px;
+	color:red;
+    padding:6px;
+}
+.inputbox{
+	width:100%;
+	height: 37px;
+    line-height: 1.4;
+    font-size: 14px;
+    padding-left: 22px;
+    color: #000;
+    background: #fff;
+    border: 1px solid #D3D3D3;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    position:relative;
+}
+.inputbox.other{
+	padding:0px;
+}
+.inputbox:hover{
+	border-color: orange;
+}
+.group .iconfont{
+	height:34px;
+	line-height: 34px;
+    font-size: 16px;
+    color: rgba(45,143,217,0.6);
+	position: absolute;
+    top: 10px;
+    left: 6px;
+    bottom: 0;
+    font: normal normal normal 16px/1 iconfont;
+}
+.group .text{
+	margin:3px 0;
+}
+.inputbox input{
+	width:100%;
+	outline:none;
+	font-size: 14px;
+    line-height: 1.4;
+    height: 100%;
+    resize: none;
+    padding: 8px 5px;
+    background-color: transparent;
+    box-sizing: border-box;
+    border: 0;
+ 
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+#work{
+	width:100%;
+	outline:none;
+	font-size: 14px;
+    line-height: 1.4;
+    height: 100%;
+    resize: none;
+    padding: 8px 5px;
+    background-color: transparent;
+    box-sizing: border-box;
+    border: 0;
+ 
+    -webkit-appearance: none;
+    border-radius: 0;	
+}
+.inputbox textarea{
+	width:100%;
+	font-size: 14px;
+	height: 100%;
+    resize: none;
+    outline:none;
+    line-height: 1.4;
+    resize: none;
+    padding: 8px 5px;
+    background-color: transparent;
+    box-sizing: border-box;
+    border: 0;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+.textarea{
+	height:144px;
+}
+.file{
+	line-height: 1.4;
+    font-size: 12px;
+    font-weight: normal;
+    color: #7C7C7C;
+}
+.fbc_ufContent{
+	position: relative;
+    color: #999;
+    text-decoration: none;
+    zoom: 1;
+    height: 34px;
+}
+.fbc_ufContent .fbc_ufText{
+	height: 37px;
+    line-height: 37px;
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+    padding-left:25px;
+    border: 1px dashed #D3D3D3;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.group .iconfont.arror{
+    left:90%;
+}
+#uploads{
+    color:#999;
+}
+.submitWrapper{
+    width:100%;
+    margin-top: 40px;
+}
+.submit{
+    text-align: center;
+    background-color: #FFFFFF;
+    padding: 20px;
+    line-height: 0;
+}
+.fb_submitBtn{
+    width: 100%;
+    height: 36px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: normal;
+    background: orange;
+    max-width: 100%;
+    min-width: 60px;
+    line-height: 1.2;
+    font-size: 14px;
+    color: #FFF;
+    display: inline-block;
+    border-radius:2px;
+    box-sizing: border-box;
+}
+.error{
+    color:red;
+    line-height: 1.4;
+    font-size: 12px;
+
+}
+.weui-cells{
+    min-height:auto;
+}
+.change{
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+}
+@keyframes myfirst
+{
+    from {height: 100%;}
+    to {height:0;}
+}
+#warn{
+    color:red;
+    font-size: 0.5rem;
+    display:none;
+}
+.weui-loadmore{
+    width:100%;
+    position:fixed;
+    z-index:1000;
+    display:none;
+    color:#fff;
+}
+.load{
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    display:none;
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    z-index: 99;
+}

@@ -1,0 +1,92 @@
+iframe{
+	width:100%;
+
+  
+}
+.ss{
+ 
+  -webkit-overflow-scrolling: touch;  
+  overflow-y: scroll;  
+}
+article{
+  margin-top: 20px;
+}
+footer .iframe{
+	width:100%;
+	height:60px;
+	line-height: 60px;
+	background:#eee;
+	position:fixed;
+	bottom:0px;
+}
+.box{
+	text-align: right;
+}
+.box .iconfont{
+	font-size:30px;
+	margin:10px;
+}
+.iconfont.icon-yes{
+	color:orange;
+}
+#shareit {
+  -webkit-user-select: none;
+  display: none;
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  text-align: center;
+  top: 0;
+  left: 0;
+  z-index: 105;
+}
+#shareit img {
+  max-width: 100%;
+}
+.arrow {
+  position: absolute;
+  right: 10%;
+  top: 5%;
+}
+#share-text {
+  margin-top: 400px;
+}
+#follow{
+  color:#fff;
+  margin-top: 100%;
+}
+.key{
+  width:100%;
+  height:30px;
+  line-height: 30px;
+  position:fixed;
+  bottom:60px;
+  background:#ddd;
+ 
+}
+
+.key ul{
+  /*overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;*/
+  overflow-x: auto;
+}
+.key ul li{
+  display:inline-block;
+  padding: 0 4px;
+  font-size:14px;
+}
+.key ul li:hover{
+  color:red;
+}
+article{
+  margin-top: 0px;
+}
+.relinfo{
+  margin:0px;
+}
+.box span{
+  color:orange;
+}

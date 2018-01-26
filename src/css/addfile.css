@@ -1,0 +1,28 @@
+.addfile .search-input{
+	width: calc(100% - 100px);
+}
+.addfile .search-btn{
+	width:100px;
+}
+.addfile .search-btn .btn{
+	width:100%;
+}
+.warn{
+	color:#333;
+	font-size: 0.7rem;
+	margin:12px;
+	display:block;
+	line-height: 20px;
+}
+.addfile .cbox{
+  border-top:none;
+}
+li:last-child .cbox{
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.addfile .icon-add {
+    position: absolute;
+    right: 6px;
+    top: 11px;
+}

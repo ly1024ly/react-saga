@@ -1,0 +1,18 @@
+.changeType.weui-tabbar{
+    bottom:initial;
+    border-top:none;
+    border-bottom:1px solid #eee;
+}
+.collect .weui-article{
+    margin-top:60px;
+}
+.collect .weui-bar__item_on{
+    border-bottom:2px solid orange;
+    color:#888;
+}
+.collect .changeType.weui-tabbar:before{
+    border-top:none;
+}
+.collect .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
+    color:#888;
+}
