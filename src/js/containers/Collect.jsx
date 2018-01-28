@@ -9,6 +9,7 @@ import WeUI from 'react-weui';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/collect.css");
+require("../../css/collect.css");
 
 var History = require('react-router').History;
 import {
@@ -35,13 +36,28 @@ class Collect extends Component {
     this.state = {
       border:["书签","手册","帖子"],
       tab:0,
-      val:''
+      val:'',
+      style:"none"
     }
   }
   componentDidMount(){
     let width = window.screen.width+"px";
       $(".a").css("width",width)
       $(".react-weui-infiniteloader__content").css("width",width)
+      var obox = document.getElementById("collect");
+    let that = this;
+    document.oncontextmenu =  function(ev){
+      ev.preventDefault();  
+      var e = ev||window.event;
+      var x = e.clientX;
+      var y = e.clientY;
+      obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+      return false;
+    };
+    /*点击空白处隐藏*/
+    document.onclick = function(){
+        obox.style.display = "none";
+    };
       
   }
   saveValue = (e) => {
@@ -59,8 +75,10 @@ class Collect extends Component {
     console.log(e.target.innerText)
   }
   render(){
+    let display = this.state.style;
     return (
       <Page className="collect">
+        <div id="collect" >删除</div>
         <Tab>
           <TabBody>
             <div className="content searchs">
@@ -80,25 +98,45 @@ class Collect extends Component {
                 </div>
               </div>
             </div>
-            <TabBar className="changeType">
-              <TabBarItem
-                  active={this.state.tab == 0}
-                  onClick={e=>this.setState({tab:0})}
-                  label="主题"
-              />
-              <TabBarItem 
-                active={this.state.tab == 1} 
-                onClick={e=>this.setState({tab:1})}
-                label="手册"
-              />
-              <TabBarItem
-                  active={this.state.tab == 2}
-                  onClick={e=>this.setState({tab:2})}
-                  label="帖子"
-              />
+          <TabBar className="changeType">
+            <TabBarItem
+                active={this.state.tab == 0}
+                onClick={e=>this.setState({tab:0})}
+                label="主题"
+            />
+            <TabBarItem 
+              active={this.state.tab == 1} 
+              onClick={e=>this.setState({tab:1})}
+              label="手册"
+            />
+            <TabBarItem
+                active={this.state.tab == 2}
+                onClick={e=>this.setState({tab:2})}
+                label="帖子"
+            />
           </TabBar>
           <Article style={{display: this.state.tab == 0 ? null : 'none'}}>
             <section>
+              <Cells>
+                <Cell href="javascript:;" access>
+                  <CellBody>
+                    进给速度
+                  </CellBody>
+                  <CellFooter>
+                  </CellFooter>
+                </Cell>
+                <Cell access>
+                  <CellBody>
+                     liyuan
+                  </CellBody>
+                  <CellFooter>
+                </CellFooter>
+                </Cell>
+              </Cells>
+            </section>
+          </Article>
+          <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
+             <section>
               <Cells>
                 <Cell href="javascript:;" access>
                   <CellBody>
@@ -117,26 +155,6 @@ class Collect extends Component {
               </Cells>
             </section>
           </Article>
-                  <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
-                     <section>
-                      <Cells>
-                        <Cell href="javascript:;" access>
-                          <CellBody>
-                            进给速度
-                          </CellBody>
-                          <CellFooter>
-                          </CellFooter>
-                        </Cell>
-                        <Cell access>
-                          <CellBody>
-                             主周
-                          </CellBody>
-                          <CellFooter>
-                        </CellFooter>
-                        </Cell>
-                      </Cells>
-                    </section>
-                    </Article>
                     
           </TabBody>
             <TabBar className="footer">

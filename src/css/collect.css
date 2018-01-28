@@ -16,3 +16,4 @@
 .collect .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
     color:#888;
 }
+#collect{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}

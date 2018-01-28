@@ -62,5 +62,31 @@
   font-size: 0.9rem;
 }
 .searchs .weui-cell{
-    padding:5px 15px;
+    padding:10px 15px;
+}
+.whichType.weui-tabbar{
+    bottom:initial;
+    border-top:none;
+    font-size: 0.9rem;
+    border-bottom:1px solid #eee;
+}
+.whichType.weui-tabbar:before{
+    border-top:none;
+}
+.whichType p.weui-tabbar__label{
+  font-size: 1rem;
+  margin:0;
+}
+.whichType .weui-bar__item_on{
+    border-bottom:2px solid orange;
+    color:#888;
+}
+.weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
+    color:#888;
+}
+.weui-cell{
+  padding: 10px 15px;
+}
+.ss.weui-article section{
+  padding-top: 22px;
 }

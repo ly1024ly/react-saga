@@ -410,7 +410,8 @@ label.weui-agree > * {
 }
 .collect .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
     color:#888;
-}/*!
+}
+#collect{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}/*!
  * WeUI v1.1.2 (https://github.com/weui/weui)
  * Copyright 2017 Tencent, Inc.
  * Licensed under the MIT license
@@ -3320,6 +3321,18 @@ body, .page {
     bottom: 0;
     background: rgba(0, 0, 0, 0.6);
 }
+.weui-cell.weui-cell_access .weui-cell__bd{
+    font-size:1rem;
+}
+.changeType .weui-tabbar__label{
+    font-size: 1rem;
+
+}
+.weui-cells{
+    user-select:none;
+    -webkit-user-select:none;
+}
+#box{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}
 .select{
     width:80%;
     height:100vh;
@@ -3327,9 +3340,87 @@ body, .page {
     position: fixed;
     right:0px;
 }
+.hide i{
+  font-weight:600;
+}
 .searchs .hide{
     height:30px;
     line-height:30px;
     text-align: right;
     padding:3px 12px;
+}
+.searchs .li{
+  height:30px;
+  line-height: 30px;
+  background: #eee;
+  position: relative;
+  padding:0 5px;
+}
+.li i{
+  position: absolute;
+  right:6px;
+  font-weight: 600;
+}
+.select .uu{
+  margin-top:10px;
+}
+.select .weui-flex__item div{
+    border:1.2px dashed gray;
+    padding:0.55rem 0.5rem;
+    margin:0.2rem 0.3rem;
+    text-align: center;
+    border-radius: 5px;
+}
+.select .ok{
+  position: fixed;
+  bottom:0px;
+  right:0px;
+  width:80%;
+}
+.ok div{
+  display:inline-block;
+  width:50%;
+  height:40px;
+  line-height: 40px;
+  text-align: center;
+  border:1px solid orange;
+  color:orange;
+  box-sizing: border-box;
+}
+.ok .press{
+  background: orange;
+  color:#fff;
+}
+.searchs .weui-cell__bd span{
+  color:#888888;
+  font-size: 0.9rem;
+}
+.searchs .weui-cell{
+    padding:10px 15px;
+}
+.whichType.weui-tabbar{
+    bottom:initial;
+    border-top:none;
+    font-size: 0.9rem;
+    border-bottom:1px solid #eee;
+}
+.whichType.weui-tabbar:before{
+    border-top:none;
+}
+.whichType p.weui-tabbar__label{
+  font-size: 1rem;
+  margin:0;
+}
+.whichType .weui-bar__item_on{
+    border-bottom:2px solid orange;
+    color:#888;
+}
+.weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
+    color:#888;
+}
+.weui-cell{
+  padding: 10px 15px;
+}
+.ss.weui-article section{
+  padding-top: 22px;
 }

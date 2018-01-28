@@ -37,17 +37,6 @@ require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/fileSearch.css")
 
-const menus = [
-    {
-        name: 'View',
-        items: [
-            {
-                label: 'Collect',
-                to: '/collect'
-            }
-        ]
-    }
-]
 
 class FileSearch extends Component {
   constructor(props,context){
@@ -56,17 +45,41 @@ class FileSearch extends Component {
         bottom_show: false,
         fullpage_show: false,
         class:"完成",
-        val:''
+        val:'',
+        tab:0,
+        search:false,
+        touchTime:0,
+        
     };
   }
   componentDidMount(){
     document.body.addEventListener("touchstart",this.touchstart)
     document.body.addEventListener("touchmove",this.touchmove)
+    document.body.addEventListener("touchend",this.touchend)
+    var obox = document.getElementById("box");
+    let that = this;
+    document.oncontextmenu =  function(ev){
+      ev.preventDefault();  
+      var e = ev||window.event;
+      var x = e.clientX;
+      var y = e.clientY;
+      obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+      return false;
+    };
+    /*点击空白处隐藏*/
+    document.onclick = function(){
+        obox.style.display = "none";
+    };
   }
   saveValue = e => {
     this.setState({
       val:e.target.value
     })
+    if(e.target.value==""){
+      this.setState({
+        search:false
+      })
+    }
   }
   touchmove = e => {
     e.stopPropagation();
@@ -78,26 +91,51 @@ class FileSearch extends Component {
     }
   }
   touchstart = e => {
-    console.log(e.changedTouches[0].clientX)
     e.stopPropagation();
     this.setState({
       clientx:e.changedTouches[0].clientX
     })
+    let that = this;
+    this.inter = setInterval(that.interval(e.changedTouches[0].clientX,e.changedTouches[0].clientY),1000)
+  }
+  interval = (x,y) => {
+    let time = this.state.touchTime;
+    this.setState({
+      touchTime:time + 1
+    })
+    if(this.state.touchTime>=3){
+
+      clearInterval(this.inter)
+    }
+  }
+  touchend = e =>{
+    e.stopPropagation();
+    this.setState({
+      touchTime:0
+    })
+    clearInterval(this.inter)
   }
   componentWillUnmount(){
     document.body.removeEventListener('touchstart',this.touchstart);
     document.body.removeEventListener('touchmove',this.touchmove);
   }
-    hide(){
-        this.setState({
-            bottom_show: false,
-            fullpage_show: false,
-        })
-    }
-
+  hide(){
+      this.setState({
+          bottom_show: false,
+          fullpage_show: false,
+      })
+  }
+  checkVal=() => {
+    console.log("ooo")
+    this.setState({
+      search:true
+    })
+  }
     render() {
+      let display = this.state.style;
       return (
       <Page className="searchs">
+        <div id="box" >添加至"手册"</div>
         <Tab>
           <TabBody>
             <div className="content searchs">
@@ -111,13 +149,13 @@ class FileSearch extends Component {
                   />
                 </div>
                 <div className="search-btn">
-                  <label type="button" className="btn"
+                  <label type="button" className="btn" onClick={() => this.checkVal()}
                   >搜本页</label>
                   <label className="btn">筛选</label>
                 </div>
               </div>
             </div>
-            <Article>
+            <Article style={{display:this.state.search ? "none" : "block"}}>
               <section>
                 <Cells>
                   <Cell href="javascript:;" access>
@@ -135,6 +173,65 @@ class FileSearch extends Component {
                 </Cells>
               </section>
             </Article>  
+            <Article style={{display:this.state.search ? "block" :"none"}} className="ss">
+              <TabBar className="whichType">
+                <TabBarItem
+                    active={this.state.tab == 0}
+                    onClick={e=>this.setState({tab:0})}
+                    label="主题"
+                />
+                <TabBarItem 
+                  active={this.state.tab == 1} 
+                  onClick={e=>this.setState({tab:1})}
+                  label="手册"
+                />
+                <TabBarItem
+                   
+                    
+                   
+                />
+              </TabBar>
+            <Article style={{display: this.state.tab == 0 ? null : 'none'}}>
+              <section>
+                <Cells>
+                  <Cell href="javascript:;" access>
+                    <CellBody>
+                      进给速度
+                    </CellBody>
+                    <CellFooter>
+                    </CellFooter>
+                  </Cell>
+                  <Cell access>
+                    <CellBody>
+                       liyuan
+                    </CellBody>
+                    <CellFooter>
+                  </CellFooter>
+                  </Cell>
+                </Cells>
+              </section>
+            </Article>
+            <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
+               <section>
+                <Cells>
+                  <Cell href="javascript:;" access>
+                    <CellBody>
+                      进给速度
+                    </CellBody>
+                    <CellFooter>
+                    </CellFooter>
+                  </Cell>
+                  <Cell access>
+                    <CellBody>
+                       主周
+                    </CellBody>
+                    <CellFooter>
+                  </CellFooter>
+                  </Cell>
+                </Cells>
+              </section>
+            </Article>
+            </Article>
                 <div style = {{display:this.state.fullpage_show?"block":"none"}} className="popup">
                     <div className="select">
                       <div className="hide"><i className="iconfont" onClick={e=>this.setState({fullpage_show: false})}>&#xe638;</i></div>
