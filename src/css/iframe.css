@@ -13,11 +13,36 @@ article{
 }
 footer .iframe{
 	width:100%;
-	height:60px;
-	line-height: 60px;
+	height:50px;
+	line-height: 50px;
 	background:#eee;
 	position:fixed;
-	bottom:0px;
+	bottom:25px;
+}
+footer .upPage{
+  width:100%;
+  height:25px;
+  line-height: 25px;
+  position:relative;
+  bottom:0px;
+}
+.left{
+  width:50%;
+  padding-left:5px;
+  position:absolute;
+  font-size: 0.8rem;
+  left:0px;
+}
+.upPage i{
+  color:orange;
+}
+.right {
+  width:50%;
+  padding-right:5px;
+  font-size: 0.8rem;
+  position: absolute;
+  right:0px;
+  text-align: right;
 }
 .box{
 	text-align: right;
@@ -89,4 +114,28 @@ article{
 }
 .box span{
   color:orange;
+}
+.react-weui-swiper__pagination{
+  display:none;
+}
+.menu{
+  width:100%;
+  height:35px;
+  line-height: 35px;
+  position: relative;
+  padding-left:10px;
+}
+.menu .iconfont{
+  width:40%;
+  position: absolute;
+
+}
+.menu div{
+  width:50%;
+  position: absolute;
+  right:0px;
+  color:orange;
+}
+.weui-popup{
+  width:83%;
 }

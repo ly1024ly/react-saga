@@ -69,7 +69,7 @@ module.exports = {
       'window.$': 'jquery',
 
     }),
-    new OpenBrowserPlugin({ url: 'http://localhost:9010/assets/view/index.html' }),
+    new OpenBrowserPlugin({ url: 'http://localhost:9010/assets/view/index.html#/collect?_k=fabvya' }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       filename:'./view/index.html',

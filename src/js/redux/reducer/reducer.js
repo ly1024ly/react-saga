@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import {collect} from './collect.js'
+import {collect} from './collect.js';
+import {files} from './fileSearch.js';
 
 const reducer = combineReducers ({
-  collect
+  collect,
+  files
 });
 
 export default reducer;

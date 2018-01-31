@@ -1,28 +1,24 @@
-.addfile .search-input{
-	width: calc(100% - 100px);
+.addfile{
+  width: 100%;
+  height:100vh;
 }
-.addfile .search-btn{
-	width:100px;
+.addfile .title{
+  width:100%;
+  height:35px;
+  padding:5px;
+  color:#666666;
+  border-bottom:1px solid #eee;
+  line-height: 35px;
 }
-.addfile .search-btn .btn{
-	width:100%;
-}
-.warn{
-	color:#333;
-	font-size: 0.7rem;
-	margin:12px;
-	display:block;
-	line-height: 20px;
-}
-.addfile .cbox{
-  border-top:none;
-}
-li:last-child .cbox{
-  border-bottom: 1px solid #d9d9d9;
-}
-
-.addfile .icon-add {
-    position: absolute;
-    right: 6px;
-    top: 11px;
+.add{
+  width:100%;
+  height:40px;
+  line-height: 40px;
+  background: #ff9900;
+  color:#fff;
+  font-size: 0.9rem;
+  text-align: center;
+  position: fixed;
+  bottom:0px;
+  left:0px;
 }

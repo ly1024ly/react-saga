@@ -37,7 +37,9 @@ class Collect extends Component {
       border:["书签","手册","帖子"],
       tab:0,
       val:'',
-      style:"none"
+      style:"none",
+      hint:false,
+      tag:"all"
     }
   }
   componentDidMount(){
@@ -62,7 +64,19 @@ class Collect extends Component {
   }
   saveValue = (e) => {
     this.setState({
-      val:e.target.value
+      val:e.target.value,
+      hint:true
+    })
+  }
+  checkVal = (res) => {
+    this.setState({
+      tag:res
+    })
+  }
+  changeTab =(res) => {
+    console.log(res)
+    this.setState({
+        tab:res.tab
     })
   }
   tabChange = (e) => {
@@ -92,26 +106,32 @@ class Collect extends Component {
                   />
                 </div>
                 <div className="search-btn">
-                  <label type="button" className="btn"
+                  <label type="button" className="btn tag" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
                   >搜本页</label>
-                  <label className="btn">添加</label>
+                  <label className="btn" className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")}>添加</label>
+                </div>
+                <div className="hint" id="hint" style={{display:this.state.hint ? "block" : "none"}} >
+                  <ul >
+                    <li>dsfd</li>
+                    <li>fdsgafg</li>
+                  </ul>
                 </div>
               </div>
             </div>
           <TabBar className="changeType">
             <TabBarItem
                 active={this.state.tab == 0}
-                onClick={e=>this.setState({tab:0})}
+                onClick={() => this.changeTab({tab:0})}
                 label="主题"
             />
             <TabBarItem 
               active={this.state.tab == 1} 
-              onClick={e=>this.setState({tab:1})}
+              onClick={() => this.changeTab({tab:1})}
               label="手册"
             />
             <TabBarItem
                 active={this.state.tab == 2}
-                onClick={e=>this.setState({tab:2})}
+                onClick={() => this.changeTab({tab:2})}
                 label="帖子"
             />
           </TabBar>
@@ -159,7 +179,7 @@ class Collect extends Component {
           </TabBody>
             <TabBar className="footer">
               <TabBarItem
-                  icon={<i className="iconfont icon-collect" style={{color:"orange"}}>&#xe616;</i>}
+                  icon={<i className="iconfont icon-collect" style={{color:"#ff9900"}}>&#xe616;</i>}
                   label="我的收藏"
               />
               <TabBarItem >
@@ -179,6 +199,19 @@ class Collect extends Component {
                   label="用户社区"
               />
           </TabBar>
+          <div className="holder">
+               <section>
+                <nav role="navigation">
+                  <ul className="cd-pagination">
+                    <li className="s" onClick={() =>this.pageChange(this,1)}>首页</li>
+                    <li className="button1" onClick={() => this.pageChange(this,"pre")}>上页</li>
+                    
+                    <li className="button2" onClick={() => this.pageChange(this,"next")}>下页</li>
+                    <li className="e" onClick={() => this.pageChange(this,max)}>尾页</li>
+                  </ul>
+                </nav> 
+              </section>
+            </div>
         </Tab>
       </Page>
     )

@@ -10,7 +10,9 @@ require("../font/iconfont.css");
 import { Provider } from 'react-redux';
 import Index from './containers/Index.jsx';
 import Collect from './containers/Collect.jsx';
-import FileSearch from './containers/FileSearch.jsx'
+import FileSearch from './containers/FileSearch.jsx';
+import AddFile from './containers/AddFile.jsx';
+import Iframe from './containers/Iframe.jsx';
 import store from "./redux/store/store.js"
 
 
@@ -21,6 +23,8 @@ const routes = (
         <Route path="/collect" component={Collect} name="我的收藏" >
         </Route>
         <Route path="filesearch" component={FileSearch} ></Route>
+        <Route path="addfile" component={AddFile} ></Route>
+        <Route path="iframe" component={Iframe} ></Route>
       </Route>
     </Router>
   </Provider>

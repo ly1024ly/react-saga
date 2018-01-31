@@ -7,13 +7,26 @@
     margin-top:60px;
 }
 .collect .weui-bar__item_on{
-    border-bottom:2px solid orange;
-    color:#888;
+    border-bottom:2px solid #ff9900;
+    color:#333;
 }
 .collect .changeType.weui-tabbar:before{
     border-top:none;
 }
 .collect .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
-    color:#888;
+    color:#333;
+}
+.hint{
+  width: -webkit-calc(100% - 33px);
+  width: calc(100% - 33px);
+  border-left:1px solid #eee;
+  border-right:1px solid #eee;
+  border-bottom:1px solid #eee;
+  background: #fff;
+  position: fixed;
+  z-index:1000;
+}
+.hint li{
+  padding:5px;
 }
 #collect{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}

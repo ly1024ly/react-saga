@@ -8,6 +8,17 @@ body{
 	padding:0px;
 
 }
+.weui-cell__bd .secret{
+    padding:5px;
+    background: orange;
+    color:#fff!important;
+    border-radius:6px;
+}
+.weui-cell__bd *{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
 header{
 	width:100%;
 	height:60px;
@@ -21,6 +32,12 @@ header{
 	top:0px;
 	left:0px;
 	z-index:10;
+}
+.weui-tab__panel{
+    padding-bottom: 0px;
+}
+.weui-article section{
+    margin-bottom: 0px;
 }
 .back{
 	position: absolute;
@@ -71,14 +88,18 @@ header{
     display: inline-block;
     background: #fff;
     color: orange;
-    border: 1px solid orange;
+    border: 1px solid #ff9900;
     /* margin-right: 5px; */
+}
+.search-btn .btn.tag{
+    background: #ff9900;
+    color:#fff;
 }
 .search-btn .btn:last-child{
 	margin-left: 2px;
 }
 .weui-tabbar__icon i,.weui-tabbar__label{
-	color:#888;
+	color:#333;
 }
 .weui-cell_access{
 	
@@ -377,3 +398,11 @@ body, .page {
     -webkit-user-select:none;
 }
 #box{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}
+.weui-cells:before{
+    border-top:0px;
+}
+.cd-pagination li{
+    padding:4px;
+    margin: 0px 4px;
+    font-size: 0.9rem;
+}
