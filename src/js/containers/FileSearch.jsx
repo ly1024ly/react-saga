@@ -31,7 +31,7 @@ var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
 require('jquery');
-import {findFileAction} from "../redux/action/fileSearch.js";
+import {findFileAction,addFileAction,saveTabAction} from "../redux/action/fileSearch.js";
 import Collect from './Collect.jsx';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
@@ -43,7 +43,8 @@ require("../../css/fileSearch.css");
 class FileSearch extends Component {
   static propTypes = {
     files:PropTypes.object,
-    findFileAction:PropTypes.func
+    findFileAction:PropTypes.func,
+    addFileAction:PropTypes.func
   }
   constructor(props,context){
     super(props,context)
@@ -57,7 +58,21 @@ class FileSearch extends Component {
         search:false,
         touchTime:0,
         tag:'all',
-        page:1
+        page:1,
+        addFile:{
+          bookid:"id17BRF0V03GB",
+          ifsecrecy:"公开",
+          username:"yang6",
+          bookname:"维宏百问",
+          status:true,  
+          audience:"通用",
+          book_keysjson:{
+              base:"维宏",
+              product:"通用",
+              type:"故障排查手册"
+          },
+          deliveryTarget:"wh"
+        }
         
     };
   }
@@ -67,14 +82,23 @@ class FileSearch extends Component {
     document.body.addEventListener("touchend",this.touchend)
     var obox = document.getElementById("box");
     let that = this;
-    document.oncontextmenu =  function(ev){
-      ev.preventDefault();  
+  //**********************text************************************
+  window.document.oncontextmenu =  function(ev){
       var e = ev||window.event;
       var x = e.clientX;
       var y = e.clientY;
       obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+      let obj = {
+        bookid:"id17BRF0V03GB",
+        bookname:"维宏百问"
+      }
+      that.setState({
+        search:true
+      })
+      that.props.addFileAction(obj);
       return false;
     };
+  //***********************************************************
     /*点击空白处隐藏*/
     document.onclick = function(){
         obox.style.display = "none";
@@ -99,17 +123,17 @@ class FileSearch extends Component {
   }
   touchmove = e => {
     e.stopPropagation();
-    console.log(this.state.clientx,e.changedTouches[0].clientX)
     let clientx = e.changedTouches[0].clientX;
     if(clientx+30<this.state.clientx){
       this.setState({fullpage_show: true})
     }
   }
   touchstart = e => {
-    e.stopPropagation();
     this.setState({
-      clientx:e.changedTouches[0].clientX
+      clientx:e.targetTouches[0].clientX,
+      clienty:e.targetTouches[0].clientY
     })
+    console.log(e)
     let that = this;
     this.inter = setInterval(that.interval(e.changedTouches[0].clientX,e.changedTouches[0].clientY),1000)
   }
@@ -130,17 +154,30 @@ class FileSearch extends Component {
     })
     clearInterval(this.inter)
   }
-  
+  componentWillMount(){
+    const { files } = this.props;
+    let tab = 0;
+    if(files.savetab&&files.savetab.data!==null){
+      tab = files.savetab.data;
+    }
+    if(files.addfile!==null){
+      this.setState({
+        search:true,
+        tab:tab
+      })
+    }
+  }
   componentWillUnmount(){
     document.body.removeEventListener('touchstart',this.touchstart);
     document.body.removeEventListener('touchmove',this.touchmove);
     document.body.removeEventListener('touchend',this.touchend);
+    
   }
   hide(){
-      this.setState({
-          bottom_show: false,
-          fullpage_show: false,
-      })
+    this.setState({
+      bottom_show: false,
+      fullpage_show: false,
+    })
   }
   goiframe = (obj) => {
     let data = {
@@ -153,10 +190,24 @@ class FileSearch extends Component {
     hashHistory.push(path)
   }
   toAddfile = () => {
-    this.context.router.push("addfile")
+    const { files } = this.props;
+    if(files.addfile&&files.addfile.data.result == "success"){
+      this.props.saveTabAction(this.state.tab)
+      let data = {
+        href:files.addfile.data.message,
+        message:JSON.stringify(this.state.addFile)
+      }
+      let path = {
+        pathname:"addfile",
+        query:data
+      }
+      hashHistory.push(path)
+    }
+  }
+  componentDidUpdate(){
+    
   }
   changeTab =(res) => {
-    console.log(res)
     this.setState({
         tab:res.tab
     })
@@ -167,7 +218,6 @@ class FileSearch extends Component {
     })
   }
   checkVal=(res) => {
-    console.log(res)
     if(res=="all"){
       this.openPop()
     }else{
@@ -182,9 +232,25 @@ class FileSearch extends Component {
   chooseBrand(res){
 
   }
+  contextMenu(ev,res){
+    ev.preventDefault(); 
+    var obox = document.getElementById("box");
+    var e = ev||window.event;
+    var x = e.clientX;
+    var y = e.clientY;
+    obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+    this.setState({
+      addFile:res
+    })
+    let obj = {
+      bookid:res.bookid,
+      bookname:res.bookname
+    }
+    this.props.addFileAction(obj);
+    return false;
+  }
 
   pageChange(res){
-    console.log(res)
     this.setState({
       page:res
     })
@@ -193,11 +259,12 @@ class FileSearch extends Component {
   render() {
     let display = this.state.style;
     const { files } = this.props;
-    console.log(this.props.files)
+    console.log(files)
     let page;
     let book = [];
     let hbook = [];
-    if(files.fileList!==null&&files.fileList.data.result){
+    console.log(files)
+    if(files.fileList.data!==null&&files.fileList.data.result){
       page = files.fileList.data.message.Maxpage;
       //手册
       hbook = files.fileList.data.message.bookMsg;
@@ -238,13 +305,13 @@ class FileSearch extends Component {
             <div className="o">猜你喜欢</div>
             <section>
               <Cells>
-                <Cell href="javascript:;" access onClick={() => this.goiframe()}>
+                <Cell href="javascript:;" access onClick={() => this.goiframe()} onContextMenu={(e) => this.contextMenu(e,"rr")}>
                   <CellBody>
                     <div>进给速度</div>
                     <span>dsfaa</span>
                   </CellBody>
                 </Cell>
-                <Cell access>
+                <Cell access onContextMenu={(e) => this.contextMenu(e,"rr")}>
                   <CellBody>
                     <div>主周</div>
                     <span>dsfaa</span>
@@ -298,11 +365,11 @@ class FileSearch extends Component {
               <Cells>
               {
                 hbook ? hbook.map(function(item,index){
-                  console.log(item)
                   let key = item.book_keysjson;
+                  console.log(item)
                   return (
-                    <Cell key={index} access onTouchStart={() => this.collectit(item)}>
-                      <CellBody>
+                    <Cell key={index} access onContextMenu={(e) => this.contextMenu(e,item)} value={item}>
+                      <CellBody >
                         <h3>{item.bookname}</h3>
                         {item.outputclass=="私密" ? <span className="secret">密</span> : ""}
                         <span>{key.base+" | "+key.product+" | "+key.type}</span>
@@ -491,5 +558,7 @@ function mapStateToProps(state) {
 
 
 export default connect(mapStateToProps,{
-  findFileAction
+  findFileAction,
+  addFileAction,
+  saveTabAction
 })(FileSearch)

@@ -406,3 +406,6 @@ body, .page {
     margin: 0px 4px;
     font-size: 0.9rem;
 }
+.react-weui-infiniteloader{
+    height: initial;
+}

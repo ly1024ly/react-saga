@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import {collect} from './collect.js';
+import {collects} from './collect.js';
 import {files} from './fileSearch.js';
+import {iframe} from './iframe.js';
 
 const reducer = combineReducers ({
-  collect,
-  files
+  collects,
+  files,
+  iframe
 });
 
 export default reducer;

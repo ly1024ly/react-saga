@@ -6,6 +6,9 @@ import {
   history
 } from 'react-router';
 import WeUI from 'react-weui';
+import { connect } from 'react-redux';
+import { createStore,bindActionCreators } from 'redux';
+import {mycollectAction} from '../redux/action/collect.js';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/collect.css");
@@ -30,7 +33,10 @@ import {
 
 
 class Collect extends Component {
-  mixins:[History]
+  static propTypes = {
+    collects:PropTypes.object,
+    mycollectAction:PropTypes.func
+  }
   constructor(props,context){
     super(props,context)
     this.state = {
@@ -48,6 +54,7 @@ class Collect extends Component {
       $(".react-weui-infiniteloader__content").css("width",width)
       var obox = document.getElementById("collect");
     let that = this;
+    this.props.mycollectAction({username:"yang6"})
     document.oncontextmenu =  function(ev){
       ev.preventDefault();  
       var e = ev||window.event;
@@ -90,6 +97,8 @@ class Collect extends Component {
   }
   render(){
     let display = this.state.style;
+    const {collect} = this.props;
+    console.log(collect)
     return (
       <Page className="collect">
         <div id="collect" >删除</div>
@@ -221,4 +230,12 @@ Collect.contextTypes={
     router: React.PropTypes.object.isRequired
 }
 
-export default Collect
+function mapStateToProps(state) {
+  return {
+    collects:state.collects
+  }
+}
+
+export default connect(mapStateToProps,{
+  mycollectAction
+})(Collect)

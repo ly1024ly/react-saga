@@ -1,3 +1,22 @@
+.weui-article .m{
+  text-align: right;
+}
+.weui-article .m .iconfont{
+  font-size: 25px;
+  margin:0px 8px;
+}
+.pop{
+  width: 83%;
+  height:100%;
+  position: fixed;
+  top:0px;
+  left:0px;
+  z-index:1000;
+  background: #fff;
+  box-show:5px 5px 10px #eee;
+  overflow-x:hidden;
+
+}
 .prop{
 	width:100%;
 	color:orange;

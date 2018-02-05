@@ -1,5 +1,5 @@
 iframe{
-	width:100%;
+  width:100%;
 
   
 }
@@ -19,12 +19,12 @@ article{
   margin-top: 20px;
 }
 footer .iframe{
-	width:100%;
-	height:50px;
-	line-height: 50px;
-	background:#eee;
-	position:fixed;
-	bottom:25px;
+  width:100%;
+  height:50px;
+  line-height: 50px;
+  background:#eee;
+  position:fixed;
+  bottom:25px;
 }
 footer .upPage{
   width:100%;
@@ -52,14 +52,14 @@ footer .upPage{
   text-align: right;
 }
 .box{
-	text-align: right;
+  text-align: right;
 }
 .box .iconfont{
-	font-size:30px;
-	margin:10px;
+  font-size:30px;
+  margin:10px;
 }
 .iconfont.icon-yes{
-	color:orange;
+  color:orange;
 }
 #shareit {
   -webkit-user-select: none;
@@ -145,22 +145,4 @@ article{
 }
 .weui-popup{
   width:83%;
-}
-.weui-article .m{
-  text-align: right;
-}
-.weui-article .m .iconfont{
-  font-size: 25px;
-  margin:0px 8px;
-}
-.pop{
-  width: 83%;
-  height:100%;
-  position: fixed;
-  top:0px;
-  left:0px;
-  z-index:1000;
-  background: #fff;
-  box-show:5px 5px 10px #eee;
-  overflow-x:hidden;
 }
