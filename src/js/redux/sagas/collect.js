@@ -12,6 +12,7 @@ export function* mycollectAsync() {
   }
   const param = collect.mycollect.data;
   const json = yield call(myCollect,param);
+  console.log(json)
   if(json.result == "success") {
     yield put(mycollectAction(json,!fetching))
   }else{

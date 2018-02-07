@@ -407,6 +407,13 @@ label.weui-agree > * {
 .collect .weui-article{
     margin-top:60px;
 }
+.collect .weui-cell__bd span {
+    color: #666666;
+    font-size: 0.9rem;
+}
+.collect .weui-cell__bd h3{
+  font-weight:600;
+}
 .collect .weui-bar__item_on{
     border-bottom:2px solid #ff9900;
     color:#333;
@@ -3548,8 +3555,8 @@ body, .page {
   
 }
 .one{
-  padding-bottom: 20px;
-  border-bottom:1px dashed gray;
+  padding-bottom: 0px;
+  overflow-x:hidden;
 }
 #frabox{
   overflow-y: auto;

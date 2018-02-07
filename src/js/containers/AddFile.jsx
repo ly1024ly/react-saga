@@ -54,9 +54,9 @@ class AddFile extends Component {
     }
     componentDidMount(){
         let message = JSON.parse(this.props.location.query.message);
-        //this.setState({
-           // book:message
-        //})
+        this.setState({
+            book:message
+        })
         console.log(message)
         const {files} = this.props;
         let framecont = document.getElementById("iframecontent");
@@ -92,6 +92,7 @@ class AddFile extends Component {
                         href:hrefs,
                         bookid:topicid,
                         filename:filename,
+                        title:title,
                         message:JSON.stringify(message),
                         _id:"eeeeeeeeeeeeeeee"
                     }
@@ -116,6 +117,7 @@ class AddFile extends Component {
     }
     componentWillUnmount(){
         this.props.files.comfirmfile.data = null;
+        window.clearTimeout(this.state.toastTimer)
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.files.comfirmfile.data!==null&&nextProps.files.comfirmfile.data.result == "success"){

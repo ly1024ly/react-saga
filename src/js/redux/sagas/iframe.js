@@ -1,7 +1,7 @@
 import {select, put, call} from 'redux-saga/effects';
 import {getIframe} from './selector.js';
-import {isCollectAction,likeAction,collectAction} from '../action/iframe.js';
-import {iscollect,like,collect} from './api.js';
+import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction} from '../action/iframe.js';
+import {iscollect,like,collect,getpage} from './api.js';
 let arr = [];
 
 export function* isCollectAsync (){
@@ -32,6 +32,7 @@ export function* likeAsync () {
   }
   const param = iframe.like.data;
   const json = yield call(like,param);
+  let arr = iframe.iscollect.data;
   if(json.result == "success") {
     for(var i=0;i<arr.length;i++){
       if(param.topicid == arr[i].topicid){
@@ -47,21 +48,58 @@ export function* likeAsync () {
 
 export function* collectAsync () {
   const iframe = yield select(getIframe);
-  const fetching = iframe.iscollect.fetching;
+  const fetching = iframe.collect.fetching;
   if(fetching){
     return null
   }
-  const param = iframe.iscollect.data;
+  const param = iframe.collect.data;
   const json = yield call(collect,param);
-  let ar = iframe.iscollect.data;
+  let arr = iframe.iscollect.data;
   if(json.result == "success") {
-    for(var i=0;i<ar.length;i++){
-      if(param.topicid == ar[i].topicid){
-        ar[i].json.luad = true;
+    for(var i=0;i<arr.length;i++){
+      if(param.topicid == arr[i].topicid){
+        arr[i].json.store = true;
       }
     }
-    yield put(collectAction(ar,!fetching))
+    yield put(collectAction(arr,!fetching))
   } else {
     yield put(collectAction(json.error,!fetching))
+  }
+}
+
+export function* delcollectAsync (){
+  const iframe = yield select(getIframe);
+  const fetching = iframe.delcollect.fetching;
+  if(fetching){
+    return null
+  }
+  const param = iframe.delcollect.data;
+  const json = yield call(collect,param);
+  let arr = iframe.iscollect.data;
+  if(json.result == "success") {
+    for(var i=0;i<arr.length;i++){
+      if(param.topicid == arr[i].topicid){
+        arr[i].json.store = false;
+      }
+    }
+    yield put(delcollectAction(arr,!fetching))
+  } else {
+    yield put(delcollectAction(json.error,!fetching))
+  }
+}
+
+export function* pageAsync (){
+  const iframe = yield select(getIframe);
+  const fetching = iframe.page.fetching;
+  if(fetching) {
+    return null
+  }
+  const param = iframe.page.data;
+  const json = yield call(getpage,param);
+  console.log(json)
+  if(json.result == "success"){
+    yield put(getpageAction(json,!fetching))
+  } else {
+    yield put(getpageAction(json.error,!fetching))
   }
 }

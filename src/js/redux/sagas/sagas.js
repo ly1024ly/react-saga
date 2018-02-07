@@ -3,8 +3,8 @@ import { searchfilesAsync,addfilesAsync,saveTabAsync,comfirmAsync,menuAsync } fr
 import {SEARCH_FILE,ADD_FILE,SAVE_TAB,COMFIRM_ADD,MENU_URL} from '../action/fileSearch.js';
 import {mycollectAsync} from './collect.js';
 import {MYCOLLECT} from '../action/collect.js';
-import {isCollectAsync,likeAsync,collectAsync} from './iframe.js';
-import {IS_COLLECT,LIKE,COLLECT} from '../action/iframe.js';
+import {isCollectAsync,likeAsync,collectAsync,delcollectAsync,pageAsync} from './iframe.js';
+import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE} from '../action/iframe.js';
 
 
 export default function* rootSaga() {
@@ -18,6 +18,8 @@ export default function* rootSaga() {
     takeLatest(MYCOLLECT,mycollectAsync),
     takeEvery(IS_COLLECT,isCollectAsync),
     takeLatest(LIKE,likeAsync),
-    takeLatest(COLLECT,collectAsync)
+    takeEvery(COLLECT,collectAsync),
+    takeEvery(DELCOLLECT,delcollectAsync),
+    takeEvery(GET_PAGE,pageAsync)
   ]
 }

@@ -41,7 +41,7 @@ import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/iframe.css");
-import {isCollectAction,likeAction,collectAction} from '../redux/action/iframe.js';
+import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction} from '../redux/action/iframe.js';
 import {ajaxCollect} from '../redux/sagas/api.js';
 
 
@@ -50,19 +50,23 @@ class Iframe extends Component {
         files:PropTypes.object,
         isCollectAction:PropTypes.func,
         likeAction:PropTypes.func,
-        collectAction:PropTypes.func
+        collectAction:PropTypes.func,
+        delcollectAction:PropTypes.func,
+        getpageAction:PropTypes.func
     }
     constructor(props,context){
         super(props,context)
         this.state ={
             fullpage_show: false,
             demoIndex:0,
-            url:'',
+            url:this.props.location.query.href,
             x:0,
             head:"",
             baseUrl:"",
             one:[],
             innerHtml:[],
+            all:[],
+            pageY:0,
             two:"https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         }
         this.like = this.like.bind(this);
@@ -86,6 +90,12 @@ class Iframe extends Component {
                let o = document.createElement("div");  
                 o.innerHTML = res;
                let old = document.head.innerHTML;
+               let body = that.parseDom(res);
+               let img = body[body.length-1].querySelectorAll("img");
+               for(var i =0;i<img.length;i++){
+                img[i].src = that.state.url.split("xml")[0] + img[i].src.split("assets/")[1];
+               }
+               console.log(img)
                let dom = that.parseDom(res.split("<head>")[1].split("</head>")[0]);
                let all = "";
                 for(var i=0;i<dom.length;i++){
@@ -96,7 +106,13 @@ class Iframe extends Component {
                     }else{
                         all += dom[i].outerHTML; 
                     }
+                    if(dom[i].nodeName=='IMG'){
+                        dom[i].src = that.state.url.split("xml")[0] + dom[i].src.split("../")[1];
+                        console.log(dom[i])
+                    }
+                    console.log(dom[i])
                 }
+
                let css = "<link rel='stylesheet' href='../css/prop.css' />";
                all = all + css;
                document.head.innerHTML = all;
@@ -113,13 +129,19 @@ class Iframe extends Component {
             head:document.head.innerHTML,
             url:decodeURIComponent(this.props.location.query.href)
         });
+        let param = {
+            title:this.props.location.query.title,
+            bookid:this.props.location.query.bookid
+        }
+        this.props.getpageAction(param)
         let that = this;
         const {files} = this.props;
         console.log(files);
         if(files.menulist.data!==null){
-            let arr = files.menulist.data.slice(0,5);
+            let arr = files.menulist.data;
             this.setState({
-                one:arr
+                one:arr,
+                all:files.menulist.data
             })
             let html = [];
             for(var i = 0;i<arr.length;i++){
@@ -142,11 +164,20 @@ class Iframe extends Component {
             url:href
         })
     }
+    onScrollHandle=(event)=>{
+        const clientHeight = event.target.clientHeight
+        const scrollHeight = event.target.scrollHeight
+        const scrollTop = event.target.scrollTop
+        const isBottom = (clientHeight + scrollTop === scrollHeight)
+        console.log(event)
+        if (this.state.isScrollBottom !== isBottom) {
+          this.contentNode.scrollTop = isBottom
+        }
+    }
     collect =(id,type,title,index) => {
         if(type===undefined){
             type = "其他";
         }
-        console.log(this.props.location.query.message)
         let obj ={
                 username:"yang6",
                 topicid:id,
@@ -159,8 +190,20 @@ class Iframe extends Component {
         this.props.collectAction(obj)
 
     }
-    delcollect = () => {
-
+    delcollect = (id,type,title,index) => {
+        if(type===undefined){
+            type = "其他";
+        }
+        let obj ={
+                username:"yang6",
+                topicid:id,
+                ContentType:type,
+                title:title,
+                topicURL:decodeURIComponent(this.state.one[index]),
+                book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
+                status:false 
+            }
+        this.props.delcollectAction(obj)
     }
     clickEvent = (e,res) => {
         console.log(e)
@@ -198,28 +241,76 @@ class Iframe extends Component {
     }
     componentWillUnmount(){
         document.head.innerHTML = this.state.head;
+        if (this.contentNode) {
+            this.contentNode.removeEventListener('scroll', this.onScrollHandle.bind(this));
+        }
     }
     swiperChange(index){
         this.setState({demoIndex: index}) 
+    }
+    componentDidUpdate(){
+        $(window).scrollTop(1000); 
+    }
+    tabMenu = e => {
+        e.preventDefault();
+        console.log(e)
+    }
+    scrollToAnchor = (anchorName) => {
+        if (anchorName) {
+            // 找到锚点
+            let anchorElement = document.getElementById(anchorName);
+            // 如果对应id的锚点存在，就跳转到锚点
+            if(anchorElement) { anchorElement.scrollIntoView(); }
+        }
     }
     render(){
         let success = false;
         let collect = false;
         const { files,iframe } = this.props;
+        console.log(iframe)
         let height = (window.innerHeight - 30);
         let menuHeight = (window.innerHeight - 35) + "px";
-       console.log(iframe)
+        let iscollect = [];
+        if(iframe.collect.data!==null&&iframe.collect.data.length>0){
+            iscollect = iframe.collect;
+        }else if(iframe.delcollect.data!==null&&iframe.delcollect.data.length>0){
+            iscollect = iframe.delcollect
+        }else{
+            iscollect = iframe.iscollect;
+        }
+        
         return (
             <div className="iframe">
             <InfiniteLoader
                 onLoadMore={ (resolve, finish) => {
                     //mock request
                     setTimeout( ()=> {
-                        if(this.state.one.length > 6){
+                        if(this.state.one.length >= this.state.all.length){
+                            console.log("finish")
                             finish()
                         }else{
+                            let len = this.state.one.length+6;
+                            let arr = this.state.all.slice(this.state.one.length-1,len)
+                            let html = this.state.innerHtml;
+                            let id = "md"+(this.state.one.length-1).toString();
+                            $(window).scrollTop(1000); 
+                            for(var i = 0;i<arr.length;i++){
+                                let result = this.ajaxLoad(arr[i]);
+                                let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
+                                html.push(result);
+                                let obj = {
+                                    bookid:this.props.location.query.bookid,
+                                    topicid:topicid,
+                                    username:"yang6"
+                                }
+                                this.props.isCollectAction(obj)
+                            }
+
                             this.setState({
-                                one: this.state.one.concat([this.state.one.length])
+                                innerHtml:html
+                            })
+                            this.setState({
+                                one: this.state.all.slice(0,len-1)
                             }, ()=> resolve())
                         }
                     }, 1000)
@@ -242,18 +333,20 @@ class Iframe extends Component {
                                 let like = false;
                                 let store = false;
                                 let num = 0;
-                                if(iframe.iscollect.data!==null&&iframe.iscollect.data.length>0){
-                                    for(let i=0;i<iframe.iscollect.data.length;i++){
-                                        if(iframe.iscollect.data[i].topicid == topicid&&iframe.iscollect.data[i].json.result=="success"){
-                                            like = iframe.iscollect.data[i].json.luad;
-                                            store = iframe.iscollect.data[i].json.store;
-                                            num = iframe.iscollect.data[i].json.luadnum;
+                                if(iscollect.data!==null&&iscollect.data.length>0){
+                                    for(let i=0;i<iscollect.data.length;i++){
+                                        if(iscollect.data[i].topicid == topicid&&iscollect.data[i].json.result=="success"){
+                                            like = iscollect.data[i].json.luad;
+                                            store = iscollect.data[i].json.store;
+                                            num = iscollect.data[i].json.luadnum;
                                             return (
                                                 <Article key={index} className="one" onClick={(e) => this.clickEvent(e,index)}>
-                                                    <div dangerouslySetInnerHTML={{ __html:item}}></div>
-                                                    <div className="m">同行点赞{num}
+                                                    <a id={"md"+index}>
+                                                        <div dangerouslySetInnerHTML={{ __html:item}} ></div>
+                                                    </a>
+                                                    <div className="m">{num}
                                                         {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}
-                                                        {store ? <i className="iconfont icon-yes">&#xe620;</i> : <i className="iconfont icon-no" onClick={() => this.collect(topicid,ContentType,title,index)}>&#xe616;</i> }
+                                                        {store ? <i className="iconfont icon-yes" onClick={() => this.delcollect(topicid,ContentType,title,index)}>&#xe620;</i> : <i className="iconfont icon-no" onClick={() => this.collect(topicid,ContentType,title,index)}>&#xe616;</i> }
                                                         <i className="iconfont">&#xe619;</i>
                                                     </div>
                                                 </Article>
@@ -265,16 +358,6 @@ class Iframe extends Component {
                         }
                         </div>
                     </PanelBody>
-                    <footer>
-                        <div className="upPage">
-                            <div className="left">
-                                <i className="iconfont" >&#xe602;</i>T:道具
-                            </div>
-                            <div className="right">
-                                T:道具<i className="iconfont">&#xe603;</i>
-                            </div>
-                        </div>
-                    </footer>
                     </Panel>
                     <div
                         className="pop"
@@ -288,7 +371,7 @@ class Iframe extends Component {
                                     <Link to="collect"><div>进入"我的收藏"</div></Link>
                                 </div>
                                 <div className="menuIframe">
-                                    <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:menuHeight}}></iframe>
+                                    <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:menuHeight}} onClick={(e) => this.tabMenu(e)}></iframe>
                                 </div>
                             </Article>
                         </div>
@@ -309,6 +392,8 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps,{
   isCollectAction,
   likeAction,
-  collectAction
+  collectAction,
+  delcollectAction,
+  getpageAction
 })(Iframe)
 

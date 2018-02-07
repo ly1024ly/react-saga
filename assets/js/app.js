@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b6857df7479ebf5fd0fe"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a8ba4b049e6b5d690a9d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -20420,18 +20420,30 @@ var Collect = function (_Component) {
       var obox = document.getElementById("collect");
       var that = this;
       this.props.mycollectAction({ username: "yang6" });
-      document.oncontextmenu = function (ev) {
-        ev.preventDefault();
-        var e = ev || window.event;
-        var x = e.clientX;
-        var y = e.clientY;
-        obox.style.cssText = "display:block;top:" + y + "px;left:" + x + "px;";
-        return false;
-      };
+      //document.oncontextmenu =  function(ev){
+      // ev.preventDefault();  
+      // var e = ev||window.event;
+      // var x = e.clientX;
+      // var y = e.clientY;
+      // obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+      // return false;
+      //};
       /*点击空白处隐藏*/
       document.onclick = function () {
         obox.style.display = "none";
       };
+    }
+  }, {
+    key: 'contextMenu',
+    value: function contextMenu(ev, res) {
+      ev.preventDefault();
+      var obox = document.getElementById("collect");
+      var e = ev || window.event;
+      var x = e.clientX;
+      var y = e.clientY;
+      obox.style.cssText = "display:block;top:" + y + "px;left:" + x + "px;";
+      alert(JSON.stringify(res));
+      return false;
     }
   }, {
     key: 'render',
@@ -20441,9 +20453,15 @@ var Collect = function (_Component) {
           _React$createElement2;
 
       var display = this.state.style;
-      var collect = this.props.collect;
+      var collects = this.props.collects;
 
-      console.log(collect);
+      console.log(collects);
+      var topic = [];
+      var book = [];
+      if (collects.mycollect.data !== null && collects.mycollect.data.result == "success") {
+        topic = collects.mycollect.data.message.topics;
+        book = collects.mycollect.data.message.books;
+      }
       return _react2.default.createElement(
         _reactWeui.Page,
         { className: 'collect' },
@@ -20546,26 +20564,33 @@ var Collect = function (_Component) {
                 _react2.default.createElement(
                   _reactWeui.Cells,
                   null,
-                  _react2.default.createElement(
-                    _reactWeui.Cell,
-                    { href: 'javascript:;', access: true },
-                    _react2.default.createElement(
-                      _reactWeui.CellBody,
-                      null,
-                      '\u8FDB\u7ED9\u901F\u5EA6'
-                    ),
-                    _react2.default.createElement(_reactWeui.CellFooter, null)
-                  ),
-                  _react2.default.createElement(
-                    _reactWeui.Cell,
-                    { access: true },
-                    _react2.default.createElement(
-                      _reactWeui.CellBody,
-                      null,
-                      'liyuan'
-                    ),
-                    _react2.default.createElement(_reactWeui.CellFooter, null)
-                  )
+                  topic.map(function (item, index) {
+                    var _this3 = this;
+
+                    var key = item.result.book_keysjson;
+                    console.log(key);
+                    return _react2.default.createElement(
+                      _reactWeui.Cell,
+                      { href: 'javascript:;', access: true, key: index, onContextMenu: function onContextMenu(e) {
+                          return _this3.contextMenu(e, item);
+                        } },
+                      _react2.default.createElement(
+                        _reactWeui.CellBody,
+                        null,
+                        _react2.default.createElement(
+                          'h3',
+                          null,
+                          item.result.title
+                        ),
+                        _react2.default.createElement(
+                          'span',
+                          null,
+                          key.base + " | " + key.product + " | " + key.type
+                        )
+                      ),
+                      _react2.default.createElement(_reactWeui.CellFooter, null)
+                    );
+                  })
                 )
               )
             ),
@@ -20578,26 +20603,28 @@ var Collect = function (_Component) {
                 _react2.default.createElement(
                   _reactWeui.Cells,
                   null,
-                  _react2.default.createElement(
-                    _reactWeui.Cell,
-                    { href: 'javascript:;', access: true },
-                    _react2.default.createElement(
-                      _reactWeui.CellBody,
-                      null,
-                      '\u8FDB\u7ED9\u901F\u5EA6'
-                    ),
-                    _react2.default.createElement(_reactWeui.CellFooter, null)
-                  ),
-                  _react2.default.createElement(
-                    _reactWeui.Cell,
-                    { access: true },
-                    _react2.default.createElement(
-                      _reactWeui.CellBody,
-                      null,
-                      '\u4E3B\u5468'
-                    ),
-                    _react2.default.createElement(_reactWeui.CellFooter, null)
-                  )
+                  book.map(function (item, index) {
+                    var key = item.book_keysjson;
+                    return _react2.default.createElement(
+                      _reactWeui.Cell,
+                      { href: 'javascript:;', access: true, key: index },
+                      _react2.default.createElement(
+                        _reactWeui.CellBody,
+                        null,
+                        _react2.default.createElement(
+                          'h3',
+                          null,
+                          item.bookname
+                        ),
+                        _react2.default.createElement(
+                          'span',
+                          null,
+                          key.base + " | " + key.product + " | " + key.type
+                        )
+                      ),
+                      _react2.default.createElement(_reactWeui.CellFooter, null)
+                    );
+                  })
                 )
               )
             )
@@ -21017,6 +21044,8 @@ Object.defineProperty(exports, "__esModule", {
 var IS_COLLECT = exports.IS_COLLECT = 'IS_COLLECT';
 var LIKE = exports.LIKE = 'LIKE';
 var COLLECT = exports.COLLECT = 'COLLECT';
+var DELCOLLECT = exports.DELCOLLECT = 'DELCOLLECT';
+var GET_PAGE = exports.GET_PAGE = 'GET_PAGE';
 
 var isCollectAction = exports.isCollectAction = function isCollectAction(param, fetching) {
   return {
@@ -21028,15 +21057,33 @@ var isCollectAction = exports.isCollectAction = function isCollectAction(param, 
 
 var likeAction = exports.likeAction = function likeAction(param, fetching) {
   return {
-    type: 'LIKE',
+    type: LIKE,
     data: param,
     fetching: fetching
   };
 };
 
 var collectAction = exports.collectAction = function collectAction(param, fetching) {
+  console.log("action===");
   return {
-    type: 'COLLECT',
+    type: COLLECT,
+    data: param,
+    fetching: fetching
+  };
+};
+
+var delcollectAction = exports.delcollectAction = function delcollectAction(param, fetching) {
+  return {
+    type: DELCOLLECT,
+    data: param,
+    fetching: fetching
+  };
+};
+
+var getpageAction = exports.getpageAction = function getpageAction(param, fetching) {
+  console.log(param, fetching);
+  return {
+    type: GET_PAGE,
     data: param,
     fetching: fetching
   };
@@ -21052,7 +21099,7 @@ var collectAction = exports.collectAction = function collectAction(param, fetchi
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.collect = exports.like = exports.ajaxCollect = exports.iscollect = exports.myCollect = exports.comFile = exports.addFile = exports.searchFile = undefined;
+exports.getpage = exports.collect = exports.like = exports.ajaxCollect = exports.iscollect = exports.myCollect = exports.comFile = exports.addFile = exports.searchFile = undefined;
 
 __webpack_require__(864);
 
@@ -21109,7 +21156,7 @@ var comFile = exports.comFile = function comFile(param) {
 };
 
 var myCollect = exports.myCollect = function myCollect(param) {
-  return fetch(getURL('search/mystore?username=' + param.username), {
+  return fetch('http://172.16.11.71:3008/search/mystore?username=' + param.username, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -21179,6 +21226,21 @@ var collect = exports.collect = function collect(param) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(param)
+  }).then(function (res) {
+    return res.json();
+  }).then(function (json) {
+    return json;
+  }).catch(function (ex) {
+    return console.log('parsing faild', ex);
+  });
+};
+
+var getpage = exports.getpage = function getpage(param) {
+  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=' + param.title + '&&bookid=' + param.bookid, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }).then(function (res) {
     return res.json();
   }).then(function (json) {
@@ -68646,9 +68708,9 @@ var AddFile = function (_Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var message = JSON.parse(this.props.location.query.message);
-            //this.setState({
-            // book:message
-            //})
+            this.setState({
+                book: message
+            });
             console.log(message);
             var files = this.props.files;
 
@@ -68685,6 +68747,7 @@ var AddFile = function (_Component) {
                             href: hrefs,
                             bookid: topicid,
                             filename: filename,
+                            title: title,
                             message: JSON.stringify(message),
                             _id: "eeeeeeeeeeeeeeee"
                         };
@@ -68715,6 +68778,7 @@ var AddFile = function (_Component) {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             this.props.files.comfirmfile.data = null;
+            window.clearTimeout(this.state.toastTimer);
         }
     }, {
         key: 'componentWillReceiveProps',
@@ -68861,11 +68925,21 @@ var Iframe = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Iframe.__proto__ || Object.getPrototypeOf(Iframe)).call(this, props, context));
 
+        _this.onScrollHandle = function (event) {
+            var clientHeight = event.target.clientHeight;
+            var scrollHeight = event.target.scrollHeight;
+            var scrollTop = event.target.scrollTop;
+            var isBottom = clientHeight + scrollTop === scrollHeight;
+            console.log(event);
+            if (_this.state.isScrollBottom !== isBottom) {
+                _this.contentNode.scrollTop = isBottom;
+            }
+        };
+
         _this.collect = function (id, type, title, index) {
             if (type === undefined) {
                 type = "其他";
             }
-            console.log(_this.props.location.query.message);
             var obj = {
                 username: "yang6",
                 topicid: id,
@@ -68878,7 +68952,21 @@ var Iframe = function (_Component) {
             _this.props.collectAction(obj);
         };
 
-        _this.delcollect = function () {};
+        _this.delcollect = function (id, type, title, index) {
+            if (type === undefined) {
+                type = "其他";
+            }
+            var obj = {
+                username: "yang6",
+                topicid: id,
+                ContentType: type,
+                title: title,
+                topicURL: decodeURIComponent(_this.state.one[index]),
+                book_keysjson: JSON.parse(_this.props.location.query.message).book_keysjson,
+                status: false
+            };
+            _this.props.delcollectAction(obj);
+        };
 
         _this.clickEvent = function (e, res) {
             console.log(e);
@@ -68912,15 +69000,33 @@ var Iframe = function (_Component) {
             _this.setState({ fullpage_show: true });
         };
 
+        _this.tabMenu = function (e) {
+            e.preventDefault();
+            console.log(e);
+        };
+
+        _this.scrollToAnchor = function (anchorName) {
+            if (anchorName) {
+                // 找到锚点
+                var anchorElement = document.getElementById(anchorName);
+                // 如果对应id的锚点存在，就跳转到锚点
+                if (anchorElement) {
+                    anchorElement.scrollIntoView();
+                }
+            }
+        };
+
         _this.state = {
             fullpage_show: false,
             demoIndex: 0,
-            url: '',
+            url: _this.props.location.query.href,
             x: 0,
             head: "",
             baseUrl: "",
             one: [],
             innerHtml: [],
+            all: [],
+            pageY: 0,
             two: "https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         };
         _this.like = _this.like.bind(_this);
@@ -68950,6 +69056,12 @@ var Iframe = function (_Component) {
                     var o = document.createElement("div");
                     o.innerHTML = res;
                     var old = document.head.innerHTML;
+                    var body = that.parseDom(res);
+                    var img = body[body.length - 1].querySelectorAll("img");
+                    for (var i = 0; i < img.length; i++) {
+                        img[i].src = that.state.url.split("xml")[0] + img[i].src.split("assets/")[1];
+                    }
+                    console.log(img);
                     var dom = that.parseDom(res.split("<head>")[1].split("</head>")[0]);
                     var all = "";
                     for (var i = 0; i < dom.length; i++) {
@@ -68960,7 +69072,13 @@ var Iframe = function (_Component) {
                         } else {
                             all += dom[i].outerHTML;
                         }
+                        if (dom[i].nodeName == 'IMG') {
+                            dom[i].src = that.state.url.split("xml")[0] + dom[i].src.split("../")[1];
+                            console.log(dom[i]);
+                        }
+                        console.log(dom[i]);
                     }
+
                     var css = "<link rel='stylesheet' href='../css/prop.css' />";
                     all = all + css;
                     document.head.innerHTML = all;
@@ -68979,14 +69097,20 @@ var Iframe = function (_Component) {
                 head: document.head.innerHTML,
                 url: decodeURIComponent(this.props.location.query.href)
             });
+            var param = {
+                title: this.props.location.query.title,
+                bookid: this.props.location.query.bookid
+            };
+            this.props.getpageAction(param);
             var that = this;
             var files = this.props.files;
 
             console.log(files);
             if (files.menulist.data !== null) {
-                var arr = files.menulist.data.slice(0, 5);
+                var arr = files.menulist.data;
                 this.setState({
-                    one: arr
+                    one: arr,
+                    all: files.menulist.data
                 });
                 var html = [];
                 for (var i = 0; i < arr.length; i++) {
@@ -69020,11 +69144,19 @@ var Iframe = function (_Component) {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             document.head.innerHTML = this.state.head;
+            if (this.contentNode) {
+                this.contentNode.removeEventListener('scroll', this.onScrollHandle.bind(this));
+            }
         }
     }, {
         key: 'swiperChange',
         value: function swiperChange(index) {
             this.setState({ demoIndex: index });
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            $(window).scrollTop(1000);
         }
     }, {
         key: 'render',
@@ -69037,9 +69169,18 @@ var Iframe = function (_Component) {
                 files = _props.files,
                 iframe = _props.iframe;
 
+            console.log(iframe);
             var height = window.innerHeight - 30;
             var menuHeight = window.innerHeight - 35 + "px";
-            console.log(iframe);
+            var iscollect = [];
+            if (iframe.collect.data !== null && iframe.collect.data.length > 0) {
+                iscollect = iframe.collect;
+            } else if (iframe.delcollect.data !== null && iframe.delcollect.data.length > 0) {
+                iscollect = iframe.delcollect;
+            } else {
+                iscollect = iframe.iscollect;
+            }
+
             return _react2.default.createElement(
                 'div',
                 { className: 'iframe' },
@@ -69049,11 +69190,32 @@ var Iframe = function (_Component) {
                         onLoadMore: function onLoadMore(resolve, finish) {
                             //mock request
                             setTimeout(function () {
-                                if (_this2.state.one.length > 6) {
+                                if (_this2.state.one.length >= _this2.state.all.length) {
+                                    console.log("finish");
                                     finish();
                                 } else {
+                                    var len = _this2.state.one.length + 6;
+                                    var arr = _this2.state.all.slice(_this2.state.one.length - 1, len);
+                                    var html = _this2.state.innerHtml;
+                                    var id = "md" + (_this2.state.one.length - 1).toString();
+                                    $(window).scrollTop(1000);
+                                    for (var i = 0; i < arr.length; i++) {
+                                        var result = _this2.ajaxLoad(arr[i]);
+                                        var topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
+                                        html.push(result);
+                                        var obj = {
+                                            bookid: _this2.props.location.query.bookid,
+                                            topicid: topicid,
+                                            username: "yang6"
+                                        };
+                                        _this2.props.isCollectAction(obj);
+                                    }
+
                                     _this2.setState({
-                                        one: _this2.state.one.concat([_this2.state.one.length])
+                                        innerHtml: html
+                                    });
+                                    _this2.setState({
+                                        one: _this2.state.all.slice(0, len - 1)
                                     }, function () {
                                         return resolve();
                                     });
@@ -69093,22 +69255,25 @@ var Iframe = function (_Component) {
                                     var like = false;
                                     var store = false;
                                     var num = 0;
-                                    if (iframe.iscollect.data !== null && iframe.iscollect.data.length > 0) {
-                                        for (var i = 0; i < iframe.iscollect.data.length; i++) {
-                                            if (iframe.iscollect.data[i].topicid == topicid && iframe.iscollect.data[i].json.result == "success") {
-                                                like = iframe.iscollect.data[i].json.luad;
-                                                store = iframe.iscollect.data[i].json.store;
-                                                num = iframe.iscollect.data[i].json.luadnum;
+                                    if (iscollect.data !== null && iscollect.data.length > 0) {
+                                        for (var i = 0; i < iscollect.data.length; i++) {
+                                            if (iscollect.data[i].topicid == topicid && iscollect.data[i].json.result == "success") {
+                                                like = iscollect.data[i].json.luad;
+                                                store = iscollect.data[i].json.store;
+                                                num = iscollect.data[i].json.luadnum;
                                                 return _react2.default.createElement(
                                                     _reactWeui.Article,
                                                     { key: index, className: 'one', onClick: function onClick(e) {
                                                             return _this3.clickEvent(e, index);
                                                         } },
-                                                    _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: item } }),
+                                                    _react2.default.createElement(
+                                                        'a',
+                                                        { id: "md" + index },
+                                                        _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: item } })
+                                                    ),
                                                     _react2.default.createElement(
                                                         'div',
                                                         { className: 'm' },
-                                                        '\u540C\u884C\u70B9\u8D5E',
                                                         num,
                                                         like ? _react2.default.createElement(
                                                             'i',
@@ -69123,7 +69288,9 @@ var Iframe = function (_Component) {
                                                         ),
                                                         store ? _react2.default.createElement(
                                                             'i',
-                                                            { className: 'iconfont icon-yes' },
+                                                            { className: 'iconfont icon-yes', onClick: function onClick() {
+                                                                    return _this3.delcollect(topicid, ContentType, title, index);
+                                                                } },
                                                             '\uE620'
                                                         ) : _react2.default.createElement(
                                                             'i',
@@ -69143,34 +69310,6 @@ var Iframe = function (_Component) {
                                         }
                                     }
                                 }, this)
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'footer',
-                            null,
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'upPage' },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'left' },
-                                    _react2.default.createElement(
-                                        'i',
-                                        { className: 'iconfont' },
-                                        '\uE602'
-                                    ),
-                                    'T:\u9053\u5177'
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'right' },
-                                    'T:\u9053\u5177',
-                                    _react2.default.createElement(
-                                        'i',
-                                        { className: 'iconfont' },
-                                        '\uE603'
-                                    )
-                                )
                             )
                         )
                     ),
@@ -69212,7 +69351,9 @@ var Iframe = function (_Component) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'menuIframe' },
-                                    _react2.default.createElement('iframe', { src: 'https://nccloud.weihong.com.cn/nchelp/booklist/\u7EF4\u5B8F\u767E\u95EE/index.html', style: { height: menuHeight } })
+                                    _react2.default.createElement('iframe', { src: 'https://nccloud.weihong.com.cn/nchelp/booklist/\u7EF4\u5B8F\u767E\u95EE/index.html', style: { height: menuHeight }, onClick: function onClick(e) {
+                                            return _this2.tabMenu(e);
+                                        } })
                                 )
                             )
                         )
@@ -69229,7 +69370,9 @@ Iframe.propTypes = {
     files: _react.PropTypes.object,
     isCollectAction: _react.PropTypes.func,
     likeAction: _react.PropTypes.func,
-    collectAction: _react.PropTypes.func
+    collectAction: _react.PropTypes.func,
+    delcollectAction: _react.PropTypes.func,
+    getpageAction: _react.PropTypes.func
 };
 
 
@@ -69243,7 +69386,9 @@ function mapStateToProps(state) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, {
     isCollectAction: _iframe.isCollectAction,
     likeAction: _iframe.likeAction,
-    collectAction: _iframe.collectAction
+    collectAction: _iframe.collectAction,
+    delcollectAction: _iframe.delcollectAction,
+    getpageAction: _iframe.getpageAction
 })(Iframe);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)))
 
@@ -70227,8 +70372,19 @@ var initialState = {
   like: {
     data: null,
     fetching: false
+  },
+  collect: {
+    data: null,
+    fetching: false
+  },
+  delcollect: {
+    data: null,
+    fetching: false
+  },
+  page: {
+    data: null,
+    fetching: false
   }
-
 };
 
 var iframe = exports.iframe = function iframe() {
@@ -70241,18 +70397,52 @@ var iframe = exports.iframe = function iframe() {
         iscollect: {
           data: action.data,
           fetching: action.fetching
+        },
+        collect: {
+          data: null,
+          fetching: false
+        },
+        delcollect: {
+          data: null,
+          fetching: false
         }
       });
     case _iframe.LIKE:
+      console.log("reducer==============");
+      console.log(action);
+      console.log();
       return _extends({}, state, {
-        iscollect: {
+        like: {
           data: action.data,
           fetching: action.fetching
         }
       });
     case _iframe.COLLECT:
       return _extends({}, state, {
-        iscollect: {
+        collect: {
+          data: action.data,
+          fetching: action.fetching
+        },
+        delcollect: {
+          data: null,
+          fetching: false
+        }
+      });
+    case _iframe.DELCOLLECT:
+
+      return _extends({}, state, {
+        delcollect: {
+          data: action.data,
+          fetching: action.fetching
+        },
+        collect: {
+          data: null,
+          fetching: false
+        }
+      });
+    case _iframe.GET_PAGE:
+      return _extends({}, state, {
+        page: {
           data: action.data,
           fetching: action.fetching
         }
@@ -70297,7 +70487,7 @@ function rootSaga() {
         case 0:
           console.log("sagas");
           _context.next = 3;
-          return [(0, _effects.takeLatest)(_fileSearch2.SEARCH_FILE, _fileSearch.searchfilesAsync), (0, _effects.takeLatest)(_fileSearch2.ADD_FILE, _fileSearch.addfilesAsync), (0, _effects.takeLatest)(_fileSearch2.SAVE_TAB, _fileSearch.saveTabAsync), (0, _effects.takeLatest)(_fileSearch2.COMFIRM_ADD, _fileSearch.comfirmAsync), (0, _effects.takeLatest)(_fileSearch2.MENU_URL, _fileSearch.menuAsync), (0, _effects.takeLatest)(_collect2.MYCOLLECT, _collect.mycollectAsync), (0, _effects.takeEvery)(_iframe2.IS_COLLECT, _iframe.isCollectAsync), (0, _effects.takeLatest)(_iframe2.LIKE, _iframe.likeAsync), (0, _effects.takeLatest)(_iframe2.COLLECT, _iframe.collectAsync)];
+          return [(0, _effects.takeLatest)(_fileSearch2.SEARCH_FILE, _fileSearch.searchfilesAsync), (0, _effects.takeLatest)(_fileSearch2.ADD_FILE, _fileSearch.addfilesAsync), (0, _effects.takeLatest)(_fileSearch2.SAVE_TAB, _fileSearch.saveTabAsync), (0, _effects.takeLatest)(_fileSearch2.COMFIRM_ADD, _fileSearch.comfirmAsync), (0, _effects.takeLatest)(_fileSearch2.MENU_URL, _fileSearch.menuAsync), (0, _effects.takeLatest)(_collect2.MYCOLLECT, _collect.mycollectAsync), (0, _effects.takeEvery)(_iframe2.IS_COLLECT, _iframe.isCollectAsync), (0, _effects.takeLatest)(_iframe2.LIKE, _iframe.likeAsync), (0, _effects.takeEvery)(_iframe2.COLLECT, _iframe.collectAsync), (0, _effects.takeEvery)(_iframe2.DELCOLLECT, _iframe.delcollectAsync), (0, _effects.takeEvery)(_iframe2.GET_PAGE, _iframe.pageAsync)];
 
         case 3:
         case 'end':
@@ -70614,23 +70804,25 @@ function mycollectAsync() {
         case 9:
           json = _context.sent;
 
+          console.log(json);
+
           if (!(json.result == "success")) {
-            _context.next = 15;
+            _context.next = 16;
             break;
           }
 
-          _context.next = 13;
+          _context.next = 14;
           return (0, _effects.put)((0, _collect.mycollectAction)(json, !fetching));
 
-        case 13:
-          _context.next = 17;
+        case 14:
+          _context.next = 18;
           break;
 
-        case 15:
-          _context.next = 17;
+        case 16:
+          _context.next = 18;
           return (0, _effects.put)((0, _collect.mycollectAction)(json.error, !fetching));
 
-        case 17:
+        case 18:
         case 'end':
           return _context.stop();
       }
@@ -70651,6 +70843,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.isCollectAsync = isCollectAsync;
 exports.likeAsync = likeAsync;
 exports.collectAsync = collectAsync;
+exports.delcollectAsync = delcollectAsync;
+exports.pageAsync = pageAsync;
 
 var _effects = __webpack_require__(120);
 
@@ -70662,7 +70856,9 @@ var _api = __webpack_require__(156);
 
 var _marked = /*#__PURE__*/regeneratorRuntime.mark(isCollectAsync),
     _marked2 = /*#__PURE__*/regeneratorRuntime.mark(likeAsync),
-    _marked3 = /*#__PURE__*/regeneratorRuntime.mark(collectAsync);
+    _marked3 = /*#__PURE__*/regeneratorRuntime.mark(collectAsync),
+    _marked4 = /*#__PURE__*/regeneratorRuntime.mark(delcollectAsync),
+    _marked5 = /*#__PURE__*/regeneratorRuntime.mark(pageAsync);
 
 var arr = [];
 
@@ -70725,7 +70921,7 @@ function isCollectAsync() {
 }
 
 function likeAsync() {
-  var iframe, fetching, param, json, i;
+  var iframe, fetching, param, json, arr, i;
   return regeneratorRuntime.wrap(function likeAsync$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -70735,7 +70931,7 @@ function likeAsync() {
 
         case 2:
           iframe = _context2.sent;
-          fetching = iframe.iscollect.fetching;
+          fetching = iframe.like.fetching;
 
           if (!fetching) {
             _context2.next = 6;
@@ -70745,15 +70941,16 @@ function likeAsync() {
           return _context2.abrupt('return', null);
 
         case 6:
-          param = iframe.iscollect.data;
+          param = iframe.like.data;
           _context2.next = 9;
           return (0, _effects.call)(_api.like, param);
 
         case 9:
           json = _context2.sent;
+          arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
-            _context2.next = 16;
+            _context2.next = 17;
             break;
           }
 
@@ -70763,18 +70960,18 @@ function likeAsync() {
               arr[i].json.luadnum = arr[i].json.luadnum + 1;
             }
           }
-          _context2.next = 14;
+          _context2.next = 15;
           return (0, _effects.put)((0, _iframe.likeAction)(arr, !fetching));
 
-        case 14:
-          _context2.next = 18;
+        case 15:
+          _context2.next = 19;
           break;
 
-        case 16:
-          _context2.next = 18;
+        case 17:
+          _context2.next = 19;
           return (0, _effects.put)((0, _iframe.likeAction)(json.error, !fetching));
 
-        case 18:
+        case 19:
         case 'end':
           return _context2.stop();
       }
@@ -70783,7 +70980,7 @@ function likeAsync() {
 }
 
 function collectAsync() {
-  var iframe, fetching, param, json, ar, i;
+  var iframe, fetching, param, json, arr, i;
   return regeneratorRuntime.wrap(function collectAsync$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -70793,7 +70990,7 @@ function collectAsync() {
 
         case 2:
           iframe = _context3.sent;
-          fetching = iframe.iscollect.fetching;
+          fetching = iframe.collect.fetching;
 
           if (!fetching) {
             _context3.next = 6;
@@ -70803,26 +71000,26 @@ function collectAsync() {
           return _context3.abrupt('return', null);
 
         case 6:
-          param = iframe.iscollect.data;
+          param = iframe.collect.data;
           _context3.next = 9;
           return (0, _effects.call)(_api.collect, param);
 
         case 9:
           json = _context3.sent;
-          ar = iframe.iscollect.data;
+          arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
             _context3.next = 17;
             break;
           }
 
-          for (i = 0; i < ar.length; i++) {
-            if (param.topicid == ar[i].topicid) {
-              ar[i].json.luad = true;
+          for (i = 0; i < arr.length; i++) {
+            if (param.topicid == arr[i].topicid) {
+              arr[i].json.store = true;
             }
           }
           _context3.next = 15;
-          return (0, _effects.put)((0, _iframe.collectAction)(ar, !fetching));
+          return (0, _effects.put)((0, _iframe.collectAction)(arr, !fetching));
 
         case 15:
           _context3.next = 19;
@@ -70838,6 +71035,118 @@ function collectAsync() {
       }
     }
   }, _marked3, this);
+}
+
+function delcollectAsync() {
+  var iframe, fetching, param, json, arr, i;
+  return regeneratorRuntime.wrap(function delcollectAsync$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return (0, _effects.select)(_selector.getIframe);
+
+        case 2:
+          iframe = _context4.sent;
+          fetching = iframe.delcollect.fetching;
+
+          if (!fetching) {
+            _context4.next = 6;
+            break;
+          }
+
+          return _context4.abrupt('return', null);
+
+        case 6:
+          param = iframe.delcollect.data;
+          _context4.next = 9;
+          return (0, _effects.call)(_api.collect, param);
+
+        case 9:
+          json = _context4.sent;
+          arr = iframe.iscollect.data;
+
+          if (!(json.result == "success")) {
+            _context4.next = 17;
+            break;
+          }
+
+          for (i = 0; i < arr.length; i++) {
+            if (param.topicid == arr[i].topicid) {
+              arr[i].json.store = false;
+            }
+          }
+          _context4.next = 15;
+          return (0, _effects.put)((0, _iframe.delcollectAction)(arr, !fetching));
+
+        case 15:
+          _context4.next = 19;
+          break;
+
+        case 17:
+          _context4.next = 19;
+          return (0, _effects.put)((0, _iframe.delcollectAction)(json.error, !fetching));
+
+        case 19:
+        case 'end':
+          return _context4.stop();
+      }
+    }
+  }, _marked4, this);
+}
+
+function pageAsync() {
+  var iframe, fetching, param, json;
+  return regeneratorRuntime.wrap(function pageAsync$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return (0, _effects.select)(_selector.getIframe);
+
+        case 2:
+          iframe = _context5.sent;
+          fetching = iframe.page.fetching;
+
+          if (!fetching) {
+            _context5.next = 6;
+            break;
+          }
+
+          return _context5.abrupt('return', null);
+
+        case 6:
+          param = iframe.page.data;
+          _context5.next = 9;
+          return (0, _effects.call)(_api.getpage, param);
+
+        case 9:
+          json = _context5.sent;
+
+          console.log(json);
+
+          if (!(json.result == "success")) {
+            _context5.next = 16;
+            break;
+          }
+
+          _context5.next = 14;
+          return (0, _effects.put)((0, _iframe.getpageAction)(json, !fetching));
+
+        case 14:
+          _context5.next = 18;
+          break;
+
+        case 16:
+          _context5.next = 18;
+          return (0, _effects.put)((0, _iframe.getpageAction)(json.error, !fetching));
+
+        case 18:
+        case 'end':
+          return _context5.stop();
+      }
+    }
+  }, _marked5, this);
 }
 
 /***/ })

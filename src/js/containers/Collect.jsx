@@ -55,14 +55,14 @@ class Collect extends Component {
       var obox = document.getElementById("collect");
     let that = this;
     this.props.mycollectAction({username:"yang6"})
-    document.oncontextmenu =  function(ev){
-      ev.preventDefault();  
-      var e = ev||window.event;
-      var x = e.clientX;
-      var y = e.clientY;
-      obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
-      return false;
-    };
+    //document.oncontextmenu =  function(ev){
+     // ev.preventDefault();  
+     // var e = ev||window.event;
+     // var x = e.clientX;
+     // var y = e.clientY;
+     // obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+     // return false;
+    //};
     /*点击空白处隐藏*/
     document.onclick = function(){
         obox.style.display = "none";
@@ -86,6 +86,16 @@ class Collect extends Component {
         tab:res.tab
     })
   }
+  contextMenu(ev,res){
+    ev.preventDefault(); 
+    var obox = document.getElementById("collect");
+    var e = ev||window.event;
+    var x = e.clientX;
+    var y = e.clientY;
+    obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+    alert(JSON.stringify(res))
+    return false;
+  }
   tabChange = (e) => {
     console.log(e.target);
     let arr = e.target.parentElement.children;
@@ -97,8 +107,14 @@ class Collect extends Component {
   }
   render(){
     let display = this.state.style;
-    const {collect} = this.props;
-    console.log(collect)
+    const {collects} = this.props;
+    console.log(collects)
+    let topic = [];
+    let book = [];
+    if(collects.mycollect.data!==null&&collects.mycollect.data.result=="success"){
+      topic = collects.mycollect.data.message.topics;
+      book = collects.mycollect.data.message.books;
+    }
     return (
       <Page className="collect">
         <div id="collect" >删除</div>
@@ -147,40 +163,43 @@ class Collect extends Component {
           <Article style={{display: this.state.tab == 0 ? null : 'none'}}>
             <section>
               <Cells>
-                <Cell href="javascript:;" access>
-                  <CellBody>
-                    进给速度
-                  </CellBody>
-                  <CellFooter>
-                  </CellFooter>
-                </Cell>
-                <Cell access>
-                  <CellBody>
-                     liyuan
-                  </CellBody>
-                  <CellFooter>
-                </CellFooter>
-                </Cell>
+                {
+                  topic.map(function(item,index){
+                  let key = item.result.book_keysjson;
+                  console.log(key)
+                    return (
+                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)}>
+                        <CellBody>
+                          <h3>{item.result.title}</h3>
+                          <span>{key.base+" | "+key.product+" | "+key.type}</span>
+                        </CellBody>
+                        <CellFooter>
+                        </CellFooter>
+                      </Cell>
+                    )
+                  })
+                }
               </Cells>
             </section>
           </Article>
           <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
              <section>
               <Cells>
-                <Cell href="javascript:;" access>
-                  <CellBody>
-                    进给速度
-                  </CellBody>
-                  <CellFooter>
-                  </CellFooter>
-                </Cell>
-                <Cell access>
-                  <CellBody>
-                     主周
-                  </CellBody>
-                  <CellFooter>
-                </CellFooter>
-                </Cell>
+                {
+                  book.map(function(item,index){
+                  let key = item.book_keysjson;
+                    return (
+                      <Cell href="javascript:;" access key={index}>
+                        <CellBody>
+                          <h3>{item.bookname}</h3>
+                          <span>{key.base+" | "+key.product+" | "+key.type}</span>
+                        </CellBody>
+                        <CellFooter>
+                        </CellFooter>
+                      </Cell>
+                    )
+                  })
+                }
               </Cells>
             </section>
           </Article>

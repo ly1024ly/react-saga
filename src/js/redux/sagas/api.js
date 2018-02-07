@@ -44,7 +44,7 @@ export const comFile = (param) => {
 }
 
 export const myCollect = (param) => {
-  return fetch(getURL(`search/mystore?username=${param.username}`),{
+  return fetch(`http://172.16.11.71:3008/search/mystore?username=${param.username}`,{
     method:'GET',
     headers:{
       'Content-Type': 'application/json'
@@ -108,6 +108,19 @@ export const collect = (param) => {
       'Content-Type': 'application/json'
     },
     body:JSON.stringify(param)
+  }).then(res => res.json())
+    .then(json => {
+      return json
+    })
+    .catch(ex => console.log('parsing faild',ex));
+}
+
+export const getpage = (param) => {
+  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&&bookid=${param.bookid}`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
   }).then(res => res.json())
     .then(json => {
       return json
