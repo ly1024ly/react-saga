@@ -20,6 +20,6 @@ export default function* rootSaga() {
     takeLatest(LIKE,likeAsync),
     takeEvery(COLLECT,collectAsync),
     takeEvery(DELCOLLECT,delcollectAsync),
-    takeEvery(GET_PAGE,pageAsync)
+    takeLatest(GET_PAGE,pageAsync)
   ]
 }

@@ -110,7 +110,6 @@ class Iframe extends Component {
                         dom[i].src = that.state.url.split("xml")[0] + dom[i].src.split("../")[1];
                         console.log(dom[i])
                     }
-                    console.log(dom[i])
                 }
 
                let css = "<link rel='stylesheet' href='../css/prop.css' />";
@@ -136,27 +135,10 @@ class Iframe extends Component {
         this.props.getpageAction(param)
         let that = this;
         const {files} = this.props;
-        console.log(files);
         if(files.menulist.data!==null){
             let arr = files.menulist.data;
             this.setState({
-                one:arr,
                 all:files.menulist.data
-            })
-            let html = [];
-            for(var i = 0;i<arr.length;i++){
-                let result = this.ajaxLoad(arr[i]);
-                let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                html.push(result);
-                let obj = {
-                    bookid:this.props.location.query.bookid,
-                    topicid:topicid,
-                    username:"yang6"
-                }
-                this.props.isCollectAction(obj)
-            }
-            this.setState({
-                innerHtml:html
             })
         }
         let href = this.props.location.query.href;
@@ -179,14 +161,14 @@ class Iframe extends Component {
             type = "其他";
         }
         let obj ={
-                username:"yang6",
-                topicid:id,
-                ContentType:type,
-                title:title,
-                topicURL:decodeURIComponent(this.state.one[index]),
-                book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
-                status:true 
-            }
+            username:"yang6",
+            topicid:id,
+            ContentType:type,
+            title:title,
+            topicURL:decodeURIComponent(this.state.one[index]),
+            book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
+            status:true 
+        }
         this.props.collectAction(obj)
 
     }
@@ -255,6 +237,29 @@ class Iframe extends Component {
         e.preventDefault();
         console.log(e)
     }
+    
+    componentWillReceiveProps(nextProps){
+        let page = [];
+        if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result=="success"){
+            page = nextProps.iframe.page.data.message[0].OtherPages;
+        }
+        let s = this.state.url.split("xml")[0]+"xml/";
+        let html = [];
+        if(page.length>0) {
+            for(var i=0;i<page.length;i++){
+                page[i].url = s + page[i].url.split("/").pop();
+                let url = s + page[i].url.split("/").pop();
+                let result = this.ajaxLoad(decodeURI(page[i].url));
+                let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
+                page[i].topicid = topicid;
+                html.push(result);
+            }
+        }
+        this.setState({
+            one:page,
+            innerHtml:html
+        })
+    }
     scrollToAnchor = (anchorName) => {
         if (anchorName) {
             // 找到锚点
@@ -267,7 +272,10 @@ class Iframe extends Component {
         let success = false;
         let collect = false;
         const { files,iframe } = this.props;
-        console.log(iframe)
+        let page = [];
+        if(iframe.page.data!==null&&iframe.page.data.result=="success"){
+            page = iframe.page.data.message.OtherPages;
+        }
         let height = (window.innerHeight - 30);
         let menuHeight = (window.innerHeight - 35) + "px";
         let iscollect = [];
