@@ -116,6 +116,7 @@ export const collect = (param) => {
 }
 
 export const getpage = (param) => {
+  console.log(param.title)
   return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&&bookid=${param.bookid}`,{
     method:'GET',
     headers: {

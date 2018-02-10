@@ -32,15 +32,8 @@ export function* likeAsync () {
   }
   const param = iframe.like.data;
   const json = yield call(like,param);
-  let arr = iframe.iscollect.data;
   if(json.result == "success") {
-    for(var i=0;i<arr.length;i++){
-      if(param.topicid == arr[i].topicid){
-        arr[i].json.luad = true;
-        arr[i].json.luadnum = arr[i].json.luadnum + 1;
-      }
-    }
-    yield put(likeAction(arr,!fetching))
+    yield put(likeAction(json,!fetching))
   } else {
     yield put(likeAction(json.error,!fetching))
   }
@@ -56,12 +49,7 @@ export function* collectAsync () {
   const json = yield call(collect,param);
   let arr = iframe.iscollect.data;
   if(json.result == "success") {
-    for(var i=0;i<arr.length;i++){
-      if(param.topicid == arr[i].topicid){
-        arr[i].json.store = true;
-      }
-    }
-    yield put(collectAction(arr,!fetching))
+    yield put(collectAction(json,!fetching))
   } else {
     yield put(collectAction(json.error,!fetching))
   }
@@ -77,12 +65,7 @@ export function* delcollectAsync (){
   const json = yield call(collect,param);
   let arr = iframe.iscollect.data;
   if(json.result == "success") {
-    for(var i=0;i<arr.length;i++){
-      if(param.topicid == arr[i].topicid){
-        arr[i].json.store = false;
-      }
-    }
-    yield put(delcollectAction(arr,!fetching))
+    yield put(delcollectAction(json,!fetching))
   } else {
     yield put(delcollectAction(json.error,!fetching))
   }
@@ -96,7 +79,6 @@ export function* pageAsync (){
   }
   const param = iframe.page.data;
   const json = yield call(getpage,param);
-  console.log(json)
   if(json.result == "success"){
     yield put(getpageAction(json,!fetching))
   } else {

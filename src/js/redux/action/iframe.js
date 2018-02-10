@@ -38,7 +38,6 @@ export const delcollectAction = (param,fetching) => {
 }
 
 export const getpageAction = (param,fetching) => {
-  console.log(param,fetching)
   return {
     type:GET_PAGE,
     data:param,

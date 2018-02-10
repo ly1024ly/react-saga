@@ -67,6 +67,7 @@ class Iframe extends Component {
             innerHtml:[],
             all:[],
             pageY:0,
+            iscollect:[],
             two:"https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         }
         this.like = this.like.bind(this);
@@ -95,7 +96,6 @@ class Iframe extends Component {
                for(var i =0;i<img.length;i++){
                 img[i].src = that.state.url.split("xml")[0] + img[i].src.split("assets/")[1];
                }
-               console.log(img)
                let dom = that.parseDom(res.split("<head>")[1].split("</head>")[0]);
                let all = "";
                 for(var i=0;i<dom.length;i++){
@@ -239,12 +239,13 @@ class Iframe extends Component {
     }
     
     componentWillReceiveProps(nextProps){
-        let page = [];
+        let page = this.state.one;
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result=="success"){
-            page = nextProps.iframe.page.data.message[0].OtherPages;
+            page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
         }
         let s = this.state.url.split("xml")[0]+"xml/";
         let html = [];
+        let is = this.state.iscollect;
         if(page.length>0) {
             for(var i=0;i<page.length;i++){
                 page[i].url = s + page[i].url.split("/").pop();
@@ -253,8 +254,29 @@ class Iframe extends Component {
                 let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
                 page[i].topicid = topicid;
                 html.push(result);
+                let obj = {
+                    username:"yang6",
+                    topicid:topicid,
+                    bookid:this.props.location.query.bookid
+                }
+                let json = ajaxCollect(obj)
+                if(json.result == "success"){
+                    let obj ={
+                        luad:json.luad,
+                        store:json.store,
+                        luadnum:json.luadnum,
+                        topicid:topicid
+                    }
+                    is.push(obj)
+                }
             }
+            this.setState({
+                iscollect:is
+            })
         }
+        let set = new Set(page);
+        page = Array.from(set);
+        console.log(page)
         this.setState({
             one:page,
             innerHtml:html
@@ -278,14 +300,7 @@ class Iframe extends Component {
         }
         let height = (window.innerHeight - 30);
         let menuHeight = (window.innerHeight - 35) + "px";
-        let iscollect = [];
-        if(iframe.collect.data!==null&&iframe.collect.data.length>0){
-            iscollect = iframe.collect;
-        }else if(iframe.delcollect.data!==null&&iframe.delcollect.data.length>0){
-            iscollect = iframe.delcollect
-        }else{
-            iscollect = iframe.iscollect;
-        }
+        let iscollect = this.state.iscollect;
         
         return (
             <div className="iframe">
@@ -293,32 +308,18 @@ class Iframe extends Component {
                 onLoadMore={ (resolve, finish) => {
                     //mock request
                     setTimeout( ()=> {
-                        if(this.state.one.length >= this.state.all.length){
+                        if(1==2){
                             console.log("finish")
                             finish()
                         }else{
-                            let len = this.state.one.length+6;
-                            let arr = this.state.all.slice(this.state.one.length-1,len)
-                            let html = this.state.innerHtml;
-                            let id = "md"+(this.state.one.length-1).toString();
-                            $(window).scrollTop(1000); 
-                            for(var i = 0;i<arr.length;i++){
-                                let result = this.ajaxLoad(arr[i]);
-                                let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                                html.push(result);
-                                let obj = {
-                                    bookid:this.props.location.query.bookid,
-                                    topicid:topicid,
-                                    username:"yang6"
-                                }
-                                this.props.isCollectAction(obj)
+                            console.log(this.state.one)
+                            let obj = {
+                                title:this.state.one[this.state.one.length-1].title,
+                                bookid:this.props.location.query.bookid
                             }
-
+                            this.props.getpageAction(obj)
                             this.setState({
-                                innerHtml:html
-                            })
-                            this.setState({
-                                one: this.state.all.slice(0,len-1)
+                               
                             }, ()=> resolve())
                         }
                     }, 1000)
@@ -341,12 +342,12 @@ class Iframe extends Component {
                                 let like = false;
                                 let store = false;
                                 let num = 0;
-                                if(iscollect.data!==null&&iscollect.data.length>0){
-                                    for(let i=0;i<iscollect.data.length;i++){
-                                        if(iscollect.data[i].topicid == topicid&&iscollect.data[i].json.result=="success"){
-                                            like = iscollect.data[i].json.luad;
-                                            store = iscollect.data[i].json.store;
-                                            num = iscollect.data[i].json.luadnum;
+                                if(iscollect.length>0){
+                                    for(let i=0;i<iscollect.length;i++){
+                                        if(iscollect[i].topicid == topicid){
+                                            like = iscollect[i].luad;
+                                            store = iscollect[i].store;
+                                            num = iscollect[i].luadnum;
                                             return (
                                                 <Article key={index} className="one" onClick={(e) => this.clickEvent(e,index)}>
                                                     <a id={"md"+index}>

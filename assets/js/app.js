@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c588fc780659974f4903"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ed20d24efdf1af60f249"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -21081,7 +21081,6 @@ var delcollectAction = exports.delcollectAction = function delcollectAction(para
 };
 
 var getpageAction = exports.getpageAction = function getpageAction(param, fetching) {
-  console.log(param, fetching);
   return {
     type: GET_PAGE,
     data: param,
@@ -21236,6 +21235,7 @@ var collect = exports.collect = function collect(param) {
 };
 
 var getpage = exports.getpage = function getpage(param) {
+  console.log(param.title);
   return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=' + param.title + '&&bookid=' + param.bookid, {
     method: 'GET',
     headers: {
@@ -69233,6 +69233,7 @@ var Iframe = function (_Component) {
             innerHtml: [],
             all: [],
             pageY: 0,
+            iscollect: [],
             two: "https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         };
         _this.like = _this.like.bind(_this);
@@ -69267,7 +69268,6 @@ var Iframe = function (_Component) {
                     for (var i = 0; i < img.length; i++) {
                         img[i].src = that.state.url.split("xml")[0] + img[i].src.split("assets/")[1];
                     }
-                    console.log(img);
                     var dom = that.parseDom(res.split("<head>")[1].split("</head>")[0]);
                     var all = "";
                     for (var i = 0; i < dom.length; i++) {
@@ -69347,30 +69347,15 @@ var Iframe = function (_Component) {
             $(window).scrollTop(1000);
         }
     }, {
-        key: 'shouldComponentUpdate',
-        value: function shouldComponentUpdate(nextProps, nextState) {
-            console.log(nextState);
-            var o = nextState.one;
-            for (var i = 0; i < o.length; i++) {
-                var obj = {
-                    username: "yang6",
-                    topicid: o[i].topicid,
-                    bookid: this.props.location.query.bookid
-                };
-                this.props.isCollectAction(obj);
-                return false;
-            }
-            return true;
-        }
-    }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            var page = [];
+            var page = this.state.one;
             if (nextProps.iframe.page.data !== null && nextProps.iframe.page.data.result == "success") {
-                page = nextProps.iframe.page.data.message[0].OtherPages;
+                page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
             }
             var s = this.state.url.split("xml")[0] + "xml/";
             var html = [];
+            var is = this.state.iscollect;
             if (page.length > 0) {
                 for (var i = 0; i < page.length; i++) {
                     page[i].url = s + page[i].url.split("/").pop();
@@ -69379,8 +69364,29 @@ var Iframe = function (_Component) {
                     var topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
                     page[i].topicid = topicid;
                     html.push(result);
+                    var obj = {
+                        username: "yang6",
+                        topicid: topicid,
+                        bookid: this.props.location.query.bookid
+                    };
+                    var json = (0, _api.ajaxCollect)(obj);
+                    if (json.result == "success") {
+                        var _obj = {
+                            luad: json.luad,
+                            store: json.store,
+                            luadnum: json.luadnum,
+                            topicid: topicid
+                        };
+                        is.push(_obj);
+                    }
                 }
+                this.setState({
+                    iscollect: is
+                });
             }
+            var set = new Set(page);
+            page = Array.from(set);
+            console.log(page);
             this.setState({
                 one: page,
                 innerHtml: html
@@ -69403,14 +69409,7 @@ var Iframe = function (_Component) {
             }
             var height = window.innerHeight - 30;
             var menuHeight = window.innerHeight - 35 + "px";
-            var iscollect = [];
-            if (iframe.collect.data !== null && iframe.collect.data.length > 0) {
-                iscollect = iframe.collect;
-            } else if (iframe.delcollect.data !== null && iframe.delcollect.data.length > 0) {
-                iscollect = iframe.delcollect;
-            } else {
-                iscollect = iframe.iscollect;
-            }
+            var iscollect = this.state.iscollect;
 
             return _react2.default.createElement(
                 'div',
@@ -69421,33 +69420,17 @@ var Iframe = function (_Component) {
                         onLoadMore: function onLoadMore(resolve, finish) {
                             //mock request
                             setTimeout(function () {
-                                if (_this2.state.one.length >= _this2.state.all.length) {
+                                if (false) {
                                     console.log("finish");
                                     finish();
                                 } else {
-                                    var len = _this2.state.one.length + 6;
-                                    var arr = _this2.state.all.slice(_this2.state.one.length - 1, len);
-                                    var html = _this2.state.innerHtml;
-                                    var id = "md" + (_this2.state.one.length - 1).toString();
-                                    $(window).scrollTop(1000);
-                                    for (var i = 0; i < arr.length; i++) {
-                                        var result = _this2.ajaxLoad(arr[i]);
-                                        var topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                                        html.push(result);
-                                        var obj = {
-                                            bookid: _this2.props.location.query.bookid,
-                                            topicid: topicid,
-                                            username: "yang6"
-                                        };
-                                        _this2.props.isCollectAction(obj);
-                                    }
-
-                                    _this2.setState({
-                                        innerHtml: html
-                                    });
-                                    _this2.setState({
-                                        one: _this2.state.all.slice(0, len - 1)
-                                    }, function () {
+                                    console.log(_this2.state.one);
+                                    var obj = {
+                                        title: _this2.state.one[_this2.state.one.length - 1].title,
+                                        bookid: _this2.props.location.query.bookid
+                                    };
+                                    _this2.props.getpageAction(obj);
+                                    _this2.setState({}, function () {
                                         return resolve();
                                     });
                                 }
@@ -69486,12 +69469,12 @@ var Iframe = function (_Component) {
                                     var like = false;
                                     var store = false;
                                     var num = 0;
-                                    if (iscollect.data !== null && iscollect.data.length > 0) {
-                                        for (var i = 0; i < iscollect.data.length; i++) {
-                                            if (iscollect.data[i].topicid == topicid && iscollect.data[i].json.result == "success") {
-                                                like = iscollect.data[i].json.luad;
-                                                store = iscollect.data[i].json.store;
-                                                num = iscollect.data[i].json.luadnum;
+                                    if (iscollect.length > 0) {
+                                        for (var i = 0; i < iscollect.length; i++) {
+                                            if (iscollect[i].topicid == topicid) {
+                                                like = iscollect[i].luad;
+                                                store = iscollect[i].store;
+                                                num = iscollect[i].luadnum;
                                                 return _react2.default.createElement(
                                                     _reactWeui.Article,
                                                     { key: index, className: 'one', onClick: function onClick(e) {
@@ -71152,7 +71135,7 @@ function isCollectAsync() {
 }
 
 function likeAsync() {
-  var iframe, fetching, param, json, arr, i;
+  var iframe, fetching, param, json;
   return regeneratorRuntime.wrap(function likeAsync$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -71178,31 +71161,24 @@ function likeAsync() {
 
         case 9:
           json = _context2.sent;
-          arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
-            _context2.next = 17;
+            _context2.next = 15;
             break;
           }
 
-          for (i = 0; i < arr.length; i++) {
-            if (param.topicid == arr[i].topicid) {
-              arr[i].json.luad = true;
-              arr[i].json.luadnum = arr[i].json.luadnum + 1;
-            }
-          }
-          _context2.next = 15;
-          return (0, _effects.put)((0, _iframe.likeAction)(arr, !fetching));
+          _context2.next = 13;
+          return (0, _effects.put)((0, _iframe.likeAction)(json, !fetching));
 
-        case 15:
-          _context2.next = 19;
+        case 13:
+          _context2.next = 17;
           break;
 
-        case 17:
-          _context2.next = 19;
+        case 15:
+          _context2.next = 17;
           return (0, _effects.put)((0, _iframe.likeAction)(json.error, !fetching));
 
-        case 19:
+        case 17:
         case 'end':
           return _context2.stop();
       }
@@ -71211,7 +71187,7 @@ function likeAsync() {
 }
 
 function collectAsync() {
-  var iframe, fetching, param, json, arr, i;
+  var iframe, fetching, param, json, arr;
   return regeneratorRuntime.wrap(function collectAsync$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -71240,27 +71216,22 @@ function collectAsync() {
           arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
-            _context3.next = 17;
+            _context3.next = 16;
             break;
           }
 
-          for (i = 0; i < arr.length; i++) {
-            if (param.topicid == arr[i].topicid) {
-              arr[i].json.store = true;
-            }
-          }
-          _context3.next = 15;
-          return (0, _effects.put)((0, _iframe.collectAction)(arr, !fetching));
+          _context3.next = 14;
+          return (0, _effects.put)((0, _iframe.collectAction)(json, !fetching));
 
-        case 15:
-          _context3.next = 19;
+        case 14:
+          _context3.next = 18;
           break;
 
-        case 17:
-          _context3.next = 19;
+        case 16:
+          _context3.next = 18;
           return (0, _effects.put)((0, _iframe.collectAction)(json.error, !fetching));
 
-        case 19:
+        case 18:
         case 'end':
           return _context3.stop();
       }
@@ -71269,7 +71240,7 @@ function collectAsync() {
 }
 
 function delcollectAsync() {
-  var iframe, fetching, param, json, arr, i;
+  var iframe, fetching, param, json, arr;
   return regeneratorRuntime.wrap(function delcollectAsync$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -71298,27 +71269,22 @@ function delcollectAsync() {
           arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
-            _context4.next = 17;
+            _context4.next = 16;
             break;
           }
 
-          for (i = 0; i < arr.length; i++) {
-            if (param.topicid == arr[i].topicid) {
-              arr[i].json.store = false;
-            }
-          }
-          _context4.next = 15;
-          return (0, _effects.put)((0, _iframe.delcollectAction)(arr, !fetching));
+          _context4.next = 14;
+          return (0, _effects.put)((0, _iframe.delcollectAction)(json, !fetching));
 
-        case 15:
-          _context4.next = 19;
+        case 14:
+          _context4.next = 18;
           break;
 
-        case 17:
-          _context4.next = 19;
+        case 16:
+          _context4.next = 18;
           return (0, _effects.put)((0, _iframe.delcollectAction)(json.error, !fetching));
 
-        case 19:
+        case 18:
         case 'end':
           return _context4.stop();
       }
@@ -71354,25 +71320,23 @@ function pageAsync() {
         case 9:
           json = _context5.sent;
 
-          console.log(json);
-
           if (!(json.result == "success")) {
-            _context5.next = 16;
+            _context5.next = 15;
             break;
           }
 
-          _context5.next = 14;
+          _context5.next = 13;
           return (0, _effects.put)((0, _iframe.getpageAction)(json, !fetching));
 
-        case 14:
-          _context5.next = 18;
+        case 13:
+          _context5.next = 17;
           break;
 
-        case 16:
-          _context5.next = 18;
+        case 15:
+          _context5.next = 17;
           return (0, _effects.put)((0, _iframe.getpageAction)(json.error, !fetching));
 
-        case 18:
+        case 17:
         case 'end':
           return _context5.stop();
       }
