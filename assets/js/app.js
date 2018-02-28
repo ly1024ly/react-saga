@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ed20d24efdf1af60f249"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "02ac0290f64398588ed3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -716,7 +716,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "../";
+/******/ 	__webpack_require__.p = "https://nccloud.weihong.com.cn/nchelp/assets/";
 /******/
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -1931,12 +1931,10 @@ function _resetWarned() {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 
@@ -21046,6 +21044,7 @@ var LIKE = exports.LIKE = 'LIKE';
 var COLLECT = exports.COLLECT = 'COLLECT';
 var DELCOLLECT = exports.DELCOLLECT = 'DELCOLLECT';
 var GET_PAGE = exports.GET_PAGE = 'GET_PAGE';
+var SAVE_VALUE = exports.SAVE_VALUE = 'SAVE_VALUE';
 
 var isCollectAction = exports.isCollectAction = function isCollectAction(param, fetching) {
   return {
@@ -21083,6 +21082,14 @@ var delcollectAction = exports.delcollectAction = function delcollectAction(para
 var getpageAction = exports.getpageAction = function getpageAction(param, fetching) {
   return {
     type: GET_PAGE,
+    data: param,
+    fetching: fetching
+  };
+};
+
+var saveValAction = exports.saveValAction = function saveValAction(param, fetching) {
+  return {
+    type: SAVE_VALUE,
     data: param,
     fetching: fetching
   };
@@ -32084,7 +32091,7 @@ selectorFactory) {
   var childContextTypes = (_childContextTypes = {}, _childContextTypes[subscriptionKey] = __WEBPACK_IMPORTED_MODULE_4__utils_PropTypes__["b" /* subscriptionShape */], _childContextTypes);
 
   return function wrapWithConnect(WrappedComponent) {
-    __WEBPACK_IMPORTED_MODULE_1_invariant___default()(typeof WrappedComponent == 'function', 'You must pass a component to the function returned by ' + ('connect. Instead received ' + JSON.stringify(WrappedComponent)));
+    __WEBPACK_IMPORTED_MODULE_1_invariant___default()(typeof WrappedComponent == 'function', 'You must pass a component to the function returned by ' + (methodName + '. Instead received ' + JSON.stringify(WrappedComponent)));
 
     var wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
@@ -56289,72 +56296,78 @@ module.exports = function() {
 /* 694 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 /**
  * Copyright 2015, Yahoo! Inc.
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
-
-
-var REACT_STATICS = {
-    childContextTypes: true,
-    contextTypes: true,
-    defaultProps: true,
-    displayName: true,
-    getDefaultProps: true,
-    mixins: true,
-    propTypes: true,
-    type: true
-};
-
-var KNOWN_STATICS = {
-  name: true,
-  length: true,
-  prototype: true,
-  caller: true,
-  callee: true,
-  arguments: true,
-  arity: true
-};
-
-var defineProperty = Object.defineProperty;
-var getOwnPropertyNames = Object.getOwnPropertyNames;
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-var getPrototypeOf = Object.getPrototypeOf;
-var objectPrototype = getPrototypeOf && getPrototypeOf(Object);
-
-module.exports = function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
-    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
-
-        if (objectPrototype) {
-            var inheritedComponent = getPrototypeOf(sourceComponent);
-            if (inheritedComponent && inheritedComponent !== objectPrototype) {
-                hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
+(function (global, factory) {
+     true ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global.hoistNonReactStatics = factory());
+}(this, (function () {
+    'use strict';
+    
+    var REACT_STATICS = {
+        childContextTypes: true,
+        contextTypes: true,
+        defaultProps: true,
+        displayName: true,
+        getDefaultProps: true,
+        getDerivedStateFromProps: true,
+        mixins: true,
+        propTypes: true,
+        type: true
+    };
+    
+    var KNOWN_STATICS = {
+        name: true,
+        length: true,
+        prototype: true,
+        caller: true,
+        callee: true,
+        arguments: true,
+        arity: true
+    };
+    
+    var defineProperty = Object.defineProperty;
+    var getOwnPropertyNames = Object.getOwnPropertyNames;
+    var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+    var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+    var getPrototypeOf = Object.getPrototypeOf;
+    var objectPrototype = getPrototypeOf && getPrototypeOf(Object);
+    
+    return function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
+        if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+            
+            if (objectPrototype) {
+                var inheritedComponent = getPrototypeOf(sourceComponent);
+                if (inheritedComponent && inheritedComponent !== objectPrototype) {
+                    hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
+                }
             }
-        }
-
-        var keys = getOwnPropertyNames(sourceComponent);
-
-        if (getOwnPropertySymbols) {
-            keys = keys.concat(getOwnPropertySymbols(sourceComponent));
-        }
-
-        for (var i = 0; i < keys.length; ++i) {
-            var key = keys[i];
-            if (!REACT_STATICS[key] && !KNOWN_STATICS[key] && (!blacklist || !blacklist[key])) {
-                var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
-                try { // Avoid failures from read-only properties
-                    defineProperty(targetComponent, key, descriptor);
-                } catch (e) {}
+            
+            var keys = getOwnPropertyNames(sourceComponent);
+            
+            if (getOwnPropertySymbols) {
+                keys = keys.concat(getOwnPropertySymbols(sourceComponent));
             }
+            
+            for (var i = 0; i < keys.length; ++i) {
+                var key = keys[i];
+                if (!REACT_STATICS[key] && !KNOWN_STATICS[key] && (!blacklist || !blacklist[key])) {
+                    var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
+                    try { // Avoid failures from read-only properties
+                        defineProperty(targetComponent, key, descriptor);
+                    } catch (e) {}
+                }
+            }
+            
+            return targetComponent;
         }
-
+        
         return targetComponent;
-    }
-
-    return targetComponent;
-};
+    };
+})));
 
 
 /***/ }),
@@ -69147,7 +69160,7 @@ var Iframe = function (_Component) {
                 type = "其他";
             }
             var obj = {
-                username: "yang6",
+                username: "yang4",
                 topicid: id,
                 ContentType: type,
                 title: title,
@@ -69156,6 +69169,11 @@ var Iframe = function (_Component) {
                 status: true
             };
             _this.props.collectAction(obj);
+            var o = {
+                html: _this.state.innerHtml,
+                iscollect: _this.state.iscollect
+            };
+            _this.props.saveValAction(o);
         };
 
         _this.delcollect = function (id, type, title, index) {
@@ -69163,7 +69181,7 @@ var Iframe = function (_Component) {
                 type = "其他";
             }
             var obj = {
-                username: "yang6",
+                username: "yang4",
                 topicid: id,
                 ContentType: type,
                 title: title,
@@ -69172,6 +69190,11 @@ var Iframe = function (_Component) {
                 status: false
             };
             _this.props.delcollectAction(obj);
+            var o = {
+                html: _this.state.innerHtml,
+                iscollect: _this.state.iscollect
+            };
+            _this.props.saveValAction(o);
         };
 
         _this.clickEvent = function (e, res) {
@@ -69193,22 +69216,22 @@ var Iframe = function (_Component) {
         _this.like = function (id, title) {
             console.log("like");
             var obj = {
-                username: "yang6",
+                username: "yang4",
                 topicid: id,
                 title: title,
                 status: true,
                 filename: _this.props.location.query.filename
             };
+            var o = {
+                html: _this.state.innerHtml,
+                iscollect: _this.state.iscollect
+            };
+            _this.props.saveValAction(o);
             _this.props.likeAction(obj);
         };
 
         _this.openPop = function () {
             _this.setState({ fullpage_show: true });
-        };
-
-        _this.tabMenu = function (e) {
-            e.preventDefault();
-            console.log(e);
         };
 
         _this.scrollToAnchor = function (anchorName) {
@@ -69272,7 +69295,7 @@ var Iframe = function (_Component) {
                     var all = "";
                     for (var i = 0; i < dom.length; i++) {
                         if (dom[i].nodeName == 'LINK') {
-                            var href = that.state.url.split("xml")[0] + dom[i].href.split("assets/")[1];
+                            var href = that.props.location.query.href.split("xml")[0] + dom[i].href.split("assets/")[1];
                             dom[i].href = href;
                             all += dom[i].outerHTML;
                         } else {
@@ -69280,12 +69303,12 @@ var Iframe = function (_Component) {
                         }
                         if (dom[i].nodeName == 'IMG') {
                             dom[i].src = that.state.url.split("xml")[0] + dom[i].src.split("../")[1];
-                            console.log(dom[i]);
                         }
                     }
 
                     var css = "<link rel='stylesheet' href='../css/prop.css' />";
                     all = all + css;
+                    all = all.split("<title>")[0] + all.split("</title>")[1];
                     document.head.innerHTML = all;
                 },
                 error: function error(res) {
@@ -69320,6 +69343,25 @@ var Iframe = function (_Component) {
             this.setState({
                 url: href
             });
+            var framecont = document.getElementById("menuiframe");
+            var doc = framecont.contentWindow;
+            framecont.onload = function (e) {
+                doc.addEventListener('click', function (event) {
+                    if (event.target.tagName == 'A') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        var _param = {
+                            title: event.target.innerText,
+                            bookid: that.props.location.query.bookid
+                        };
+                        that.props.getpageAction(_param);
+                        that.setState({
+                            fullpage_show: false,
+                            one: []
+                        });
+                    }
+                });
+            };
         }
     }, {
         key: 'parseDom',
@@ -69350,12 +69392,19 @@ var Iframe = function (_Component) {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
             var page = this.state.one;
+            console.log(nextProps, this.props);
+
             if (nextProps.iframe.page.data !== null && nextProps.iframe.page.data.result == "success") {
-                page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
+                if (page.length == 0) {
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2, 5));
+                } else {
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3, 5));
+                }
             }
             var s = this.state.url.split("xml")[0] + "xml/";
             var html = [];
-            var is = this.state.iscollect;
+            var is = [];
+
             if (page.length > 0) {
                 for (var i = 0; i < page.length; i++) {
                     page[i].url = s + page[i].url.split("/").pop();
@@ -69365,7 +69414,7 @@ var Iframe = function (_Component) {
                     page[i].topicid = topicid;
                     html.push(result);
                     var obj = {
-                        username: "yang6",
+                        username: "yang4",
                         topicid: topicid,
                         bookid: this.props.location.query.bookid
                     };
@@ -69379,18 +69428,71 @@ var Iframe = function (_Component) {
                         };
                         is.push(_obj);
                     }
-                }
+                };
+                console.log(is);
                 this.setState({
                     iscollect: is
                 });
+
+                if (nextProps.iframe.collect.data !== null && nextProps.iframe.collect.data.result == "success") {
+                    var a = this.state.iscollect;
+                    for (var i = 0; i < a.length; i++) {
+                        if (a[i].topicid == nextProps.iframe.collect.data.topicid) {
+                            a[i].store = true;
+                        }
+                    }
+                    this.setState({
+                        iscollect: a
+                    });
+                }
+                if (nextProps.iframe.delcollect.data !== null && nextProps.iframe.delcollect.data.result == "success") {
+                    var _a = this.state.iscollect;
+                    for (var i = 0; i < _a.length; i++) {
+                        if (_a[i].topicid == nextProps.iframe.delcollect.data.topicid) {
+                            _a[i].store = false;
+                        }
+                    }
+                    this.setState({
+                        iscollect: _a
+                    });
+                }
             }
             var set = new Set(page);
             page = Array.from(set);
-            console.log(page);
-            this.setState({
-                one: page,
-                innerHtml: html
-            });
+            if (nextProps.iframe.save.data !== null && nextProps.iframe.save.data.html) {
+                var isc = nextProps.iframe.save.data.iscollect;
+                if (nextProps.iframe.like.data !== null && nextProps.iframe.like.data.result == "success") {
+                    for (var i = 0; i < isc.length; i++) {
+                        if (isc[i].topicid == nextProps.iframe.like.data.topicid) {
+                            isc[i].luad = true;
+                            isc[i].luadnum = isc[i].luadnum + 1;
+                        }
+                    }
+                }
+                if (nextProps.iframe.collect.data !== null && nextProps.iframe.collect.data.result == "success") {
+                    for (var i = 0; i < isc.length; i++) {
+                        if (isc[i].topicid == nextProps.iframe.collect.data.topicid) {
+                            isc[i].store = true;
+                        }
+                    }
+                }
+                if (nextProps.iframe.delcollect.data !== null && nextProps.iframe.delcollect.data.result == "success") {
+                    for (var i = 0; i < isc.length; i++) {
+                        if (isc[i].topicid == nextProps.iframe.delcollect.data.topicid) {
+                            isc[i].store = false;
+                        }
+                    }
+                }
+                this.setState({
+                    innerHtml: nextProps.iframe.save.data.html,
+                    iscollect: isc
+                });
+            } else {
+                this.setState({
+                    one: page,
+                    innerHtml: html
+                });
+            }
         }
     }, {
         key: 'render',
@@ -69419,22 +69521,21 @@ var Iframe = function (_Component) {
                     {
                         onLoadMore: function onLoadMore(resolve, finish) {
                             //mock request
-                            setTimeout(function () {
-                                if (false) {
-                                    console.log("finish");
-                                    finish();
-                                } else {
-                                    console.log(_this2.state.one);
-                                    var obj = {
-                                        title: _this2.state.one[_this2.state.one.length - 1].title,
-                                        bookid: _this2.props.location.query.bookid
-                                    };
-                                    _this2.props.getpageAction(obj);
-                                    _this2.setState({}, function () {
-                                        return resolve();
-                                    });
-                                }
-                            }, 1000);
+
+                            if (false) {
+                                console.log("finish");
+                                finish();
+                            } else {
+
+                                var obj = {
+                                    title: _this2.state.one[_this2.state.one.length - 1].title,
+                                    bookid: _this2.props.location.query.bookid
+                                };
+                                _this2.props.getpageAction(obj);
+                                _this2.setState({}, function () {
+                                    return resolve();
+                                });
+                            }
                         }
                     },
                     _react2.default.createElement(
@@ -69565,9 +69666,7 @@ var Iframe = function (_Component) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'menuIframe' },
-                                    _react2.default.createElement('iframe', { src: 'https://nccloud.weihong.com.cn/nchelp/booklist/\u7EF4\u5B8F\u767E\u95EE/index.html', style: { height: menuHeight }, onClick: function onClick(e) {
-                                            return _this2.tabMenu(e);
-                                        } })
+                                    _react2.default.createElement('iframe', { src: 'https://nccloud.weihong.com.cn/nchelp/booklist/\u7EF4\u5B8F\u767E\u95EE/index.html', style: { height: menuHeight }, id: 'menuiframe' })
                                 )
                             )
                         )
@@ -69586,7 +69685,8 @@ Iframe.propTypes = {
     likeAction: _react.PropTypes.func,
     collectAction: _react.PropTypes.func,
     delcollectAction: _react.PropTypes.func,
-    getpageAction: _react.PropTypes.func
+    getpageAction: _react.PropTypes.func,
+    saveValAction: _react.PropTypes.func
 };
 
 
@@ -69602,7 +69702,8 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, {
     likeAction: _iframe.likeAction,
     collectAction: _iframe.collectAction,
     delcollectAction: _iframe.delcollectAction,
-    getpageAction: _iframe.getpageAction
+    getpageAction: _iframe.getpageAction,
+    saveValAction: _iframe.saveValAction
 })(Iframe);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)))
 
@@ -70598,6 +70699,10 @@ var initialState = {
   page: {
     data: null,
     fetching: false
+  },
+  save: {
+    data: null,
+    fetching: false
   }
 };
 
@@ -70622,13 +70727,18 @@ var iframe = exports.iframe = function iframe() {
         }
       });
     case _iframe.LIKE:
-      console.log("reducer==============");
-      console.log(action);
-      console.log();
       return _extends({}, state, {
         like: {
           data: action.data,
           fetching: action.fetching
+        },
+        collect: {
+          data: null,
+          fetching: false
+        },
+        delcollect: {
+          data: null,
+          fetching: false
         }
       });
     case _iframe.COLLECT:
@@ -70636,6 +70746,10 @@ var iframe = exports.iframe = function iframe() {
         collect: {
           data: action.data,
           fetching: action.fetching
+        },
+        like: {
+          data: null,
+          fetching: false
         },
         delcollect: {
           data: null,
@@ -70649,7 +70763,22 @@ var iframe = exports.iframe = function iframe() {
           data: action.data,
           fetching: action.fetching
         },
+        like: {
+          data: null,
+          fetching: false
+        },
         collect: {
+          data: null,
+          fetching: false
+        }
+      });
+    case _iframe.SAVE_VALUE:
+      return _extends({}, state, {
+        save: {
+          data: action.data,
+          fetching: action.fetching
+        },
+        page: {
           data: null,
           fetching: false
         }
@@ -70659,6 +70788,10 @@ var iframe = exports.iframe = function iframe() {
         page: {
           data: action.data,
           fetching: action.fetching
+        },
+        save: {
+          data: null,
+          fetching: false
         }
       });
     default:
@@ -70701,7 +70834,7 @@ function rootSaga() {
         case 0:
           console.log("sagas");
           _context.next = 3;
-          return [(0, _effects.takeLatest)(_fileSearch2.SEARCH_FILE, _fileSearch.searchfilesAsync), (0, _effects.takeLatest)(_fileSearch2.ADD_FILE, _fileSearch.addfilesAsync), (0, _effects.takeLatest)(_fileSearch2.SAVE_TAB, _fileSearch.saveTabAsync), (0, _effects.takeLatest)(_fileSearch2.COMFIRM_ADD, _fileSearch.comfirmAsync), (0, _effects.takeLatest)(_fileSearch2.MENU_URL, _fileSearch.menuAsync), (0, _effects.takeLatest)(_collect2.MYCOLLECT, _collect.mycollectAsync), (0, _effects.takeEvery)(_iframe2.IS_COLLECT, _iframe.isCollectAsync), (0, _effects.takeLatest)(_iframe2.LIKE, _iframe.likeAsync), (0, _effects.takeEvery)(_iframe2.COLLECT, _iframe.collectAsync), (0, _effects.takeEvery)(_iframe2.DELCOLLECT, _iframe.delcollectAsync), (0, _effects.takeLatest)(_iframe2.GET_PAGE, _iframe.pageAsync)];
+          return [(0, _effects.takeLatest)(_fileSearch2.SEARCH_FILE, _fileSearch.searchfilesAsync), (0, _effects.takeLatest)(_fileSearch2.ADD_FILE, _fileSearch.addfilesAsync), (0, _effects.takeLatest)(_fileSearch2.SAVE_TAB, _fileSearch.saveTabAsync), (0, _effects.takeLatest)(_fileSearch2.COMFIRM_ADD, _fileSearch.comfirmAsync), (0, _effects.takeLatest)(_fileSearch2.MENU_URL, _fileSearch.menuAsync), (0, _effects.takeLatest)(_collect2.MYCOLLECT, _collect.mycollectAsync), (0, _effects.takeEvery)(_iframe2.IS_COLLECT, _iframe.isCollectAsync), (0, _effects.takeLatest)(_iframe2.LIKE, _iframe.likeAsync), (0, _effects.takeEvery)(_iframe2.COLLECT, _iframe.collectAsync), (0, _effects.takeEvery)(_iframe2.DELCOLLECT, _iframe.delcollectAsync), (0, _effects.takeLatest)(_iframe2.GET_PAGE, _iframe.pageAsync), (0, _effects.takeEvery)(_iframe2.SAVE_VALUE, _iframe.saveAsync)];
 
         case 3:
         case 'end':
@@ -71059,6 +71192,7 @@ exports.likeAsync = likeAsync;
 exports.collectAsync = collectAsync;
 exports.delcollectAsync = delcollectAsync;
 exports.pageAsync = pageAsync;
+exports.saveAsync = saveAsync;
 
 var _effects = __webpack_require__(120);
 
@@ -71072,7 +71206,8 @@ var _marked = /*#__PURE__*/regeneratorRuntime.mark(isCollectAsync),
     _marked2 = /*#__PURE__*/regeneratorRuntime.mark(likeAsync),
     _marked3 = /*#__PURE__*/regeneratorRuntime.mark(collectAsync),
     _marked4 = /*#__PURE__*/regeneratorRuntime.mark(delcollectAsync),
-    _marked5 = /*#__PURE__*/regeneratorRuntime.mark(pageAsync);
+    _marked5 = /*#__PURE__*/regeneratorRuntime.mark(pageAsync),
+    _marked6 = /*#__PURE__*/regeneratorRuntime.mark(saveAsync);
 
 var arr = [];
 
@@ -71163,22 +71298,24 @@ function likeAsync() {
           json = _context2.sent;
 
           if (!(json.result == "success")) {
-            _context2.next = 15;
+            _context2.next = 17;
             break;
           }
 
-          _context2.next = 13;
+          console.log(param);
+          json.topicid = param.topicid;
+          _context2.next = 15;
           return (0, _effects.put)((0, _iframe.likeAction)(json, !fetching));
 
-        case 13:
-          _context2.next = 17;
+        case 15:
+          _context2.next = 19;
           break;
 
-        case 15:
-          _context2.next = 17;
+        case 17:
+          _context2.next = 19;
           return (0, _effects.put)((0, _iframe.likeAction)(json.error, !fetching));
 
-        case 17:
+        case 19:
         case 'end':
           return _context2.stop();
       }
@@ -71216,22 +71353,23 @@ function collectAsync() {
           arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
-            _context3.next = 16;
+            _context3.next = 17;
             break;
           }
 
-          _context3.next = 14;
+          json.topicid = param.topicid;
+          _context3.next = 15;
           return (0, _effects.put)((0, _iframe.collectAction)(json, !fetching));
 
-        case 14:
-          _context3.next = 18;
+        case 15:
+          _context3.next = 19;
           break;
 
-        case 16:
-          _context3.next = 18;
+        case 17:
+          _context3.next = 19;
           return (0, _effects.put)((0, _iframe.collectAction)(json.error, !fetching));
 
-        case 18:
+        case 19:
         case 'end':
           return _context3.stop();
       }
@@ -71269,22 +71407,23 @@ function delcollectAsync() {
           arr = iframe.iscollect.data;
 
           if (!(json.result == "success")) {
-            _context4.next = 16;
+            _context4.next = 17;
             break;
           }
 
-          _context4.next = 14;
+          json.topicid = param.topicid;
+          _context4.next = 15;
           return (0, _effects.put)((0, _iframe.delcollectAction)(json, !fetching));
 
-        case 14:
-          _context4.next = 18;
+        case 15:
+          _context4.next = 19;
           break;
 
-        case 16:
-          _context4.next = 18;
+        case 17:
+          _context4.next = 19;
           return (0, _effects.put)((0, _iframe.delcollectAction)(json.error, !fetching));
 
-        case 18:
+        case 19:
         case 'end':
           return _context4.stop();
       }
@@ -71342,6 +71481,39 @@ function pageAsync() {
       }
     }
   }, _marked5, this);
+}
+
+function saveAsync() {
+  var iframe, fetching, param;
+  return regeneratorRuntime.wrap(function saveAsync$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return (0, _effects.select)(_selector.getIframe);
+
+        case 2:
+          iframe = _context6.sent;
+          fetching = iframe.save.fetching;
+
+          if (!fetching) {
+            _context6.next = 6;
+            break;
+          }
+
+          return _context6.abrupt('return', null);
+
+        case 6:
+          param = iframe.save.data;
+          _context6.next = 9;
+          return (0, _effects.put)((0, _iframe.saveValAction)(param, !fetching));
+
+        case 9:
+        case 'end':
+          return _context6.stop();
+      }
+    }
+  }, _marked6, this);
 }
 
 /***/ })

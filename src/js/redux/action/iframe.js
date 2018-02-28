@@ -3,6 +3,7 @@ export const LIKE = 'LIKE'
 export const COLLECT = 'COLLECT'
 export const DELCOLLECT = 'DELCOLLECT'
 export const GET_PAGE = 'GET_PAGE'
+export const SAVE_VALUE = 'SAVE_VALUE'
 
 export const isCollectAction = (param,fetching) => {
   return {
@@ -40,6 +41,14 @@ export const delcollectAction = (param,fetching) => {
 export const getpageAction = (param,fetching) => {
   return {
     type:GET_PAGE,
+    data:param,
+    fetching:fetching
+  }
+}
+
+export const saveValAction = (param,fetching) => {
+  return {
+    type:SAVE_VALUE,
     data:param,
     fetching:fetching
   }

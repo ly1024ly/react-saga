@@ -1,6 +1,6 @@
 import {select, put, call} from 'redux-saga/effects';
 import {getIframe} from './selector.js';
-import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction} from '../action/iframe.js';
+import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction,saveValAction} from '../action/iframe.js';
 import {iscollect,like,collect,getpage} from './api.js';
 let arr = [];
 
@@ -33,6 +33,8 @@ export function* likeAsync () {
   const param = iframe.like.data;
   const json = yield call(like,param);
   if(json.result == "success") {
+    console.log(param)
+    json.topicid = param.topicid;
     yield put(likeAction(json,!fetching))
   } else {
     yield put(likeAction(json.error,!fetching))
@@ -49,6 +51,7 @@ export function* collectAsync () {
   const json = yield call(collect,param);
   let arr = iframe.iscollect.data;
   if(json.result == "success") {
+    json.topicid = param.topicid;
     yield put(collectAction(json,!fetching))
   } else {
     yield put(collectAction(json.error,!fetching))
@@ -65,6 +68,7 @@ export function* delcollectAsync (){
   const json = yield call(collect,param);
   let arr = iframe.iscollect.data;
   if(json.result == "success") {
+    json.topicid = param.topicid;
     yield put(delcollectAction(json,!fetching))
   } else {
     yield put(delcollectAction(json.error,!fetching))
@@ -84,4 +88,14 @@ export function* pageAsync (){
   } else {
     yield put(getpageAction(json.error,!fetching))
   }
+}
+
+export function* saveAsync(){
+  const iframe = yield select(getIframe);
+  const fetching = iframe.save.fetching;
+  if(fetching) {
+    return null
+  }
+  const param = iframe.save.data;
+  yield put(saveValAction(param,!fetching))
 }

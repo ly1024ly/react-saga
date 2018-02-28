@@ -1,4 +1,4 @@
-import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE} from '../action/iframe.js'
+import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE,SAVE_VALUE} from '../action/iframe.js'
 
 const initialState = {
   iscollect:{
@@ -18,6 +18,10 @@ const initialState = {
     fetching:false
   },
   page:{
+    data:null,
+    fetching:false
+  },
+  save:{
     data:null,
     fetching:false
   }
@@ -42,14 +46,19 @@ export const iframe = (state=initialState,action ={}) => {
         }
       }
     case LIKE:
-      console.log("reducer==============");
-      console.log(action)
-      console.log()
       return{
         ...state,
         like:{
           data:action.data,
           fetching:action.fetching
+        },
+        collect:{
+          data:null,
+          fetching:false
+        },
+        delcollect:{
+          data:null,
+          fetching:false
         }
       }
     case COLLECT:
@@ -58,6 +67,10 @@ export const iframe = (state=initialState,action ={}) => {
         collect:{
           data:action.data,
           fetching:action.fetching
+        },
+        like:{
+          data:null,
+          fetching:false
         },
         delcollect:{
           data:null,
@@ -72,7 +85,23 @@ export const iframe = (state=initialState,action ={}) => {
           data:action.data,
           fetching:action.fetching
         },
+        like:{
+          data:null,
+          fetching:false
+        },
         collect:{
+          data:null,
+          fetching:false
+        }
+      }
+    case SAVE_VALUE:
+      return {
+        ...state,
+        save:{
+          data:action.data,
+          fetching:action.fetching
+        },
+        page:{
           data:null,
           fetching:false
         }
@@ -83,6 +112,10 @@ export const iframe = (state=initialState,action ={}) => {
         page:{
           data:action.data,
           fetching:action.fetching
+        },
+        save:{
+          data:null,
+          fetching:false
         }
       }
     default:

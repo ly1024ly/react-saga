@@ -41,7 +41,7 @@ import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/iframe.css");
-import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction} from '../redux/action/iframe.js';
+import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction,saveValAction} from '../redux/action/iframe.js';
 import {ajaxCollect} from '../redux/sagas/api.js';
 
 
@@ -52,7 +52,8 @@ class Iframe extends Component {
         likeAction:PropTypes.func,
         collectAction:PropTypes.func,
         delcollectAction:PropTypes.func,
-        getpageAction:PropTypes.func
+        getpageAction:PropTypes.func,
+        saveValAction:PropTypes.func
     }
     constructor(props,context){
         super(props,context)
@@ -100,7 +101,7 @@ class Iframe extends Component {
                let all = "";
                 for(var i=0;i<dom.length;i++){
                     if(dom[i].nodeName=='LINK'){
-                        let href = that.state.url.split("xml")[0] + dom[i].href.split("assets/")[1];
+                        let href = that.props.location.query.href.split("xml")[0] + dom[i].href.split("assets/")[1];
                         dom[i].href = href;
                         all += dom[i].outerHTML; 
                     }else{
@@ -108,12 +109,13 @@ class Iframe extends Component {
                     }
                     if(dom[i].nodeName=='IMG'){
                         dom[i].src = that.state.url.split("xml")[0] + dom[i].src.split("../")[1];
-                        console.log(dom[i])
+                       
                     }
                 }
 
                let css = "<link rel='stylesheet' href='../css/prop.css' />";
                all = all + css;
+               all = all.split("<title>")[0] + all.split("</title>")[1];
                document.head.innerHTML = all;
             },
             error: function (res) {
@@ -144,7 +146,28 @@ class Iframe extends Component {
         let href = this.props.location.query.href;
         this.setState({
             url:href
-        })
+        });
+        var framecont = document.getElementById("menuiframe");
+        var doc = framecont.contentWindow;
+        framecont.onload = function(e){
+            doc.addEventListener('click',function(event){
+                if(event.target.tagName=='A'){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    let param = {
+                        title:event.target.innerText,
+                        bookid:that.props.location.query.bookid
+                    };
+                    that.props.getpageAction(param);
+                    that.setState({
+                        fullpage_show:false,
+                        one:[]
+                    })
+                }
+                
+            });
+        }
+        
     }
     onScrollHandle=(event)=>{
         const clientHeight = event.target.clientHeight
@@ -161,7 +184,7 @@ class Iframe extends Component {
             type = "其他";
         }
         let obj ={
-            username:"yang6",
+            username:"yang4",
             topicid:id,
             ContentType:type,
             title:title,
@@ -169,7 +192,12 @@ class Iframe extends Component {
             book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
             status:true 
         }
-        this.props.collectAction(obj)
+        this.props.collectAction(obj);
+        let o = {
+            html:this.state.innerHtml,
+            iscollect:this.state.iscollect
+        };
+        this.props.saveValAction(o)
 
     }
     delcollect = (id,type,title,index) => {
@@ -177,7 +205,7 @@ class Iframe extends Component {
             type = "其他";
         }
         let obj ={
-                username:"yang6",
+                username:"yang4",
                 topicid:id,
                 ContentType:type,
                 title:title,
@@ -186,6 +214,11 @@ class Iframe extends Component {
                 status:false 
             }
         this.props.delcollectAction(obj)
+        let o = {
+            html:this.state.innerHtml,
+            iscollect:this.state.iscollect
+        }
+        this.props.saveValAction(o)
     }
     clickEvent = (e,res) => {
         console.log(e)
@@ -210,12 +243,17 @@ class Iframe extends Component {
     like = (id,title) => {
         console.log("like")
         let obj = {
-            username:"yang6",
+            username:"yang4",
             topicid:id,
             title:title,
             status:true,
             filename:this.props.location.query.filename
         }
+        let o = {
+            html:this.state.innerHtml,
+            iscollect:this.state.iscollect
+        }
+        this.props.saveValAction(o)
         this.props.likeAction(obj)
     }
     openPop = () => {
@@ -233,19 +271,22 @@ class Iframe extends Component {
     componentDidUpdate(){
         $(window).scrollTop(1000); 
     }
-    tabMenu = e => {
-        e.preventDefault();
-        console.log(e)
-    }
     
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
+        console.log(nextProps,this.props)
+
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result=="success"){
-            page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
+            if(page.length==0){
+                page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
+            } else {
+                page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3,5));
+            }
         }
         let s = this.state.url.split("xml")[0]+"xml/";
         let html = [];
-        let is = this.state.iscollect;
+        let is = [];
+
         if(page.length>0) {
             for(var i=0;i<page.length;i++){
                 page[i].url = s + page[i].url.split("/").pop();
@@ -255,11 +296,11 @@ class Iframe extends Component {
                 page[i].topicid = topicid;
                 html.push(result);
                 let obj = {
-                    username:"yang6",
+                    username:"yang4",
                     topicid:topicid,
                     bookid:this.props.location.query.bookid
                 }
-                let json = ajaxCollect(obj)
+                let json = ajaxCollect(obj);
                 if(json.result == "success"){
                     let obj ={
                         luad:json.luad,
@@ -269,18 +310,74 @@ class Iframe extends Component {
                     }
                     is.push(obj)
                 }
-            }
+            };
+            console.log(is)
             this.setState({
                 iscollect:is
-            })
+            });
+
+            if(nextProps.iframe.collect.data!==null&&nextProps.iframe.collect.data.result=="success"){
+                let a = this.state.iscollect;
+                for(var i=0;i<a.length;i++){
+                    if(a[i].topicid==nextProps.iframe.collect.data.topicid){
+                        a[i].store = true;
+                    }
+                }
+                this.setState({
+                    iscollect:a
+                }); 
+            }
+            if(nextProps.iframe.delcollect.data!==null&&nextProps.iframe.delcollect.data.result=="success"){
+                let a = this.state.iscollect;
+                for(var i=0;i<a.length;i++){
+                    if(a[i].topicid==nextProps.iframe.delcollect.data.topicid){
+                        a[i].store = false;
+                    }
+                }
+                this.setState({
+                    iscollect:a
+                }); 
+            }
+            
         }
         let set = new Set(page);
         page = Array.from(set);
-        console.log(page)
-        this.setState({
-            one:page,
-            innerHtml:html
-        })
+        if(nextProps.iframe.save.data!==null&&nextProps.iframe.save.data.html){
+            let isc = nextProps.iframe.save.data.iscollect;
+            if(nextProps.iframe.like.data!==null&&nextProps.iframe.like.data.result == "success"){
+                for(var i=0;i<isc.length;i++){
+                    if(isc[i].topicid == nextProps.iframe.like.data.topicid){
+                        isc[i].luad = true;
+                        isc[i].luadnum = isc[i].luadnum + 1;
+                    }
+                }
+            }
+            if(nextProps.iframe.collect.data!==null&&nextProps.iframe.collect.data.result == "success"){
+                for(var i=0;i<isc.length;i++){
+                    if(isc[i].topicid == nextProps.iframe.collect.data.topicid){
+                        isc[i].store = true;
+                        
+                    }
+                }
+            }
+            if(nextProps.iframe.delcollect.data!==null&&nextProps.iframe.delcollect.data.result == "success"){
+                for(var i=0;i<isc.length;i++){
+                    if(isc[i].topicid == nextProps.iframe.delcollect.data.topicid){
+                        isc[i].store = false;
+                        
+                    }
+                }
+            }
+            this.setState({
+                innerHtml:nextProps.iframe.save.data.html,
+                iscollect:isc
+            })
+        }else{
+            this.setState({
+                one:page,
+                innerHtml:html
+            })
+        }
     }
     scrollToAnchor = (anchorName) => {
         if (anchorName) {
@@ -307,22 +404,22 @@ class Iframe extends Component {
             <InfiniteLoader
                 onLoadMore={ (resolve, finish) => {
                     //mock request
-                    setTimeout( ()=> {
+                    
                         if(1==2){
                             console.log("finish")
                             finish()
                         }else{
-                            console.log(this.state.one)
+                           
                             let obj = {
                                 title:this.state.one[this.state.one.length-1].title,
                                 bookid:this.props.location.query.bookid
                             }
-                            this.props.getpageAction(obj)
+                            this.props.getpageAction(obj);
                             this.setState({
                                
                             }, ()=> resolve())
                         }
-                    }, 1000)
+                   
                 }}
             >
                 <Panel>
@@ -380,7 +477,7 @@ class Iframe extends Component {
                                     <Link to="collect"><div>进入"我的收藏"</div></Link>
                                 </div>
                                 <div className="menuIframe">
-                                    <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:menuHeight}} onClick={(e) => this.tabMenu(e)}></iframe>
+                                    <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:menuHeight}} id="menuiframe"></iframe>
                                 </div>
                             </Article>
                         </div>
@@ -403,6 +500,7 @@ export default connect(mapStateToProps,{
   likeAction,
   collectAction,
   delcollectAction,
-  getpageAction
+  getpageAction,
+  saveValAction
 })(Iframe)
 
