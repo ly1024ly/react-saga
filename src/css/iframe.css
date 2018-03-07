@@ -4,8 +4,9 @@ iframe{
   
 }
 .one{
-  padding-bottom: 0px;
+  padding-bottom: 10px;
   overflow-x:hidden;
+  border-top:1px solid #bfbfbf;
 }
 #frabox{
   overflow-y: auto;
@@ -63,7 +64,6 @@ footer .upPage{
 }
 #shareit {
   -webkit-user-select: none;
-  display: none;
   position: fixed;
   overflow: hidden;
   width: 100%;

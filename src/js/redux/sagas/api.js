@@ -44,7 +44,7 @@ export const comFile = (param) => {
 }
 
 export const myCollect = (param) => {
-  return fetch(`http://172.16.11.71:3008/search/mystore?username=${param.username}`,{
+  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/mystore?username=${param.username}`,{
     method:'GET',
     headers:{
       'Content-Type': 'application/json'
@@ -116,8 +116,7 @@ export const collect = (param) => {
 }
 
 export const getpage = (param) => {
-  console.log(param.title)
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&&bookid=${param.bookid}`,{
+  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}`,{
     method:'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -127,4 +126,61 @@ export const getpage = (param) => {
       return json
     })
     .catch(ex => console.log('parsing faild',ex));
+}
+
+export const wechatapi = (param) => {
+  console.log("wechat")
+  const body = {
+    url:location.href.split("#")[0]
+  };
+  return fetch("https://nccloud.weihong.com.cn/weixin/jssdksignature",{
+    method:'POST',
+    headers:{
+      'Accept':'application',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(body),
+  }).then(res => res.json())
+    .then(json => {
+      console.log(json)
+      return json
+    })
+  .catch(ex => console.log('parsing faild',ex));
+}
+
+export const searchCollect = param => {
+  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/searchMystore?username=${param.username}&string=${param.string}`,{
+    method:'GET',
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+  .then(json => {
+    return json
+  })
+}
+
+export const filterapi = param => {
+  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/filter?",{
+    method:'POST',
+    headers:{
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(param)
+  }).then(res => res.json())
+  .then(json => {
+    return json
+  })
+}
+
+export const brandapi = param => {
+  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/type/product/base?",{
+    method:'GET',
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+  .then(json => {
+    return json
+  })
 }

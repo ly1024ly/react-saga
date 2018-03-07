@@ -2990,6 +2990,9 @@ body{
 	padding:0px;
 
 }
+.weui-article section .weui-cells{
+    padding:0 15px;
+}
 .weui-cell__bd .secret{
     padding:5px;
     background: orange;
@@ -3430,10 +3433,14 @@ body, .page {
 }
 .select .weui-flex__item div{
     border:1.2px dashed gray;
-    padding:0.55rem 0.5rem;
+    padding:0.55rem 0rem;
     margin:0.2rem 0.3rem;
     text-align: center;
     border-radius: 4px;
+    font-size:0.7rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .select .weui-flex{
   flex-wrap:wrap;
@@ -3499,6 +3506,10 @@ body, .page {
 .ss.weui-article section{
   padding-top: 22px;
 }
+.choose{
+  border:1px solid #ff9900;
+  background: #fff3e8;
+}
 .hint{
   width: -webkit-calc(100% - 33px);
   width: calc(100% - 33px);
@@ -3526,7 +3537,8 @@ body, .page {
   position: fixed;
   left:0;
   background: rgba(0, 0, 0, 0.1);
-}.addfile{
+}
+#file{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}.addfile{
   width: 100%;
   height:100vh;
 }
@@ -3555,8 +3567,9 @@ body, .page {
   
 }
 .one{
-  padding-bottom: 0px;
+  padding-bottom: 10px;
   overflow-x:hidden;
+  border-top:1px solid #bfbfbf;
 }
 #frabox{
   overflow-y: auto;
@@ -3614,7 +3627,6 @@ footer .upPage{
 }
 #shareit {
   -webkit-user-select: none;
-  display: none;
   position: fixed;
   overflow: hidden;
   width: 100%;

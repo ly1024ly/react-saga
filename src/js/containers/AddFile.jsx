@@ -120,12 +120,12 @@ class AddFile extends Component {
         window.clearTimeout(this.state.toastTimer)
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.files.comfirmfile.data!==null&&nextProps.files.comfirmfile.data.result == "success"){
+        if(nextProps.files.comfirmfile.data!==null&&nextProps.files.comfirmfile.data.result&&nextProps.files.comfirmfile.data.result == "success"){
             this.setState({
                 message:"收藏成功！"
             })
             this.showToast()
-        }else if(nextProps.files.comfirmfile.data!==null&&nextProps.files.comfirmfile.data.result == "faild"){
+        }else if(nextProps.files.comfirmfile.data!==null&&nextProps.files.comfirmfile.data.result&&nextProps.files.comfirmfile.data.result == "faild"){
             this.setState({
                 message:"收藏失败！"
             })
@@ -133,7 +133,17 @@ class AddFile extends Component {
         }
     }
     comfirAdd=()=>{
-        this.props.comfirmFileAction(this.state.book)
+        console.log(this.state.book);
+        let book = this.state.book;
+        let obj ={
+            username:"yang4",
+            bookid:book.bookid,
+            bookname:book.bookname,
+            book_keysjson:book.book_keysjson,
+            status:true,
+            ifsecrecy:book.outputclass == "公开" ? true : false
+        }
+        this.props.comfirmFileAction(obj)
     }
     render(){
         const {files} = this.props;
@@ -144,7 +154,7 @@ class AddFile extends Component {
             <Page className="addfile">
                 <Toast icon="success-no-circle" show={this.state.showToast}>{this.state.message}</Toast>
                 <div className="title">Ncstudio 编程手册</div>
-                <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:height,overFlow:'auto'}} id="iframecontent"></iframe>
+                <iframe src={this.props.location.query.href} style={{height:height,overFlow:'auto'}} id="iframecontent"></iframe>
                 <div className="add" onClick={() =>this.comfirAdd()}>收藏至"手册"</div>
             </Page>
         )

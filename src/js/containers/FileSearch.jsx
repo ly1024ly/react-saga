@@ -31,7 +31,7 @@ var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
 require('jquery');
-import {findFileAction,addFileAction,saveTabAction} from "../redux/action/fileSearch.js";
+import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction} from "../redux/action/fileSearch.js";
 import Collect from './Collect.jsx';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
@@ -44,7 +44,9 @@ class FileSearch extends Component {
   static propTypes = {
     files:PropTypes.object,
     findFileAction:PropTypes.func,
-    addFileAction:PropTypes.func
+    addFileAction:PropTypes.func,
+    filterAction:PropTypes.func,
+    brandAction:PropTypes.func
   }
   constructor(props,context){
     super(props,context)
@@ -59,6 +61,9 @@ class FileSearch extends Component {
         touchTime:0,
         tag:'all',
         page:1,
+        brand:[],
+        product:[],
+        type:[],
         addFile:{
           bookid:"id17BRF0V03GB",
           ifsecrecy:"公开",
@@ -80,28 +85,29 @@ class FileSearch extends Component {
     document.body.addEventListener("touchstart",this.touchstart)
     document.body.addEventListener("touchmove",this.touchmove)
     document.body.addEventListener("touchend",this.touchend)
-    var obox = document.getElementById("box");
+    var menubox = document.getElementById("file");
+    this.props.brandAction();
     let that = this;
   //**********************text************************************
-  window.document.oncontextmenu =  function(ev){
-      var e = ev||window.event;
-      var x = e.clientX;
-      var y = e.clientY;
-      obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
-      let obj = {
-        bookid:"id17BRF0V03GB",
-        bookname:"维宏百问"
-      }
-      that.setState({
-        search:true
-      })
-      that.props.addFileAction(obj);
-      return false;
-    };
+  //window.document.oncontextmenu =  function(ev){
+      //var e = ev||window.event;
+      //var x = e.clientX;
+      //var y = e.clientY;
+      //obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+      //let obj = {
+       // bookid:"id17BRF0V03GB",
+       // bookname:"维宏百问"
+      //}
+      //that.setState({
+        //search:true
+      //})
+      //that.props.addFileAction(obj);
+      //return false;
+   // };
   //***********************************************************
     /*点击空白处隐藏*/
     document.onclick = function(){
-        obox.style.display = "none";
+        menubox.style.display = "none";
     };
   }
   saveValue = e => {
@@ -133,7 +139,6 @@ class FileSearch extends Component {
       clientx:e.targetTouches[0].clientX,
       clienty:e.targetTouches[0].clientY
     })
-    console.log(e)
     let that = this;
     this.inter = setInterval(that.interval(e.changedTouches[0].clientX,e.changedTouches[0].clientY),1000)
   }
@@ -187,7 +192,7 @@ class FileSearch extends Component {
       pathname:"iframe",
       query:data
     }
-    hashHistory.push(path)
+    //hashHistory.push(path)
   }
   toAddfile = () => {
     const { files } = this.props;
@@ -213,13 +218,36 @@ class FileSearch extends Component {
     })
   }
   finish(res){
+    if(res.class=="重置"){
+
+      this.setState({
+        brand:[],
+        product:[],
+        type:[]
+      })
+    } else if(res.class=="完成"){
+      this.setState({
+        fullpage_show: false,
+      })
+    }
     this.setState({
         class:res.class
     })
   }
   checkVal=(res) => {
     if(res=="all"){
-      this.openPop()
+    console.log(res)
+      let obj = {
+        q:this.state.val,
+        page:1,
+        type:"doc",
+        filterWorld:{
+          Type:this.state.type,
+          product:this.state.product,
+          base:this.state.brand
+        }
+      }
+      this.props.filterAction(obj)
     }else{
       this.props.findFileAction({q:this.state.val,page:1,type:""})
       this.setState({
@@ -229,16 +257,56 @@ class FileSearch extends Component {
       })
     }
   }
-  chooseBrand(res){
+  choosePro = res => {
+    let arr = this.state.product;
+    let re = arr.find((val) => {
+      return val==res
+    })
+    if(re){
 
+    }else{
+      arr.push(res);
+    }
+    this.setState({
+      product:arr
+    })
   }
-  contextMenu(ev,res){
+  chooseBrand(res){
+    let arr = this.state.brand;
+    let re = arr.find((val) => {
+      return val==res
+    })
+    if(re){
+
+    }else{
+      arr.push(res);
+    }
+    this.setState({
+      brand:arr
+    })
+  }
+  chooseType = res => {
+    let arr = this.state.type;
+    let re = arr.find((val) => {
+      return val==res
+    })
+    if(re){
+
+    }else{
+      arr.push(res);
+    }
+    this.setState({
+      type:arr
+    })
+  }
+  contextMenus = (ev,res) => {
     ev.preventDefault(); 
-    var obox = document.getElementById("box");
+    console.log(ev)
+    var menubox = document.getElementById("file");
     var e = ev||window.event;
     var x = e.clientX;
     var y = e.clientY;
-    obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
+    menubox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
     this.setState({
       addFile:res
     })
@@ -259,23 +327,29 @@ class FileSearch extends Component {
   render() {
     let display = this.state.style;
     const { files } = this.props;
-    console.log(files)
     let page;
     let book = [];
     let hbook = [];
     console.log(files)
-    if(files.fileList.data!==null&&files.fileList.data.result){
+    if(files.fileList&&files.fileList.data!==null&&files.fileList.data.result){
       page = files.fileList.data.message.Maxpage;
       //手册
       hbook = files.fileList.data.message.bookMsg;
       //主题
       book = files.fileList.data.message.objArray;
     }
-    let brand = ["nc65c","phinx","维宏","中国","美团"];
 
+    let brand = [];
+    let product = [];
+    let type = [];
+    if(files.brand.data!==null&&files.brand.data.result=="success"){
+      brand = files.brand.data.message[0].base;
+      product = files.brand.data.message[0].product;
+      type = files.brand.data.message[0].type;
+    }
     return (
     <Page className="searchs">
-      <div id="box" onClick={() => {this.toAddfile()}}>添加至"手册"</div>
+      <div id="file" onClick={() => {this.toAddfile()}}>添加至"手册"</div>
       <Tab>
         <TabBody>
           <div className="content searchs">
@@ -290,7 +364,7 @@ class FileSearch extends Component {
               </div>
               <div className="search-btn">
                 <label type="button" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
-                >搜本页</label>
+                >搜索</label>
                 <label className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")}>筛选</label>
               </div>
               <div className="hint" id="hint" style={{display:this.state.hint ? "block" : "none"}} >
@@ -305,13 +379,13 @@ class FileSearch extends Component {
             <div className="o">猜你喜欢</div>
             <section>
               <Cells>
-                <Cell href="javascript:;" access onClick={() => this.goiframe()} onContextMenu={(e) => this.contextMenu(e,"rr")}>
+                <Cell href="javascript:;" access onClick={() => this.goiframe()} >
                   <CellBody>
                     <div>进给速度</div>
                     <span>dsfaa</span>
                   </CellBody>
                 </Cell>
-                <Cell access onContextMenu={(e) => this.contextMenu(e,"rr")}>
+                <Cell access >
                   <CellBody>
                     <div>主周</div>
                     <span>dsfaa</span>
@@ -345,7 +419,7 @@ class FileSearch extends Component {
                 book ? book.map(function(item,index){
                   let key = item.book_keysjson;
                   return (
-                    <Cell href="javascript:;" access onClick={() => {this.goiframe(item)}} key={index}>
+                    <Cell href="javascript:;" access onClick={() => {this.goiframe(item)}} key={index} onContextMenu={(e) => this.contextMenus(e,item)}>
                       <CellBody>
                         <h3>{item.title}</h3>
                         <div>{item.body.slice(0,20)}</div>
@@ -366,9 +440,8 @@ class FileSearch extends Component {
               {
                 hbook ? hbook.map(function(item,index){
                   let key = item.book_keysjson;
-                  console.log(item)
                   return (
-                    <Cell key={index} access onContextMenu={(e) => this.contextMenu(e,item)} value={item}>
+                    <Cell key={index} href="javascript:;" access onContextMenu={(e) => this.contextMenus(e,item)} value={item}>
                       <CellBody >
                         <h3>{item.bookname}</h3>
                         {item.outputclass=="私密" ? <span className="secret">密</span> : ""}
@@ -406,9 +479,20 @@ class FileSearch extends Component {
                              <Flex>
                                 {
                                   brand.map(function(item,index){
+                                    let className = this.state.brand.find(val => {
+                                      return val == item
+                                    });
+                                    if(className) {
+                                      className = "choose";
+                                    }
+                                    let choose = {
+                                      border:"1px solid #ff9900",
+                                      background: "#fff3e8"
+                                    }
+                                    choose = className ? choose : {};
                                     return (
-                                      <FlexItem key={index}>
-                                        <div className="placeholder" onClick={() => this.chooseBrand(item)}>{item}</div>
+                                      <FlexItem key={index} >
+                                        <div className="placeholder" style={choose} onClick={() => this.chooseBrand(item)}>{item}</div>
                                       </FlexItem>
                                     )
                                   },this)
@@ -430,27 +514,27 @@ class FileSearch extends Component {
                             >
                             <div className="uu">
                             <Flex>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
+                              {
+                                product.map((item,index) => {
+                                  let className = this.state.product.find(val => {
+                                      return val == item
+                                    });
+                                    if(className) {
+                                      className = "choose";
+                                    }
+                                    let choose = {
+                                      border:"1px solid #ff9900",
+                                      background: "#fff3e8"
+                                    }
+                                    choose = className ? choose : {};
+                                  return (
+                                    <FlexItem key={index}>
+                                      <div className="placeholder" style={choose} onClick={() => this.choosePro(item)}>{item}</div>
+                                    </FlexItem>
+                                  )
+                                },this)
+                              }
                             </Flex>
-                            <Flex>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                            </Flex> 
                           </div>                                                                          
                             </Accordion>
                         </li>   
@@ -467,27 +551,27 @@ class FileSearch extends Component {
                             >
                             <div className="uu">
                             <Flex>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
+                                {
+                                  type.map((item,index) => {
+                                    let className = this.state.type.find(val => {
+                                      return val == item
+                                    });
+                                    if(className) {
+                                      className = "choose";
+                                    }
+                                    let choose = {
+                                      border:"1px solid #ff9900",
+                                      background: "#fff3e8"
+                                    }
+                                    choose = className ? choose : {};
+                                    return (
+                                      <FlexItem key={index}>
+                                        <div className="placeholder" style={choose} onClick={() => {this.chooseType(item)}}>{item}</div>
+                                      </FlexItem>
+                                    )
+                                  })
+                                }
                             </Flex>
-                            <Flex>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                                <FlexItem>
-                                    <div className="placeholder">weui</div>
-                                </FlexItem>
-                            </Flex> 
                           </div>                                                                          
                             </Accordion>
                         </li>                                        
@@ -560,5 +644,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps,{
   findFileAction,
   addFileAction,
-  saveTabAction
+  saveTabAction,
+  filterAction,
+  brandAction
 })(FileSearch)

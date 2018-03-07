@@ -1,7 +1,7 @@
 import {select, put, call} from 'redux-saga/effects';
 import {getIframe} from './selector.js';
-import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction,saveValAction} from '../action/iframe.js';
-import {iscollect,like,collect,getpage} from './api.js';
+import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction,saveValAction,wechatAction} from '../action/iframe.js';
+import {iscollect,like,collect,getpage,wechatapi} from './api.js';
 let arr = [];
 
 export function* isCollectAsync (){
@@ -98,4 +98,18 @@ export function* saveAsync(){
   }
   const param = iframe.save.data;
   yield put(saveValAction(param,!fetching))
+}
+
+export function* wechatAsync(){
+  const iframe = yield select(getIframe);
+  const fetching = iframe.wechat.fetching;
+  if(fetching) {
+    return null
+  }
+  const param = iframe.save.data;
+  const json = yield call(wechatapi,param);
+  console.log(json)
+   
+    yield put(wechatAction(json,!fetching))
+  
 }

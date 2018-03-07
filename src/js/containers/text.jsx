@@ -35,14 +35,24 @@ var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
 require('jquery');
+var wx = require("weixin-js-sdk");
 import Collect from './Collect.jsx';
 import {  } from "../redux/action/fileSearch.js";
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/iframe.css");
-import {isCollectAction,likeAction,collectAction,delcollectAction,getpageAction,saveValAction} from '../redux/action/iframe.js';
+import {
+    isCollectAction,
+    likeAction,
+    collectAction,
+    delcollectAction,
+    getpageAction,
+    saveValAction,
+    wechatAction
+} from '../redux/action/iframe.js';
 import {ajaxCollect} from '../redux/sagas/api.js';
+var firstGuid = require('../../img/share-it.png');
 
 
 class Iframe extends Component {
@@ -53,7 +63,8 @@ class Iframe extends Component {
         collectAction:PropTypes.func,
         delcollectAction:PropTypes.func,
         getpageAction:PropTypes.func,
-        saveValAction:PropTypes.func
+        saveValAction:PropTypes.func,
+        wechatAction:PropTypes.func
     }
     constructor(props,context){
         super(props,context)
@@ -67,8 +78,11 @@ class Iframe extends Component {
             one:[],
             innerHtml:[],
             all:[],
+            show:"none",
             pageY:0,
             iscollect:[],
+            id:[],
+            shareTitle:"",
             two:"https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         }
         this.like = this.like.bind(this);
@@ -76,7 +90,7 @@ class Iframe extends Component {
         this.delcollect = this.delcollect.bind(this);
     }
     componentWillMount(){
-        this.setState({fullpage_show: false})
+        this.setState({fullpage_show: false});
     }
     ajaxLoad(res){
         let html = "";
@@ -125,7 +139,8 @@ class Iframe extends Component {
         return html
     }
     componentDidMount(){
-        this.swiperChange("1")
+        this.swiperChange("1");
+        this.props.wechatAction();
         this.setState({
             head:document.head.innerHTML,
             url:decodeURIComponent(this.props.location.query.href)
@@ -161,7 +176,10 @@ class Iframe extends Component {
                     that.props.getpageAction(param);
                     that.setState({
                         fullpage_show:false,
-                        one:[]
+                        one:[],
+                        idArr:[],
+                        innerHtml:[],
+                        is:[]
                     })
                 }
                 
@@ -275,32 +293,39 @@ class Iframe extends Component {
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
         console.log(nextProps,this.props)
-
+        let addPage = [];
+        let that = this;
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result=="success"){
             if(page.length==0){
-
+                addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
             } else {
+                addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(3,5);
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3,5));
             }
         }
         let s = this.state.url.split("xml")[0]+"xml/";
-        let html = [];
+        let html = this.state.innerHtml;
         let is = this.state.iscollect;
-        if(page.length>0) {
-            for(var i=0;i<page.length;i++){
-                page[i].url = s + page[i].url.split("/").pop();
-                let url = s + page[i].url.split("/").pop();
-                let result = this.ajaxLoad(decodeURI(page[i].url));
+        let idArr = this.state.id;
+        if(addPage.length>0) {
+            for(var i=0;i<addPage.length;i++){
+                addPage[i].url = s + addPage[i].url.split("/").pop();
+                let url = s + addPage[i].url.split("/").pop();
+                let result = this.ajaxLoad(decodeURI(addPage[i].url));
                 let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                page[i].topicid = topicid;
+                let o ={
+                    title:addPage[i].title,
+                    topicid:topicid
+                }
+                idArr.push(o)
                 html.push(result);
                 let obj = {
                     username:"yang4",
                     topicid:topicid,
                     bookid:this.props.location.query.bookid
                 }
-                let json = ajaxCollect(obj)
+                let json = ajaxCollect(obj);
                 if(json.result == "success"){
                     let obj ={
                         luad:json.luad,
@@ -310,7 +335,15 @@ class Iframe extends Component {
                     }
                     is.push(obj)
                 }
+            };
+            for(var i=0;i<page.length;i++){
+                for(var j=0;j<idArr.length;j++){
+                    if(page[i].title == idArr[j].title){
+                        page[i].topicid = idArr[j].topicid;
+                    }
+                }
             }
+            console.log(page)
             this.setState({
                 iscollect:is
             });
@@ -372,12 +405,73 @@ class Iframe extends Component {
                 iscollect:isc
             })
         }else{
-            console.log(page)
             this.setState({
                 one:page,
                 innerHtml:html
             })
         }
+        let wechat;
+        if(nextProps.iframe.wechat.data&&nextProps.iframe.wechat.data!==null&&nextProps.iframe.wechat.data.result=="success"){
+            wechat = nextProps.iframe.wechat.data.values;
+            wx.config({
+                debug: false,
+                appId: wechat.appId,
+                timestamp: wechat.timestamp,
+                nonceStr: wechat.nonceStr,
+                signature: wechat.signature,
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareQZone',
+                    'showMenuItems',
+                    "showOptionMenu"
+                ],
+
+            });
+            let url = "";
+            let topicid = '';
+            for(var i=0;i<this.state.one.length;i++){
+                if(this.state.one[i].title == this.state.shareTitle){
+                    url = encodeURIComponent(this.state.one[i].url);
+                    topicid = this.state.one[i].topicid
+                }
+            };
+            wx.ready(() => {
+                wx.showOptionMenu();
+                var shareDate = {
+                    title:"维宏云在线帮助：" + that.state.shareTitle,
+                    link:"https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + topicid + "&shareUrl=" + url,
+                    imgUrl: "https://nccloud.weihong.com.cn/img/share.jpg",
+                    trigger: function(res) {
+                    },
+                    success: function(res) {
+                        $("#share_btn").css("color","orange");
+                    },
+                    cancel: function(res) {
+                       $("#share_btn").css("color","black");
+                    }
+                };
+
+                wx.onMenuShareTimeline(shareDate);
+                wx.onMenuShareAppMessage(shareDate);
+                wx.onMenuShareQQ(shareDate);
+                wx.onMenuShareQZone(shareDate);
+            });
+            wx.error(function(res) {
+                console.log(res)
+               
+            });
+        }
+    }
+    hideFlow(param,title=""){
+        console.log("ggg");
+        console.log(title)
+        this.setState({
+            show:param,
+            shareTitle:title
+        })
     }
     scrollToAnchor = (anchorName) => {
         if (anchorName) {
@@ -398,9 +492,16 @@ class Iframe extends Component {
         let height = (window.innerHeight - 30);
         let menuHeight = (window.innerHeight - 35) + "px";
         let iscollect = this.state.iscollect;
-        
+        let show = this.state.show;
+
         return (
             <div className="iframe">
+                <div id="shareit" style={{display:show}} onClick={(e) => this.hideFlow("none")}>
+                    <img className="arrow" src= {firstGuid} />
+                    <div  id="follow">
+                        点击右上角按钮，开始分享
+                    </div>
+                </div>
             <InfiniteLoader
                 onLoadMore={ (resolve, finish) => {
                     //mock request
@@ -453,7 +554,7 @@ class Iframe extends Component {
                                                     <div className="m">{num}
                                                         {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}
                                                         {store ? <i className="iconfont icon-yes" onClick={() => this.delcollect(topicid,ContentType,title,index)}>&#xe620;</i> : <i className="iconfont icon-no" onClick={() => this.collect(topicid,ContentType,title,index)}>&#xe616;</i> }
-                                                        <i className="iconfont">&#xe619;</i>
+                                                        <i className="iconfont" onClick={(e) => this.hideFlow("block",title)}>&#xe619;</i>
                                                     </div>
                                                 </Article>
                                             )
@@ -501,6 +602,7 @@ export default connect(mapStateToProps,{
   collectAction,
   delcollectAction,
   getpageAction,
-  saveValAction
+  saveValAction,
+  wechatAction
 })(Iframe)
 

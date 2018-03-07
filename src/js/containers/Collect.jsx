@@ -8,7 +8,7 @@ import {
 import WeUI from 'react-weui';
 import { connect } from 'react-redux';
 import { createStore,bindActionCreators } from 'redux';
-import {mycollectAction} from '../redux/action/collect.js';
+import {mycollectAction,delthemeAction,delbookAction,searchAction} from '../redux/action/collect.js';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/collect.css");
@@ -35,7 +35,10 @@ import {
 class Collect extends Component {
   static propTypes = {
     collects:PropTypes.object,
-    mycollectAction:PropTypes.func
+    mycollectAction:PropTypes.func,
+    delthemeAction:PropTypes.func,
+    delbookAction:PropTypes.func,
+    searchAction:PropTypes.func
   }
   constructor(props,context){
     super(props,context)
@@ -45,23 +48,25 @@ class Collect extends Component {
       val:'',
       style:"none",
       hint:false,
-      tag:"all"
+      tag:"all",
+      book:{},
+      type:""
     }
   }
   componentDidMount(){
     let width = window.screen.width+"px";
-      $(".a").css("width",width)
-      $(".react-weui-infiniteloader__content").css("width",width)
-      var obox = document.getElementById("collect");
+    $(".a").css("width",width)
+    $(".react-weui-infiniteloader__content").css("width",width)
+    var obox = document.getElementById("collect");
     let that = this;
-    this.props.mycollectAction({username:"yang6"})
+    this.props.mycollectAction({username:"yang4"})
     //document.oncontextmenu =  function(ev){
-     // ev.preventDefault();  
+      //ev.preventDefault();  
      // var e = ev||window.event;
      // var x = e.clientX;
      // var y = e.clientY;
      // obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
-     // return false;
+      //return false;
     //};
     /*点击空白处隐藏*/
     document.onclick = function(){
@@ -76,15 +81,30 @@ class Collect extends Component {
     })
   }
   checkVal = (res) => {
-    this.setState({
-      tag:res
-    })
+    let obj = {
+      username:"yang4",
+      string:this.state.val
+    }
+    this.props.searchAction(obj)
   }
   changeTab =(res) => {
     console.log(res)
     this.setState({
         tab:res.tab
     })
+  }
+  iniframe = res => {
+
+  }
+  pageChange = (res) => {
+    console.log(res)
+  }
+  delCollect = () => {
+    if(this.state.type == "theme"){
+      this.props.delthemeAction(this.state.book)
+    } else if(this.state.type == "book"){
+      this.props.delbookAction(this.state.book)
+    }
   }
   contextMenu(ev,res){
     ev.preventDefault(); 
@@ -93,7 +113,38 @@ class Collect extends Component {
     var x = e.clientX;
     var y = e.clientY;
     obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
-    alert(JSON.stringify(res))
+    let obj = {};
+    if(res.result){
+    //主题
+    console.log(res.result.topicURL)
+      obj = {
+        username:res.result.username,
+        topicid:res.result.topicid,
+        title:res.result.title,
+        topicURL:res.result.topicURL,
+        ContentType:res.result.ContentType,
+        book_keysjson:res.result.book_keysjson,
+        status:false
+      }
+      this.setState({
+        type:"theme"
+      })
+    } else {
+      obj = {
+        username:res.username,
+        bookid:res.bookid,
+        bookname:res.bookname,
+        book_keysjson:res.book_keysjson,
+        status:false,
+        ifsecrecy:res.ifsecrecy
+      }
+      this.setState({
+        type:"book"
+      })
+    }
+    this.setState({
+      book:obj
+    })
     return false;
   }
   tabChange = (e) => {
@@ -109,6 +160,9 @@ class Collect extends Component {
     let display = this.state.style;
     const {collects} = this.props;
     console.log(collects)
+    if(collects.deltheme.data!==null&&collects.deltheme.data.result=="success"){
+      console.log(collects.deltheme.data)
+    }
     let topic = [];
     let book = [];
     if(collects.mycollect.data!==null&&collects.mycollect.data.result=="success"){
@@ -117,7 +171,7 @@ class Collect extends Component {
     }
     return (
       <Page className="collect">
-        <div id="collect" >删除</div>
+        <div id="collect" onClick={() => this.delCollect(this)}>删除</div>
         <Tab>
           <TabBody>
             <div className="content searchs">
@@ -131,8 +185,8 @@ class Collect extends Component {
                   />
                 </div>
                 <div className="search-btn">
-                  <label type="button" className="btn tag" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
-                  >搜本页</label>
+                  <label type="button" className="btn tag" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal()}
+                  >搜索</label>
                   <label className="btn" className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")}>添加</label>
                 </div>
                 <div className="hint" id="hint" style={{display:this.state.hint ? "block" : "none"}} >
@@ -165,25 +219,23 @@ class Collect extends Component {
               <Cells>
                 {
                   topic.map(function(item,index){
-                  let key = item.result.book_keysjson;
-                  console.log(key)
+                  let key = item.result&&item.result.book_keysjson ? item.result.book_keysjson : item.book_keysjson;
                     return (
-                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)}>
+                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)} onClick={() => this.iniframe(item)}>
                         <CellBody>
-                          <h3>{item.result.title}</h3>
+                          <h3>{item.result&&item.result.title ? item.result.title : item.title}</h3>
                           <span>{key.base+" | "+key.product+" | "+key.type}</span>
                         </CellBody>
-                        <CellFooter>
-                        </CellFooter>
+                        
                       </Cell>
                     )
-                  })
+                  },this)
                 }
               </Cells>
             </section>
           </Article>
           <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
-             <section>
+            <section>
               <Cells>
                 {
                   book.map(function(item,index){
@@ -194,8 +246,7 @@ class Collect extends Component {
                           <h3>{item.bookname}</h3>
                           <span>{key.base+" | "+key.product+" | "+key.type}</span>
                         </CellBody>
-                        <CellFooter>
-                        </CellFooter>
+                        
                       </Cell>
                     )
                   })
@@ -256,5 +307,8 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps,{
-  mycollectAction
+  mycollectAction,
+  delthemeAction,
+  delbookAction,
+  searchAction
 })(Collect)

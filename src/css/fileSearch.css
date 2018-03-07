@@ -38,10 +38,14 @@
 }
 .select .weui-flex__item div{
     border:1.2px dashed gray;
-    padding:0.55rem 0.5rem;
+    padding:0.55rem 0rem;
     margin:0.2rem 0.3rem;
     text-align: center;
     border-radius: 4px;
+    font-size:0.7rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .select .weui-flex{
   flex-wrap:wrap;
@@ -107,6 +111,10 @@
 .ss.weui-article section{
   padding-top: 22px;
 }
+.choose{
+  border:1px solid #ff9900;
+  background: #fff3e8;
+}
 .hint{
   width: -webkit-calc(100% - 33px);
   width: calc(100% - 33px);
@@ -135,3 +143,4 @@
   left:0;
   background: rgba(0, 0, 0, 0.1);
 }
+#file{display:none;padding:10px 15px;background:#fff;position:fixed;z-index:10000; border:1px solid #eee;box-shadow:2px 2px 5px #d9d9d9;}

@@ -1,4 +1,4 @@
-import {SEARCH_FILE,ADD_FILE,SAVE_TAB,COMFIRM_ADD,MENU_URL} from '../action/fileSearch.js';
+import {SEARCH_FILE,ADD_FILE,SAVE_TAB,COMFIRM_ADD,MENU_URL,FILTER,BRAND} from '../action/fileSearch.js';
 
 const initialState = {
   fileList:{
@@ -19,6 +19,14 @@ const initialState = {
     fetching:false
   },
   menulist:{
+    data:null,
+    fetching:false
+  },
+  filter:{
+    data:null,
+    fetching:false
+  },
+  brand:{
     data:null,
     fetching:false
   }
@@ -63,6 +71,22 @@ export const files = (state = initialState,action = {}) => {
       return {
         ...state,
         menulist:{
+          fetching:action.fetching,
+          data:action.data
+        }
+      }
+    case FILTER:
+      return {
+        ...state,
+        filter:{
+          fetching:action.fetching,
+          data:action.data
+        }
+      }
+    case BRAND:
+      return {
+        ...state,
+        brand:{
           fetching:action.fetching,
           data:action.data
         }

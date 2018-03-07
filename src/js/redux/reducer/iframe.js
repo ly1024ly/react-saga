@@ -1,4 +1,4 @@
-import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE,SAVE_VALUE} from '../action/iframe.js'
+import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE,SAVE_VALUE,WECHAT} from '../action/iframe.js'
 
 const initialState = {
   iscollect:{
@@ -22,6 +22,10 @@ const initialState = {
     fetching:false
   },
   save:{
+    data:null,
+    fetching:false
+  },
+  wechat:{
     data:null,
     fetching:false
   }
@@ -116,6 +120,14 @@ export const iframe = (state=initialState,action ={}) => {
         save:{
           data:null,
           fetching:false
+        }
+      }
+    case WECHAT:
+      return {
+        ...state,
+        wechat:{
+          data:action.data,
+          fetching:action.fetching
         }
       }
     default:

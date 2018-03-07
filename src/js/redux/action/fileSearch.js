@@ -3,6 +3,8 @@ export const ADD_FILE = 'ADD_FILE'
 export const SAVE_TAB = 'SAVE_TAB'
 export const COMFIRM_ADD = 'COMFIRM_ADD'
 export const MENU_URL = 'MENU_URL'
+export const FILTER = 'FILTER'
+export const BRAND = 'BRAND'
 
 export const findFileAction = (param,fetching) => {
   return {
@@ -41,6 +43,22 @@ export const comfirmFileAction = (param,fetching) => {
 export const menuurlAction = (param,fetching) => {
   return {
     type:MENU_URL,
+    data:param,
+    fetching:fetching
+  }
+}
+
+export const filterAction = (param,fetching) => {
+  return {
+    type:FILTER,
+    data:param,
+    fetching:fetching
+  }
+}
+
+export const brandAction = (param=null,fetching) => {
+  return {
+    type:BRAND,
     data:param,
     fetching:fetching
   }

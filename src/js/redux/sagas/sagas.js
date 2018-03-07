@@ -1,10 +1,11 @@
 import { takeLatest, takeEvery } from 'redux-saga/effects';
-import { searchfilesAsync,addfilesAsync,saveTabAsync,comfirmAsync,menuAsync } from './fileSearch.js';
-import {SEARCH_FILE,ADD_FILE,SAVE_TAB,COMFIRM_ADD,MENU_URL} from '../action/fileSearch.js';
-import {mycollectAsync} from './collect.js';
-import {MYCOLLECT} from '../action/collect.js';
-import {isCollectAsync,likeAsync,collectAsync,delcollectAsync,pageAsync,saveAsync} from './iframe.js';
-import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE,SAVE_VALUE} from '../action/iframe.js';
+import {SEARCH_FILE,ADD_FILE,SAVE_TAB,COMFIRM_ADD,MENU_URL,FILTER,BRAND} from '../action/fileSearch.js';
+import {IS_COLLECT,LIKE,COLLECT,DELCOLLECT,GET_PAGE,SAVE_VALUE,WECHAT} from '../action/iframe.js';
+import {MYCOLLECT,DELTHEME,DELBOOK,SEARCH_COLLECT} from '../action/collect.js';
+
+import {mycollectAsync,delthemeAsync,delbookAsync,searchAsync} from './collect.js';
+import {isCollectAsync,likeAsync,collectAsync,delcollectAsync,pageAsync,saveAsync,wechatAsync} from './iframe.js';
+import { searchfilesAsync,addfilesAsync,saveTabAsync,comfirmAsync,menuAsync,filterAsync,brandAsync } from './fileSearch.js';
 
 
 export default function* rootSaga() {
@@ -21,6 +22,12 @@ export default function* rootSaga() {
     takeEvery(COLLECT,collectAsync),
     takeEvery(DELCOLLECT,delcollectAsync),
     takeLatest(GET_PAGE,pageAsync),
-    takeEvery(SAVE_VALUE,saveAsync)
+    takeEvery(SAVE_VALUE,saveAsync),
+    takeLatest(WECHAT,wechatAsync),
+    takeEvery(DELTHEME,delthemeAsync),
+    takeEvery(DELBOOK,delbookAsync),
+    takeEvery(SEARCH_COLLECT,searchAsync),
+    takeEvery(FILTER,filterAsync),
+    takeEvery(BRAND,brandAsync)
   ]
 }

@@ -8,6 +8,9 @@ body{
 	padding:0px;
 
 }
+.weui-article section .weui-cells{
+    padding:0 15px;
+}
 .weui-cell__bd .secret{
     padding:5px;
     background: orange;
