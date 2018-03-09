@@ -84,6 +84,7 @@ class Iframe extends Component {
             id:[],
             searchTitle:'',
             shareTitle:"",
+            message:"",
             two:"https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         }
         this.like = this.like.bind(this);
@@ -151,14 +152,20 @@ class Iframe extends Component {
                html = res;
             },
             error: function (res) {
-                alert(res);
+                try{
+                    throw new Error(res)
+                }catch(e){
+                    alert(e)
+                }
             }
         });
         return html
     }
+    componentWillMount(){
+        this.props.wechatAction();
+    }
     componentDidMount(){
         this.swiperChange("1");
-        this.props.wechatAction();
         console.log(this.props.location.query)
         this.setState({
             head:document.head.innerHTML,
@@ -230,7 +237,9 @@ class Iframe extends Component {
             topicid:id,
             ContentType:type,
             title:title,
-            topicURL:val.url,
+            bookid:this.props.location.query.bookid,
+            bookname:this.props.location.query.bookname,
+            topicURL:decodeURIComponent(val.url),
             book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
             status:true 
         }
@@ -255,7 +264,9 @@ class Iframe extends Component {
                 topicid:id,
                 ContentType:type,
                 title:title,
-                topicURL:val.url,
+                topicURL:decodeURIComponent(val.url),
+                bookid:this.props.location.query.bookid,
+                bookname:this.props.location.query.bookname,
                 book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
                 status:false 
             }
@@ -321,33 +332,65 @@ class Iframe extends Component {
             this.contentNode.removeEventListener('scroll', this.onScrollHandle.bind(this));
         }
     }
+    shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
+       const thisProps = this.props || {}, thisState = this.state || {};
+
+        if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
+            Object.keys(thisState).length !== Object.keys(nextState).length) {
+            return true;
+        }
+
+        for (const key in nextProps) {
+            if (thisProps[key] !== nextProps[key] || !is(thisProps[key], nextProps[key])) {
+                return true;
+            }
+        }
+
+        for (const key in nextState) {
+            if (thisState[key] !== nextState[key] || !is(thisState[key], nextState[key])) {
+                return true;
+            }
+        }
+      return false;
+    }
     swiperChange(index){
         this.setState({demoIndex: index}) 
     }
     componentDidUpdate(){
         $(window).scrollTop(1000); 
     }
-    shouldComponentUpdate(nextProps = {},nextState = {}) {
-        return true
-    }
+   
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
-        console.log(nextProps,this.state.one)
+        console.log("--------------------------------------------------")
+        console.log(nextProps.iframe)
         let addPage = [];
         let that = this;
-        if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result=="success"){
+        if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result&&nextProps.iframe.page.data.result=="success"){
             if(page.length==0){
                 addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
             } else {
-                addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(3,5);
+                if(page[page.length-1].title!==nextProps.iframe.page.data.message[0].OtherPages.slice(4,5)[0].title){
+                    addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(3,5);
+                }
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3,5));
             }
+            this.setState({
+                massage:"",
+
+            })
+        } else if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result == "fail"){
+            this.setState({
+                massage:nextProps.iframe.page.data.message
+            })
         }
         let s = this.state.url.split("xml")[0]+"xml/";
         let html = this.state.innerHtml;
         let is = this.state.iscollect;
         let idArr = this.state.id;
+        console.log("***************addPage*****************");
+        console.log(addPage)
         if(addPage.length>0) {
             for(var i=0;i<addPage.length;i++){
                 addPage[i].url = s + addPage[i].url.split("/").pop();
@@ -550,20 +593,21 @@ class Iframe extends Component {
                             console.log("finish")
                             finish()
                         }else{
-                           
-                            let obj = {
-                                title:this.state.one[this.state.one.length-1].title,
-                                bookid:this.props.location.query.bookid
-                            }
-                            console.log(obj,this.state.one,this.state.searchTitle)
-                            if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
-                                this.props.getpageAction(obj);
+                            if(this.state.one.length>0){
+                                let obj = {
+                                    title:this.state.one[this.state.one.length-1].title,
+                                    bookid:this.props.location.query.bookid
+                                }
+                                console.log(obj,this.state.one,this.state.searchTitle)
+                                if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
+                                    this.props.getpageAction(obj);
+                                }
+                                this.setState({
+                                    searchTitle:this.state.one[this.state.one.length-1].title
+                                })
                             }
                             this.setState({
-                                searchTitle:this.state.one[this.state.one.length-1].title
-                            })
-                            this.setState({
-                               searchTitle:this.state.one[this.state.one.length-1].title
+                               searchTitle:this.state.one.length>0 ? this.state.one[this.state.one.length-1].title : ""
                             }, ()=> resolve())
                         }
                    
@@ -576,7 +620,7 @@ class Iframe extends Component {
                     <PanelBody>
                        <div style={{height:height,overFlow:"auto"}} id="frabox">
                         {
-                            this.state.innerHtml.map(function(item,index){
+                           this.state.innerHtml.map(function(item,index){
                                 let topicid = item.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
                                 let title = item.split("h1")[1].split(">")[1].split("<")[0];
                                 let ContentType;
@@ -586,6 +630,7 @@ class Iframe extends Component {
                                 let like = false;
                                 let store = false;
                                 let num = 0;
+                                console.log(this.state.message)
                                 if(iscollect.length>0){
                                     for(let i=0;i<iscollect.length;i++){
                                         if(iscollect[i].topicid == topicid){
@@ -597,8 +642,8 @@ class Iframe extends Component {
                                                     <a id={"md"+index}>
                                                         <div dangerouslySetInnerHTML={{ __html:item}} ></div>
                                                     </a>
-                                                    <div className="m">{num}
-                                                        {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}
+                                                    <div className="m">
+                                                        {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}{num}
                                                         {store ? <i className="iconfont icon-yes" onClick={() => this.delcollect(topicid,ContentType,title,index)}>&#xe620;</i> : <i className="iconfont icon-no" onClick={() => this.collect(topicid,ContentType,title,index)}>&#xe616;</i> }
                                                         <i className="iconfont" onClick={(e) => this.hideFlow("block",title)}>&#xe619;</i>
                                                     </div>
@@ -609,6 +654,7 @@ class Iframe extends Component {
                                 }
                             },this)
                         }
+                        <div className="none" style={{display:iframe.page.data!==null&&iframe.page.data.result=="fail" ? "block" : "none"}}>{iframe.page.data!==null&&iframe.page.data.result=="fail" ? iframe.page.data.message : ""}</div>
                         </div>
                     </PanelBody>
                     </Panel>

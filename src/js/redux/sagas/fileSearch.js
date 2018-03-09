@@ -14,7 +14,7 @@ export function* searchfilesAsync() {
   if(json.result == "success") {
     yield put(findFileAction(json,!fetching))
   } else {
-    yield put(findFileAction(json.error,!fetching));
+    yield put(findFileAction(json,!fetching));
   }
 }
 
@@ -31,7 +31,7 @@ export function* addfilesAsync() {
   if(json.result == "success") {
     yield put(addFileAction(json,!fetching))
   } else {
-    yield put(addFileAction(json.error,!fetching))
+    yield put(addFileAction(json,!fetching))
   }
 }
 
@@ -58,7 +58,7 @@ export function* comfirmAsync() {
   if(json.result == "success") {
     yield put(comfirmFileAction(json,!fetching))
   } else {
-    yield put(comfirmFileAction(json.error,!fetching))
+    yield put(comfirmFileAction(json,!fetching))
   }
 }
 
@@ -89,7 +89,7 @@ export function* filterAsync() {
     }
     yield put(filterAction(json,!fetching))
   }else {
-    yield put(filterAction(json.error,!fetching))
+    yield put(filterAction(json,!fetching))
   }
 }
 
@@ -104,6 +104,6 @@ export function* brandAsync(){
   if(json.result == "success"){
     yield put(brandAction(json,!fetching))
   }else{
-    yield put(brandAction(json.brand,!fetching))
+    yield put(brandAction(json,!fetching))
   }
 }

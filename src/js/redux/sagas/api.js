@@ -171,6 +171,7 @@ export const filterapi = param => {
   .then(json => {
     return json
   })
+  .catch(ex => console.log('parsing faild',ex));
 }
 
 export const brandapi = param => {

@@ -3,6 +3,10 @@ iframe{
 
   
 }
+.none{
+  margin: 70px auto;
+  text-align: center;
+}
 .one{
   padding-bottom: 10px;
   overflow-x:hidden;
@@ -150,8 +154,8 @@ article{
   text-align: right;
 }
 .weui-article .m .iconfont{
-  font-size: 25px;
-  margin:0px 8px;
+  font-size: 22px;
+  margin:0px 5px;
 }
 .pop{
   width: 83%;

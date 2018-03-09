@@ -86,7 +86,7 @@ export function* pageAsync (){
   if(json.result == "success"){
     yield put(getpageAction(json,!fetching))
   } else {
-    yield put(getpageAction(json.error,!fetching))
+    yield put(getpageAction(json,!fetching))
   }
 }
 
@@ -106,7 +106,7 @@ export function* wechatAsync(){
   if(fetching) {
     return null
   }
-  const param = iframe.save.data;
+  const param = iframe.wechat.data;
   const json = yield call(wechatapi,param);
   console.log(json)
    

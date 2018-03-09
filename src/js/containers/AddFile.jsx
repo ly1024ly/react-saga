@@ -31,6 +31,7 @@ var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
 require('jquery');
+import { is } from 'immutable';
 import Collect from './Collect.jsx';
 import {comfirmFileAction,menuurlAction} from '../redux/action/fileSearch.js';
 import 'react-weui/build/packages/react-weui.css';
@@ -93,6 +94,7 @@ class AddFile extends Component {
                         bookid:topicid,
                         filename:filename,
                         title:title,
+                        bookname:that.state.book.bookname,
                         message:JSON.stringify(message),
                         _id:"eeeeeeeeeeeeeeee"
                     }
@@ -132,6 +134,27 @@ class AddFile extends Component {
             this.showToast()
         }
     }
+    shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
+       const thisProps = this.props || {}, thisState = this.state || {};
+
+        if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
+            Object.keys(thisState).length !== Object.keys(nextState).length) {
+            return true;
+        }
+
+        for (const key in nextProps) {
+            if (thisProps[key] !== nextProps[key] || !is(thisProps[key], nextProps[key])) {
+                return true;
+            }
+        }
+
+        for (const key in nextState) {
+            if (thisState[key] !== nextState[key] || !is(thisState[key], nextState[key])) {
+                return true;
+            }
+        }
+      return false;
+    }
     comfirAdd=()=>{
         console.log(this.state.book);
         let book = this.state.book;
@@ -141,6 +164,7 @@ class AddFile extends Component {
             bookname:book.bookname,
             book_keysjson:book.book_keysjson,
             status:true,
+            bookUrl:this.props.location.query.href,
             ifsecrecy:book.outputclass == "公开" ? true : false
         }
         this.props.comfirmFileAction(obj)

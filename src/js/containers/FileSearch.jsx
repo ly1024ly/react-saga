@@ -37,7 +37,7 @@ import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/fileSearch.css");
-
+import { is } from 'immutable';
 
 
 class FileSearch extends Component {
@@ -127,6 +127,27 @@ class FileSearch extends Component {
   openPop = () => {
     this.setState({fullpage_show: true})
   }
+  shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
+     const thisProps = this.props || {}, thisState = this.state || {};
+
+      if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
+          Object.keys(thisState).length !== Object.keys(nextState).length) {
+          return true;
+      }
+
+      for (const key in nextProps) {
+          if (thisProps[key] !== nextProps[key] || !is(thisProps[key], nextProps[key])) {
+              return true;
+          }
+      }
+
+      for (const key in nextState) {
+          if (thisState[key] !== nextState[key] || !is(thisState[key], nextState[key])) {
+              return true;
+          }
+      }
+    return false;
+  }
   touchmove = e => {
     e.stopPropagation();
     let clientx = e.changedTouches[0].clientX;
@@ -186,13 +207,17 @@ class FileSearch extends Component {
   }
   goiframe = (obj) => {
     let data = {
-      href:obj.url
+      href:obj.url,
+      bookname:obj.bookname,
+      bookid:obj.bookid,
+      title:obj.title,
+      message:JSON.stringify(obj)
     }
     let path = {
       pathname:"iframe",
       query:data
     }
-    //hashHistory.push(path)
+    hashHistory.push(path)
   }
   toAddfile = () => {
     const { files } = this.props;
@@ -250,12 +275,12 @@ class FileSearch extends Component {
       this.props.filterAction(obj)
     }else{
       this.props.findFileAction({q:this.state.val,page:1,type:""})
-      this.setState({
-        search:true,
-        tag:res,
-        hint:false
-      })
     }
+    this.setState({
+      search:true,
+      tag:res,
+      hint:false
+    })
   }
   choosePro = res => {
     let arr = this.state.product;
@@ -298,6 +323,17 @@ class FileSearch extends Component {
     this.setState({
       type:arr
     })
+  }
+  inaddFile = res => {
+    let data = {
+      href:res.bookUrl,
+      message:JSON.stringify(res)
+    }
+    let path = {
+      pathname:"addfile",
+      query:data
+    }
+    hashHistory.push(path)
   }
   contextMenus = (ev,res) => {
     ev.preventDefault(); 
@@ -367,12 +403,6 @@ class FileSearch extends Component {
                 >搜索</label>
                 <label className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")}>筛选</label>
               </div>
-              <div className="hint" id="hint" style={{display:this.state.hint ? "block" : "none"}} >
-                <ul >
-                  <li>dsfd</li>
-                  <li>fdsgafg</li>
-                </ul>
-              </div>
             </div>
           </div>
           <Article style={{display:this.state.search ? "none" : "block"}}>
@@ -441,7 +471,7 @@ class FileSearch extends Component {
                 hbook ? hbook.map(function(item,index){
                   let key = item.book_keysjson;
                   return (
-                    <Cell key={index} href="javascript:;" access onContextMenu={(e) => this.contextMenus(e,item)} value={item}>
+                    <Cell key={index} href="javascript:;" access onContextMenu={(e) => this.contextMenus(e,item)} value={item} onClick={() => this.inaddFile(item)}>
                       <CellBody >
                         <h3>{item.bookname}</h3>
                         {item.outputclass=="私密" ? <span className="secret">密</span> : ""}

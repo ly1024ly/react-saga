@@ -50,7 +50,8 @@ class Collect extends Component {
       hint:false,
       tag:"all",
       book:{},
-      type:""
+      type:"",
+      btn:"search"
     }
   }
   componentDidMount(){
@@ -85,7 +86,11 @@ class Collect extends Component {
       username:"yang4",
       string:this.state.val
     }
-    this.props.searchAction(obj)
+    this.props.searchAction(obj);
+    this.setState({
+      tag:res
+    })
+   
   }
   changeTab =(res) => {
     console.log(res)
@@ -94,7 +99,19 @@ class Collect extends Component {
     })
   }
   iniframe = res => {
-
+    let obj = {
+      title:res.title,
+      href:res.topicURL,
+      bookid:res.bookid,
+      bookname:res.bookname,
+      message:JSON.stringify({book_keysjson:res.book_keysjson})
+    }
+    console.log(obj)
+    let path = {
+      pathname:"iframe",
+      query:obj
+    }
+    hashHistory.push(path)
   }
   pageChange = (res) => {
     console.log(res)
@@ -136,6 +153,7 @@ class Collect extends Component {
         bookname:res.bookname,
         book_keysjson:res.book_keysjson,
         status:false,
+        bookUrl:res.bookUrl,
         ifsecrecy:res.ifsecrecy
       }
       this.setState({
@@ -146,6 +164,17 @@ class Collect extends Component {
       book:obj
     })
     return false;
+  }
+  inaddFile = res => {
+    let data = {
+      href:res.bookUrl,
+      message:JSON.stringify(res)
+    }
+    let path = {
+      pathname:"addfile",
+      query:data
+    }
+    hashHistory.push(path)
   }
   tabChange = (e) => {
     console.log(e.target);
@@ -185,15 +214,9 @@ class Collect extends Component {
                   />
                 </div>
                 <div className="search-btn">
-                  <label type="button" className="btn tag" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal()}
+                  <label type="button" className="btn tag" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
                   >搜索</label>
                   <label className="btn" className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")}>添加</label>
-                </div>
-                <div className="hint" id="hint" style={{display:this.state.hint ? "block" : "none"}} >
-                  <ul >
-                    <li>dsfd</li>
-                    <li>fdsgafg</li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -221,7 +244,7 @@ class Collect extends Component {
                   topic.map(function(item,index){
                   let key = item.result&&item.result.book_keysjson ? item.result.book_keysjson : item.book_keysjson;
                     return (
-                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)} onClick={() => this.iniframe(item)}>
+                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)} onClick={() => this.iniframe(item.result ? item.result : item)}>
                         <CellBody>
                           <h3>{item.result&&item.result.title ? item.result.title : item.title}</h3>
                           <span>{key.base+" | "+key.product+" | "+key.type}</span>
@@ -241,7 +264,7 @@ class Collect extends Component {
                   book.map(function(item,index){
                   let key = item.book_keysjson;
                     return (
-                      <Cell href="javascript:;" access key={index}>
+                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)} onClick={() => this.inaddFile(item)}>
                         <CellBody>
                           <h3>{item.bookname}</h3>
                           <span>{key.base+" | "+key.product+" | "+key.type}</span>
@@ -249,7 +272,7 @@ class Collect extends Component {
                         
                       </Cell>
                     )
-                  })
+                  },this)
                 }
               </Cells>
             </section>
@@ -278,7 +301,7 @@ class Collect extends Component {
                   label="用户社区"
               />
           </TabBar>
-          <div className="holder">
+          <div className="holder" style={{display:"none"}}>
                <section>
                 <nav role="navigation">
                   <ul className="cd-pagination">
