@@ -3394,6 +3394,10 @@ body, .page {
 .react-weui-infiniteloader{
     height: initial;
 }
+.weui-tabbar__icon img{
+    width:24px;
+    height:24px;
+}
 .select{
     width:80%;
     height:100vh;
@@ -3718,8 +3722,9 @@ article{
 }
 .weui-article .m .iconfont{
   font-size: 22px;
-  margin:0px 5px;
+  margin:0px 10px;
 }
+
 .pop{
   width: 83%;
   height:100%;

@@ -13,6 +13,7 @@ import Collect from './containers/Collect.jsx';
 import FileSearch from './containers/FileSearch.jsx';
 import AddFile from './containers/AddFile.jsx';
 import Iframe from './containers/Iframe.jsx';
+//import Maintenance from './containers/Maintenance.jsx';
 import store from "./redux/store/store.js"
 
 
@@ -25,6 +26,7 @@ const routes = (
         <Route path="filesearch" component={FileSearch} ></Route>
         <Route path="addfile" component={AddFile} ></Route>
         <Route path="iframe" component={Iframe} ></Route>
+       
       </Route>
     </Router>
   </Provider>

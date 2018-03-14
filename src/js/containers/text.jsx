@@ -82,9 +82,10 @@ class Iframe extends Component {
             pageY:0,
             iscollect:[],
             id:[],
+            user:{},
             searchTitle:'',
             shareTitle:"",
-            message:null,
+            message:"",
             two:"https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         }
         this.like = this.like.bind(this);
@@ -92,6 +93,15 @@ class Iframe extends Component {
         this.delcollect = this.delcollect.bind(this);
     }
     componentWillMount(){
+        if(sessionStorage.user){
+            this.setState({
+                user:JSON.parse(sessionStorage.user)
+            })
+        }else{
+            let url = window.location.href;
+            url = url.split("view")[0]+"view/prop.html";
+            //window.location.href=url;
+        }
         this.setState({fullpage_show: false});
     }
     iter = (arr) => {
@@ -131,11 +141,15 @@ class Iframe extends Component {
                let old = document.head.innerHTML;
                let body = that.parseDom("<body" + res.split("<body")[1].split("</html>")[0]);
                let dom = that.parseDom(res.split("<head>")[1].split("</head>")[0]);
-               let all = "";
-               res = res.replace(/...\image/g, that.props.location.query.href.split("xml")[0] + "image");
+               let all = '';
+               let s = that.state.url.split("/topics")[0];
+                let lindex = s.lastIndexOf("/");
+                s = s.slice(0,lindex);
+                console.log(s)
+               res = res.replace(/src="..\/../g,'src="'+s);
                 for(var i=0;i<dom.length;i++){ 
                     if(dom[i].nodeName=='LINK'){
-                        let href = that.props.location.query.href.split("xml")[0] + dom[i].href.split("assets/")[1];
+                        let href = s + "/"+ dom[i].href.split("nchelp/")[1];
                         dom[i].href = href;
                         all += dom[i].outerHTML; 
                     }else{
@@ -143,12 +157,12 @@ class Iframe extends Component {
                     }
                     
                 }
-                
-               let css = "<link rel='stylesheet' href='../css/prop.css' />";
-               all = all + css;
+
+               let css = '<link rel="stylesheet" href="../css/prop.css" />';
+               all = css + all;
                all = all.split("<title>")[0] + all.split("</title>")[1];
                document.head.innerHTML = all;
-             
+
                html = res;
             },
             error: function (res) {
@@ -197,8 +211,10 @@ class Iframe extends Component {
                 if(event.target.tagName=='A'){
                     event.preventDefault();
                     event.stopPropagation();
+                    let title = event.target.innerText;
+                    title = title.replace(/”/,"\"");
                     let param = {
-                        title:event.target.innerText,
+                        title:title,
                         bookid:that.props.location.query.bookid
                     };
                     that.props.getpageAction(param);
@@ -233,7 +249,7 @@ class Iframe extends Component {
             return val.topicid == id
         })
         let obj ={
-            username:"yang4",
+            username:"yang1",
             topicid:id,
             ContentType:type,
             title:title,
@@ -260,16 +276,16 @@ class Iframe extends Component {
             return val.topicid == id
         })
         let obj ={
-                username:"yang4",
-                topicid:id,
-                ContentType:type,
-                title:title,
-                topicURL:decodeURIComponent(val.url),
-                bookid:this.props.location.query.bookid,
-                bookname:this.props.location.query.bookname,
-                book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
-                status:false 
-            }
+            username:"yang1",
+            topicid:id,
+            ContentType:type,
+            title:title,
+            topicURL:decodeURIComponent(val.url),
+            bookid:this.props.location.query.bookid,
+            bookname:this.props.location.query.bookname,
+            book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
+            status:false 
+        }
         this.props.delcollectAction(obj)
         let o = {
             html:this.state.innerHtml,
@@ -280,34 +296,22 @@ class Iframe extends Component {
     clickEvent = (e,res) => {
         console.log(e)
         if(e.target.getAttribute("href")){
-            e.preventDefault()
-            let href = e.target.getAttribute("href").split("../")[1];
-            href = this.state.url.split("xml")[0] + href;
-            this.setState({
-                one:href
-            })
-            let title = e.target.text;
-            let obj = {
-                title:title,
-                bookid:this.props.location.query.bookid
-            }
+            e.preventDefault();
             this.setState({
                 one:[],
                 innerHtml:[],
                 iscollect:[]
             });
+            let title = e.target.text;
+            let obj = {
+                title:title,
+                bookid:this.props.location.query.bookid
+            }
             this.props.getpageAction(obj);
         }
     }
     closePop = () => {
         this.setState({fullpage_show: false})
-    }
-    componentWillUnmount(){
-        this.setState({
-            one:[],
-            innerHtml:[],
-            iscollect:[]
-        })
     }
     parseDom(nodelist) {
       var objE = document.createElement("div");  
@@ -317,7 +321,7 @@ class Iframe extends Component {
     like = (id,title) => {
         console.log("like")
         let obj = {
-            username:"yang4",
+            username:"yang1",
             topicid:id,
             title:title,
             status:true,
@@ -366,27 +370,34 @@ class Iframe extends Component {
     componentDidUpdate(){
         $(window).scrollTop(1000); 
     }
-    shouldComponentUpdate(nextProps = {},nextState = {}) {
-        return true
-    }
+   
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
         console.log("--------------------------------------------------")
-        console.log(nextProps.iframe)
+        console.log(nextProps.iframe);
+        console.log(this.state.one)
         let addPage = [];
         let that = this;
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result&&nextProps.iframe.page.data.result=="success"){
             if(page.length==0){
-                addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
-                page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
+                if(nextProps.iframe.page.data.message[0].OtherPages.length<5){
+                    addPage = nextProps.iframe.page.data.message[0].OtherPages;
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
+                } else {
+                    addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
+                }
             } else {
-                if(page[page.length-1].title!==nextProps.iframe.page.data.message[0].OtherPages.slice(4,5)[0].title){
-                    addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(3,5);
+                let otherPage = nextProps.iframe.page.data.message[0].OtherPages;
+                let arr = nextProps.iframe.page.data.message[0].OtherPages;
+                if(otherPage.length>0&&page[page.length-1].title!==otherPage[otherPage.length-1].title){
+                    
+                    addPage = arr.slice(arr.length-2,arr.length);
                 }
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3,5));
             }
             this.setState({
-                massage:null,
+                massage:"",
 
             })
         } else if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result == "fail"){
@@ -394,7 +405,9 @@ class Iframe extends Component {
                 massage:nextProps.iframe.page.data.message
             })
         }
-        let s = this.state.url.split("xml")[0]+"xml/";
+        let s = this.state.url.split("/topics")[0];
+        let lindex = s.lastIndexOf("/");
+        s = s.slice(0,lindex)+"/";
         let html = this.state.innerHtml;
         let is = this.state.iscollect;
         let idArr = this.state.id;
@@ -402,10 +415,12 @@ class Iframe extends Component {
         console.log(addPage)
         if(addPage.length>0) {
             for(var i=0;i<addPage.length;i++){
-                addPage[i].url = s + addPage[i].url.split("/").pop();
-                let url = s + addPage[i].url.split("/").pop();
+                addPage[i].url = s + addPage[i].url;
+                let url = addPage[i].url;
+                console.log(url)
                 let result = this.ajaxLoad(decodeURI(addPage[i].url));
                 let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
+                console.log(addPage[i])
                 let o ={
                     title:addPage[i].title,
                     topicid:topicid
@@ -413,7 +428,7 @@ class Iframe extends Component {
                 idArr.push(o)
                 html.push(result);
                 let obj = {
-                    username:"yang4",
+                    username:"yang1",
                     topicid:topicid,
                     bookid:this.props.location.query.bookid
                 }
@@ -463,8 +478,7 @@ class Iframe extends Component {
             }
             
         }
-        let set = new Set(page);
-        page = Array.from(set);
+        
         if(nextProps.iframe.save.data!==null&&nextProps.iframe.save.data.html){
             let isc = nextProps.iframe.save.data.iscollect;
             if(nextProps.iframe.like.data!==null&&nextProps.iframe.like.data.result == "success"){
@@ -585,7 +599,9 @@ class Iframe extends Component {
         let menuHeight = (window.innerHeight - 35) + "px";
         let iscollect = this.state.iscollect;
         let show = this.state.show;
-
+        let src = JSON.parse(this.props.location.query.message).bookUrl;
+        console.log("**********************************");
+        console.log(src)
         return (
             <div className="iframe">
                 <div id="shareit" style={{display:show}} onClick={(e) => this.hideFlow("none")}>
@@ -602,20 +618,21 @@ class Iframe extends Component {
                             console.log("finish")
                             finish()
                         }else{
-                           
-                            let obj = {
-                                title:this.state.one[this.state.one.length-1].title,
-                                bookid:this.props.location.query.bookid
-                            }
-                            console.log(obj,this.state.one,this.state.searchTitle)
-                            if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
-                                this.props.getpageAction(obj);
+                            if(this.state.one.length>0){
+                                let obj = {
+                                    title:this.state.one[this.state.one.length-1].title,
+                                    bookid:this.props.location.query.bookid
+                                }
+                                console.log(obj,this.state.one,this.state.searchTitle)
+                                if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
+                                    this.props.getpageAction(obj);
+                                }
+                                this.setState({
+                                    searchTitle:this.state.one[this.state.one.length-1].title
+                                })
                             }
                             this.setState({
-                                searchTitle:this.state.one[this.state.one.length-1].title
-                            })
-                            this.setState({
-                               searchTitle:this.state.one[this.state.one.length-1].title
+                               searchTitle:this.state.one.length>0 ? this.state.one[this.state.one.length-1].title : ""
                             }, ()=> resolve())
                         }
                    
@@ -638,6 +655,7 @@ class Iframe extends Component {
                                 let like = false;
                                 let store = false;
                                 let num = 0;
+                                console.log(this.state.message)
                                 if(iscollect.length>0){
                                     for(let i=0;i<iscollect.length;i++){
                                         if(iscollect[i].topicid == topicid){
@@ -661,7 +679,7 @@ class Iframe extends Component {
                                 }
                             },this)
                         }
-                        <div className="none" style={{display:this.state.message==null ? "none" : "block"}}>{this.state.message}</div>
+                        <div className="none" style={{display:iframe.page.data!==null&&iframe.page.data.result=="fail" ? "block" : "none"}}>{iframe.page.data!==null&&iframe.page.data.result=="fail" ? iframe.page.data.message : ""}</div>
                         </div>
                     </PanelBody>
                     </Panel>
@@ -677,7 +695,7 @@ class Iframe extends Component {
                                     <Link to="collect"><div>进入"我的收藏"</div></Link>
                                 </div>
                                 <div className="menuIframe">
-                                    <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:menuHeight}} id="menuiframe"></iframe>
+                                    <iframe src={src} style={{height:menuHeight}} id="menuiframe"></iframe>
                                 </div>
                             </Article>
                         </div>

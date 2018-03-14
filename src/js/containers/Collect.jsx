@@ -13,6 +13,10 @@ import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/collect.css");
 require("../../css/collect.css");
+let IconMsg = require("../../img/collect.png");
+let Iconsearch = require("../../img/none.png");
+let Iconar = require("../../img/ar.png");
+let Iconman = require("../../img/nman.png");
 
 var History = require('react-router').History;
 import {
@@ -51,8 +55,20 @@ class Collect extends Component {
       tag:"all",
       book:{},
       type:"",
+      user:{},
       btn:"search"
     }
+  }
+  componentWillMount(){
+    if(sessionStorage.user){
+      this.setState({
+        user:JSON.parse(sessionStorage.user)
+      })
+    }else{
+      let url = window.location.href;
+      url = url.split("view")[0]+"view/prop.html";
+      //window.location.href=url;
+    }    
   }
   componentDidMount(){
     let width = window.screen.width+"px";
@@ -60,7 +76,7 @@ class Collect extends Component {
     $(".react-weui-infiniteloader__content").css("width",width)
     var obox = document.getElementById("collect");
     let that = this;
-    this.props.mycollectAction({username:"yang4"})
+    this.props.mycollectAction({username:"yang1"})
     //document.oncontextmenu =  function(ev){
       //ev.preventDefault();  
      // var e = ev||window.event;
@@ -83,7 +99,7 @@ class Collect extends Component {
   }
   checkVal = (res) => {
     let obj = {
-      username:"yang4",
+      username:"yang1",
       string:this.state.val
     }
     this.props.searchAction(obj);
@@ -99,8 +115,10 @@ class Collect extends Component {
     })
   }
   iniframe = res => {
+    let title = res.title;
+    title = title.replace(/”/,"\"");
     let obj = {
-      title:res.title,
+      title:title,
       href:res.topicURL,
       bookid:res.bookid,
       bookname:res.bookname,
@@ -140,6 +158,8 @@ class Collect extends Component {
         title:res.result.title,
         topicURL:res.result.topicURL,
         ContentType:res.result.ContentType,
+        bookid:res.result.bookid,
+        bookname:res.result.bookname,
         book_keysjson:res.result.book_keysjson,
         status:false
       }
@@ -147,6 +167,7 @@ class Collect extends Component {
         type:"theme"
       })
     } else {
+    //手册
       obj = {
         username:res.username,
         bookid:res.bookid,
@@ -280,26 +301,32 @@ class Collect extends Component {
                     
           </TabBody>
             <TabBar className="footer">
-              <TabBarItem
-                  icon={<i className="iconfont icon-collect" style={{color:"#ff9900"}}>&#xe616;</i>}
-                  label="我的收藏"
-              />
+              <TabBarItem>
+                <TabBarIcon>
+                  <img src={IconMsg}/>
+                </TabBarIcon>
+                <TabBarLabel>我的收藏</TabBarLabel>
+              </TabBarItem>
               <TabBarItem >
                 <Link to="filesearch">
                   <TabBarIcon>
-                   icon={<i className="iconfont icon-title" >&#xe656;</i>}  
+                    <img src={Iconsearch}/>
                   </TabBarIcon>
                   <TabBarLabel>帮助文档</TabBarLabel>
                 </Link>
               </TabBarItem>
-              <TabBarItem
-                  icon={<i className="iconfont icon-help">&#xe60b;</i>}
-                  label="扫码求助"
-              />
-              <TabBarItem
-                  icon={<i className="iconfont icon-r" style={{color:"#ddd"}}>&#xe6fd;</i>}
-                  label="用户社区"
-              />
+              <TabBarItem>
+                <TabBarIcon>
+                    <img src={Iconar}/>
+                </TabBarIcon>
+                <TabBarLabel>扫码求助</TabBarLabel>
+              </TabBarItem>
+              <TabBarItem>
+                <TabBarIcon>
+                    <img src={Iconman}/>
+                </TabBarIcon>
+                <TabBarLabel>用户社区</TabBarLabel>
+              </TabBarItem>
           </TabBar>
           <div className="holder" style={{display:"none"}}>
                <section>

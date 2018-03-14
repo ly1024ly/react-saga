@@ -107,9 +107,9 @@ export function* wechatAsync(){
     return null
   }
   const param = iframe.wechat.data;
+  console.log(param)
   const json = yield call(wechatapi,param);
-  console.log(json)
    
-    yield put(wechatAction(json,!fetching))
+  yield put(wechatAction(json,!fetching))
   
 }

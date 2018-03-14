@@ -220,8 +220,9 @@ article{
 }
 .weui-article .m .iconfont{
   font-size: 22px;
-  margin:0px 5px;
+  margin:0px 10px;
 }
+
 .pop{
   width: 83%;
   height:100%;
@@ -234,10 +235,14 @@ article{
   overflow-x:hidden;
 }.weui-article .m{
   text-align: right;
+  margin-top:10px;
 }
 .weui-article .m .iconfont{
   font-size: 22px;
-  margin:0px 5px;
+  margin:10px 10px;
+}
+.weui-article .m .iconfont.icon-no,.weui-article .m .iconfont.icon-yes{
+  margin:10px 0;
 }
 .pop{
   width: 83%;
@@ -256,4 +261,8 @@ article{
 	color:orange;
 	margin-top: 30%;
 	text-align: center;
+}
+.weui-tabbar__icon img{
+  width:56px;
+  height:56px;
 }

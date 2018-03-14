@@ -38,7 +38,10 @@ require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/fileSearch.css");
 import { is } from 'immutable';
-
+let Iconsearch = require("../../img/search.png");
+let Iconar = require("../../img/ar.png");
+let Iconman = require("../../img/nman.png");
+let Iconcn = require("../../img/collectno.png");
 
 class FileSearch extends Component {
   static propTypes = {
@@ -64,10 +67,11 @@ class FileSearch extends Component {
         brand:[],
         product:[],
         type:[],
+        user:{},
         addFile:{
           bookid:"id17BRF0V03GB",
           ifsecrecy:"公开",
-          username:"yang6",
+          username:"yang1",
           bookname:"维宏百问",
           status:true,  
           audience:"通用",
@@ -88,22 +92,7 @@ class FileSearch extends Component {
     var menubox = document.getElementById("file");
     this.props.brandAction();
     let that = this;
-  //**********************text************************************
-  //window.document.oncontextmenu =  function(ev){
-      //var e = ev||window.event;
-      //var x = e.clientX;
-      //var y = e.clientY;
-      //obox.style.cssText = "display:block;top:"+y+"px;left:"+x+"px;";
-      //let obj = {
-       // bookid:"id17BRF0V03GB",
-       // bookname:"维宏百问"
-      //}
-      //that.setState({
-        //search:true
-      //})
-      //that.props.addFileAction(obj);
-      //return false;
-   // };
+  
   //***********************************************************
     /*点击空白处隐藏*/
     document.onclick = function(){
@@ -181,6 +170,25 @@ class FileSearch extends Component {
     clearInterval(this.inter)
   }
   componentWillMount(){
+    if(sessionStorage.user){
+      this.setState({
+        user:JSON.parse(sessionStorage.user)
+      })
+      let user = JSON.parse(sessionStorage.user);
+
+      if(typeof(user.q)!=="undefined"){
+        let q = decodeURI(user.q);
+        this.setState({
+          val:q
+        })
+        delete user.q;
+        sessionStorage.user = JSON.stringify(user);
+      }
+    }else{
+      let url = window.location.href;
+      url = url.split("view")[0]+"view/prop.html";
+      //window.location.href=url;
+    }
     const { files } = this.props;
     let tab = 0;
     if(files.savetab&&files.savetab.data!==null){
@@ -210,7 +218,7 @@ class FileSearch extends Component {
       href:obj.url,
       bookname:obj.bookname,
       bookid:obj.bookid,
-      title:obj.title,
+      title:obj.title.replace(/”/,"\""),
       message:JSON.stringify(obj)
     }
     let path = {
@@ -409,7 +417,7 @@ class FileSearch extends Component {
             <div className="o">猜你喜欢</div>
             <section>
               <Cells>
-                <Cell href="javascript:;" access onClick={() => this.goiframe()} >
+                <Cell href="javascript:;" access onClick={() => this.goiframe()} onContextMenu={(e) => this.contextMenus(e,"长按")}>
                   <CellBody>
                     <div>进给速度</div>
                     <span>dsfaa</span>
@@ -452,7 +460,7 @@ class FileSearch extends Component {
                     <Cell href="javascript:;" access onClick={() => {this.goiframe(item)}} key={index} onContextMenu={(e) => this.contextMenus(e,item)}>
                       <CellBody>
                         <h3>{item.title}</h3>
-                        <div>{item.body.slice(0,20)}</div>
+                        <div>{item.body.slice(0,40)}</div>
                         <span>{key.base+" | "+key.product+" | "+key.type}</span>
                       </CellBody>
                       <CellFooter>
@@ -631,26 +639,31 @@ class FileSearch extends Component {
           </div>
         <TabBar className="footer">
           <TabBarItem
-              icon={<i className="iconfont icon-collect" >&#xe616;</i>}
-              label="我的收藏"
-              onClick={() =>this.context.router.push("collect")}
-          />
-          <TabBarItem >
-            <Link to="filesearch">
-              <TabBarIcon>
-               icon={<i className="iconfont icon-title" style={{color:"#ff9900"}}>&#xe656;</i>}  
-              </TabBarIcon>
-              <TabBarLabel>帮助文档</TabBarLabel>
-            </Link>
+            onClick={() =>this.context.router.push("collect")}
+          >
+            <TabBarIcon>
+              <img src={Iconcn}/>
+            </TabBarIcon>
+            <TabBarLabel>扫码求助</TabBarLabel>
           </TabBarItem>
-          <TabBarItem
-              icon={<i className="iconfont icon-help">&#xe60b;</i>}
-              label="扫码求助"
-          />
-          <TabBarItem
-              icon={<i className="iconfont icon-r" style={{color:"#ddd"}}>&#xe6fd;</i>}
-              label="用户社区"
-          />
+          <TabBarItem >
+            <TabBarIcon>
+              <img src={Iconsearch}/>
+            </TabBarIcon>
+            <TabBarLabel>帮助文档</TabBarLabel>
+          </TabBarItem>
+          <TabBarItem>
+            <TabBarIcon>
+              <img src={Iconar}/>
+            </TabBarIcon>
+            <TabBarLabel>扫码求助</TabBarLabel>
+          </TabBarItem>
+          <TabBarItem>
+            <TabBarIcon>
+              <img src={Iconman}/>
+            </TabBarIcon>
+            <TabBarLabel>用户社区</TabBarLabel>
+          </TabBarItem>
         </TabBar>
       </Tab>
 

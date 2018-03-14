@@ -82,6 +82,7 @@ class Iframe extends Component {
             pageY:0,
             iscollect:[],
             id:[],
+            user:{},
             searchTitle:'',
             shareTitle:"",
             message:"",
@@ -92,6 +93,15 @@ class Iframe extends Component {
         this.delcollect = this.delcollect.bind(this);
     }
     componentWillMount(){
+        if(sessionStorage.user){
+            this.setState({
+                user:JSON.parse(sessionStorage.user)
+            })
+        }else{
+            let url = window.location.href;
+            url = url.split("view")[0]+"view/prop.html";
+            //window.location.href=url;
+        }
         this.setState({fullpage_show: false});
     }
     iter = (arr) => {
@@ -131,11 +141,15 @@ class Iframe extends Component {
                let old = document.head.innerHTML;
                let body = that.parseDom("<body" + res.split("<body")[1].split("</html>")[0]);
                let dom = that.parseDom(res.split("<head>")[1].split("</head>")[0]);
-               let all = "";
-               res = res.replace(/...\image/g, that.props.location.query.href.split("xml")[0] + "image");
+               let all = '';
+               let s = that.state.url.split("/topics")[0];
+                let lindex = s.lastIndexOf("/");
+                s = s.slice(0,lindex);
+                console.log(s)
+               res = res.replace(/src="..\/../g,'src="'+s);
                 for(var i=0;i<dom.length;i++){ 
                     if(dom[i].nodeName=='LINK'){
-                        let href = that.props.location.query.href.split("xml")[0] + dom[i].href.split("assets/")[1];
+                        let href = s + "/"+ dom[i].href.split("nchelp/")[1];
                         dom[i].href = href;
                         all += dom[i].outerHTML; 
                     }else{
@@ -143,12 +157,12 @@ class Iframe extends Component {
                     }
                     
                 }
-                
-               let css = "<link rel='stylesheet' href='../css/prop.css' />";
-               all = all + css;
+
+               let css = '<link rel="stylesheet" href="../css/prop.css" />';
+               all = css + all;
                all = all.split("<title>")[0] + all.split("</title>")[1];
                document.head.innerHTML = all;
-             
+
                html = res;
             },
             error: function (res) {
@@ -197,8 +211,10 @@ class Iframe extends Component {
                 if(event.target.tagName=='A'){
                     event.preventDefault();
                     event.stopPropagation();
+                    let title = event.target.innerText;
+                    title = title.replace(/”/,"\"");
                     let param = {
-                        title:event.target.innerText,
+                        title:title,
                         bookid:that.props.location.query.bookid
                     };
                     that.props.getpageAction(param);
@@ -233,7 +249,7 @@ class Iframe extends Component {
             return val.topicid == id
         })
         let obj ={
-            username:"yang4",
+            username:"yang1",
             topicid:id,
             ContentType:type,
             title:title,
@@ -260,16 +276,16 @@ class Iframe extends Component {
             return val.topicid == id
         })
         let obj ={
-                username:"yang4",
-                topicid:id,
-                ContentType:type,
-                title:title,
-                topicURL:decodeURIComponent(val.url),
-                bookid:this.props.location.query.bookid,
-                bookname:this.props.location.query.bookname,
-                book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
-                status:false 
-            }
+            username:"yang1",
+            topicid:id,
+            ContentType:type,
+            title:title,
+            topicURL:decodeURIComponent(val.url),
+            bookid:this.props.location.query.bookid,
+            bookname:this.props.location.query.bookname,
+            book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
+            status:false 
+        }
         this.props.delcollectAction(obj)
         let o = {
             html:this.state.innerHtml,
@@ -280,22 +296,16 @@ class Iframe extends Component {
     clickEvent = (e,res) => {
         console.log(e)
         if(e.target.getAttribute("href")){
-            e.preventDefault()
-            let href = e.target.getAttribute("href").split("../")[1];
-            href = this.state.url.split("xml")[0] + href;
-            this.setState({
-                one:href
-            })
+            e.preventDefault();
+            this.state.one = [];
+            this.state.innerHtml = [];
+            this.state.iscollect = [];
             let title = e.target.text;
             let obj = {
                 title:title,
                 bookid:this.props.location.query.bookid
             }
-            this.setState({
-                one:[],
-                innerHtml:[],
-                iscollect:[]
-            });
+            console.log(this.state.one)
             this.props.getpageAction(obj);
         }
     }
@@ -310,7 +320,7 @@ class Iframe extends Component {
     like = (id,title) => {
         console.log("like")
         let obj = {
-            username:"yang4",
+            username:"yang1",
             topicid:id,
             title:title,
             status:true,
@@ -363,16 +373,26 @@ class Iframe extends Component {
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
         console.log("--------------------------------------------------")
-        console.log(nextProps.iframe)
+        console.log(nextProps.iframe);
         let addPage = [];
         let that = this;
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result&&nextProps.iframe.page.data.result=="success"){
             if(page.length==0){
-                addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
-                page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
+                if(nextProps.iframe.page.data.message[0].OtherPages.length<5){
+                    console.log("length<5&&&&&&&&&&&&&&&&&&&&")
+                    addPage = nextProps.iframe.page.data.message[0].OtherPages;
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
+                } else {
+                    console.log("length==5++++++++++++++++++")
+                    addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
+                }
             } else {
-                if(page[page.length-1].title!==nextProps.iframe.page.data.message[0].OtherPages.slice(4,5)[0].title){
-                    addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(3,5);
+                let otherPage = nextProps.iframe.page.data.message[0].OtherPages;
+                let arr = nextProps.iframe.page.data.message[0].OtherPages;
+                if(otherPage.length>0&&page[page.length-1].title!==otherPage[otherPage.length-1].title){
+                    
+                    addPage = arr.slice(arr.length-2,arr.length);
                 }
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3,5));
             }
@@ -385,7 +405,9 @@ class Iframe extends Component {
                 massage:nextProps.iframe.page.data.message
             })
         }
-        let s = this.state.url.split("xml")[0]+"xml/";
+        let s = this.state.url.split("/topics")[0];
+        let lindex = s.lastIndexOf("/");
+        s = s.slice(0,lindex)+"/";
         let html = this.state.innerHtml;
         let is = this.state.iscollect;
         let idArr = this.state.id;
@@ -393,10 +415,12 @@ class Iframe extends Component {
         console.log(addPage)
         if(addPage.length>0) {
             for(var i=0;i<addPage.length;i++){
-                addPage[i].url = s + addPage[i].url.split("/").pop();
-                let url = s + addPage[i].url.split("/").pop();
+                addPage[i].url = s + addPage[i].url;
+                let url = addPage[i].url;
+                console.log(url)
                 let result = this.ajaxLoad(decodeURI(addPage[i].url));
                 let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
+                console.log(addPage[i])
                 let o ={
                     title:addPage[i].title,
                     topicid:topicid
@@ -404,7 +428,7 @@ class Iframe extends Component {
                 idArr.push(o)
                 html.push(result);
                 let obj = {
-                    username:"yang4",
+                    username:"yang1",
                     topicid:topicid,
                     bookid:this.props.location.query.bookid
                 }
@@ -454,8 +478,7 @@ class Iframe extends Component {
             }
             
         }
-        let set = new Set(page);
-        page = Array.from(set);
+        
         if(nextProps.iframe.save.data!==null&&nextProps.iframe.save.data.html){
             let isc = nextProps.iframe.save.data.iscollect;
             if(nextProps.iframe.like.data!==null&&nextProps.iframe.like.data.result == "success"){
@@ -576,7 +599,9 @@ class Iframe extends Component {
         let menuHeight = (window.innerHeight - 35) + "px";
         let iscollect = this.state.iscollect;
         let show = this.state.show;
-
+        let src = JSON.parse(this.props.location.query.message).bookUrl;
+        console.log("**********************************");
+        console.log(src)
         return (
             <div className="iframe">
                 <div id="shareit" style={{display:show}} onClick={(e) => this.hideFlow("none")}>
@@ -643,7 +668,7 @@ class Iframe extends Component {
                                                         <div dangerouslySetInnerHTML={{ __html:item}} ></div>
                                                     </a>
                                                     <div className="m">
-                                                        {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}{num}
+                                                        {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}<span style={{marginRight:"10px"}}>{num}</span>
                                                         {store ? <i className="iconfont icon-yes" onClick={() => this.delcollect(topicid,ContentType,title,index)}>&#xe620;</i> : <i className="iconfont icon-no" onClick={() => this.collect(topicid,ContentType,title,index)}>&#xe616;</i> }
                                                         <i className="iconfont" onClick={(e) => this.hideFlow("block",title)}>&#xe619;</i>
                                                     </div>
@@ -670,7 +695,7 @@ class Iframe extends Component {
                                     <Link to="collect"><div>进入"我的收藏"</div></Link>
                                 </div>
                                 <div className="menuIframe">
-                                    <iframe src="https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/index.html" style={{height:menuHeight}} id="menuiframe"></iframe>
+                                    <iframe src={src} style={{height:menuHeight}} id="menuiframe"></iframe>
                                 </div>
                             </Article>
                         </div>

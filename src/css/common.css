@@ -412,3 +412,7 @@ body, .page {
 .react-weui-infiniteloader{
     height: initial;
 }
+.weui-tabbar__icon img{
+    width:24px;
+    height:24px;
+}
