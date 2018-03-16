@@ -142,10 +142,10 @@ article{
 
 }
 .menu div{
-  width:50%;
+  width:40%;
   position: absolute;
   right:0px;
-  color:orange;
+  color:#ff9900;
 }
 .weui-popup{
   width:83%;

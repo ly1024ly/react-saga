@@ -1,7 +1,7 @@
 import {select, put, call} from 'redux-saga/effects';
 import {getFile} from "./selector.js";
-import { findFileAction,addFileAction,saveTabAction,comfirmFileAction,menuurlAction,filterAction,brandAction } from "../action/fileSearch.js";
-import { searchFile,addFile,comFile,filterapi,brandapi } from './api.js';
+import { findFileAction,addFileAction,saveTabAction,comfirmFileAction,menuurlAction,filterAction,brandAction,saveAction,bookAction } from "../action/fileSearch.js";
+import { searchFile,addFile,comFile,filterapi,brandapi,allbooks } from './api.js';
 
 export function* searchfilesAsync() {
   const files = yield select(getFile);
@@ -106,4 +106,29 @@ export function* brandAsync(){
   }else{
     yield put(brandAction(json,!fetching))
   }
+}
+
+export function* iniframeAsync(){
+  const files = yield select(getFile);
+  let fetching = files.save.fetching;
+  if(fetching){
+    return null
+  }
+  let json = files.save.data;
+  yield put(saveAction(json,!fetching))
+}
+
+export function* bookAsync() {
+  const files = yield select(getFile);
+  let fetching = files.books.fetching;
+  if(fetching){
+    return null
+  }
+  let json = yield call(allbooks,param);
+  if(json.result == "success"){
+    yield put(bookAction(json,!fetching))
+  } else {
+    yield put(bookAction(json,!fetching))
+  }
+
 }

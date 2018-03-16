@@ -51,8 +51,38 @@ class AddFile extends Component {
             book:{},
             showToast:false,
             message:"",
-            user:{}
+            user:{},
+            title:""
         }
+    }
+    ajaxLoad(res){
+        let that = this;
+        let obj = {};
+        $.ajax({
+            url: res,
+            data: null,
+            type: "GET",
+            async:false,
+            contentType: "text/html",
+            success: function (res) {
+              console.log(res.split("<body id=\"")[1].split("\">")[0])
+              let topicid = res.split("<body id=\"")[1];
+              if(topicid){
+                topicid = topicid.split("\">")[0];
+              }
+              let title = res.split("<title>")[1].split("</title>")[0];
+              obj.title = title;
+              obj.topicid = topicid;
+            },
+            error: function (res) {
+                try{
+                    throw new Error(res)
+                }catch(e){
+                    alert(e)
+                }
+            }
+        });
+        return obj
     }
     componentDidMount(){
         let message = JSON.parse(this.props.location.query.message);
@@ -78,6 +108,7 @@ class AddFile extends Component {
                 e.preventDefault();
                 let hrefs;
                 let title;
+                let obj ={};
                 let filename;
                 if(e.target.children[0]){
                     hrefs = e.target.children[0].href;
@@ -88,14 +119,16 @@ class AddFile extends Component {
                     filename = e.target.filename;
                     title = e.target.innerText;
                 }
-                document.title = title;
+                obj = that.ajaxLoad(hrefs);
                 title = title.replace(/”/,"\"");
+                document.title = title;
                 if(hrefs!==""){
                     let data = {
                         href:hrefs,
                         bookid:topicid,
                         filename:filename,
-                        title:title,
+                        title:obj.title,
+                        topicid:obj.topicid,
                         bookname:that.state.book.bookname,
                         message:JSON.stringify(message),
                         _id:"eeeeeeeeeeeeeeee"
@@ -104,11 +137,14 @@ class AddFile extends Component {
                         pathname:'iframe',
                         query:data
                     }
-
+                    console.log(hrefs)
                     if(hrefs){
                         hashHistory.push(path);
                     }
                 }
+              
+                //title = title.replace(/”/,"\"");
+                
             },false)  
         }
     }

@@ -60,7 +60,7 @@ header{
 	margin:20px 15px;
 }
 .search{
-	width: 92%;
+	width: 94%;
     height: 35px;
     font-size:14px;
     line-height: 35px;
@@ -110,6 +110,9 @@ header{
 }
 .holder{
 	text-align: center;
+}
+div.weui-cells{
+    min-height:initial; 
 }
 footer{
 	position: fixed;
@@ -415,4 +418,10 @@ body, .page {
 .weui-tabbar__icon img{
     width:24px;
     height:24px;
+}
+.weui-tabbar__item .weui-tabbar__label{
+    font-size:0.9rem;
+}
+a.weui-cell {
+    padding: 8px 16px;
 }

@@ -31,7 +31,7 @@ var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
 require('jquery');
-import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction} from "../redux/action/fileSearch.js";
+import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction,saveAction} from "../redux/action/fileSearch.js";
 import Collect from './Collect.jsx';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
@@ -49,7 +49,8 @@ class FileSearch extends Component {
     findFileAction:PropTypes.func,
     addFileAction:PropTypes.func,
     filterAction:PropTypes.func,
-    brandAction:PropTypes.func
+    brandAction:PropTypes.func,
+    saveAction:PropTypes.func
   }
   constructor(props,context){
     super(props,context)
@@ -68,6 +69,7 @@ class FileSearch extends Component {
         product:[],
         type:[],
         user:{},
+        typ:"",
         addFile:{
           bookid:"id17BRF0V03GB",
           ifsecrecy:"公开",
@@ -92,7 +94,40 @@ class FileSearch extends Component {
     var menubox = document.getElementById("file");
     this.props.brandAction();
     let that = this;
-  
+    const { files } = this.props;
+    if(files.save.data!==null){
+      this.setState({
+        search:true,
+        val:files.save.data.val,
+        page:files.save.data.page,
+        typ:files.save.data.type
+      });
+      if(files.save.data.type=="doc"){
+        let obj = {
+          q:files.save.data.val,
+          page:files.save.data.page,
+          type:"doc",
+          filterWorld:files.save.data.filter
+        };
+        this.setState({
+          type:files.save.data.filter.Type,
+          brand:files.save.data.filter.base,
+          product:files.save.data.filter.product
+        });
+        this.props.filterAction(obj);
+      } else {
+        let o = {
+          q:files.save.data.val,
+          page:files.save.data.page,
+          type:""
+        }
+        this.props.findFileAction(o);
+      }
+    } else {
+      this.setState({
+        search:false
+      })
+    }
   //***********************************************************
     /*点击空白处隐藏*/
     document.onclick = function(){
@@ -218,9 +253,26 @@ class FileSearch extends Component {
       href:obj.url,
       bookname:obj.bookname,
       bookid:obj.bookid,
+      topicid:obj.topicid,
       title:obj.title.replace(/”/,"\""),
       message:JSON.stringify(obj)
     }
+    let o = {};
+    if(this.state.typ=="doc"){
+      o.val = this.state.val;
+      o.page = this.state.page;
+      o.type = "doc";
+      o.filter = {
+        Type:this.state.type,
+        base:this.state.brand,
+        product:this.state.product
+      }
+    } else {
+      o.val = this.state.val;
+      o.page = this.state.page;
+      o.type = ""; 
+    }
+    this.props.saveAction(o);
     let path = {
       pathname:"iframe",
       query:data
@@ -280,8 +332,16 @@ class FileSearch extends Component {
           base:this.state.brand
         }
       }
+      this.setState({
+        typ:"doc",
+        page:1
+      });
       this.props.filterAction(obj)
     }else{
+      this.setState({
+        typ:"",
+        page:1
+      });
       this.props.findFileAction({q:this.state.val,page:1,type:""})
     }
     this.setState({
@@ -366,7 +426,20 @@ class FileSearch extends Component {
     this.setState({
       page:res
     })
-    this.props.findFileAction({q:this.state.val,page:res,type:""})
+    let o = {};
+    if(this.state.typ == "doc"){
+      o.q = this.state.val;
+      o.page = res;
+      o.type = "doc";
+      o.filterWorld ={
+        Type:this.state.type,
+        base:this.state.brand,
+        product:this.state.product
+      }
+      this.props.filterAction(o);
+    } else {
+      this.props.findFileAction({q:this.state.val,page:res,type:""})
+    }
   }
   render() {
     let display = this.state.style;
@@ -644,7 +717,7 @@ class FileSearch extends Component {
             <TabBarIcon>
               <img src={Iconcn}/>
             </TabBarIcon>
-            <TabBarLabel>扫码求助</TabBarLabel>
+            <TabBarLabel>我的收藏</TabBarLabel>
           </TabBarItem>
           <TabBarItem >
             <TabBarIcon>
@@ -689,5 +762,6 @@ export default connect(mapStateToProps,{
   addFileAction,
   saveTabAction,
   filterAction,
-  brandAction
+  brandAction,
+  saveAction
 })(FileSearch)

@@ -117,11 +117,13 @@ class Collect extends Component {
   iniframe = res => {
     let title = res.title;
     title = title.replace(/”/,"\"");
+    console.log(res)
     let obj = {
       title:title,
       href:res.topicURL,
       bookid:res.bookid,
       bookname:res.bookname,
+      topicid:res.topicid,
       message:JSON.stringify({book_keysjson:res.book_keysjson})
     }
     console.log(obj)
@@ -254,7 +256,7 @@ class Collect extends Component {
             />
             <TabBarItem
                 active={this.state.tab == 2}
-                onClick={() => this.changeTab({tab:2})}
+                
                 label="帖子"
             />
           </TabBar>

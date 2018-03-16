@@ -409,13 +409,13 @@ label.weui-agree > * {
 }
 .collect .weui-cell__bd span {
     color: #666666;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 .collect .weui-cell__bd h3{
   font-weight:600;
 }
 .collect .weui-bar__item_on{
-    border-bottom:2px solid #ff9900;
+    border-bottom:3px solid #ff9900;
     color:#333;
 }
 .collect .changeType.weui-tabbar:before{
@@ -3042,7 +3042,7 @@ header{
 	margin:20px 15px;
 }
 .search{
-	width: 92%;
+	width: 94%;
     height: 35px;
     font-size:14px;
     line-height: 35px;
@@ -3092,6 +3092,9 @@ header{
 }
 .holder{
 	text-align: center;
+}
+div.weui-cells{
+    min-height:initial; 
 }
 footer{
 	position: fixed;
@@ -3398,6 +3401,12 @@ body, .page {
     width:24px;
     height:24px;
 }
+.weui-tabbar__item .weui-tabbar__label{
+    font-size:0.9rem;
+}
+a.weui-cell {
+    padding: 8px 16px;
+}
 .select{
     width:80%;
     height:100vh;
@@ -3479,10 +3488,10 @@ body, .page {
 }
 .searchs .weui-cell__bd span{
   color:#666666;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
-.searchs .weui-cell{
-    padding:10px 15px;
+.searchs a.weui-cell{
+    padding:8px 16px;
 }
 .whichType.weui-tabbar{
     bottom:initial;
@@ -3494,11 +3503,11 @@ body, .page {
     border-top:none;
 }
 .whichType p.weui-tabbar__label{
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin:0;
 }
 .whichType .weui-bar__item_on{
-    border-bottom:2px solid #ff9900;
+    border-bottom:3px solid #ff9900;
     color:#888;
 }
 .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
@@ -3709,10 +3718,10 @@ article{
 
 }
 .menu div{
-  width:50%;
+  width:40%;
   position: absolute;
   right:0px;
-  color:orange;
+  color:#ff9900;
 }
 .weui-popup{
   width:83%;

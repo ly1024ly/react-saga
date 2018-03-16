@@ -80,10 +80,10 @@
 }
 .searchs .weui-cell__bd span{
   color:#666666;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
-.searchs .weui-cell{
-    padding:10px 15px;
+.searchs a.weui-cell{
+    padding:8px 16px;
 }
 .whichType.weui-tabbar{
     bottom:initial;
@@ -95,11 +95,11 @@
     border-top:none;
 }
 .whichType p.weui-tabbar__label{
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin:0;
 }
 .whichType .weui-bar__item_on{
-    border-bottom:2px solid #ff9900;
+    border-bottom:3px solid #ff9900;
     color:#888;
 }
 .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{

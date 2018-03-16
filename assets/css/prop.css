@@ -207,10 +207,10 @@ article{
 
 }
 .menu div{
-  width:50%;
+  width:40%;
   position: absolute;
   right:0px;
-  color:orange;
+  color:#ff9900;
 }
 .weui-popup{
   width:83%;
@@ -243,6 +243,9 @@ article{
 }
 .weui-article .m .iconfont.icon-no,.weui-article .m .iconfont.icon-yes{
   margin:10px 0;
+}
+article{
+  overflow-x:hidden;
 }
 .pop{
   width: 83%;

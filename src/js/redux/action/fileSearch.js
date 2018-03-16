@@ -5,6 +5,8 @@ export const COMFIRM_ADD = 'COMFIRM_ADD'
 export const MENU_URL = 'MENU_URL'
 export const FILTER = 'FILTER'
 export const BRAND = 'BRAND'
+export const SAVE_VAL = 'SAVE_VAL'
+export const ALL_BOOK = 'ALL_BOOK'
 
 export const findFileAction = (param,fetching) => {
   return {
@@ -59,6 +61,22 @@ export const filterAction = (param,fetching) => {
 export const brandAction = (param=null,fetching) => {
   return {
     type:BRAND,
+    data:param,
+    fetching:fetching
+  }
+}
+
+export const saveAction = (param,fetching) => {
+  return {
+    type:SAVE_VAL,
+    data:param,
+    fetching:fetching
+  }
+}
+
+export const bookAction = (param,fetching) => {
+  return {
+    type:ALL_BOOK,
     data:param,
     fetching:fetching
   }

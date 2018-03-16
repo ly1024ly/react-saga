@@ -116,7 +116,7 @@ export const collect = (param) => {
 }
 
 export const getpage = (param) => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}`,{
+  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`,{
     method:'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -180,6 +180,15 @@ export const brandapi = param => {
     headers:{
       'Content-Type': 'application/json'
     }
+  }).then(res => res.json())
+  .then(json => {
+    return json
+  })
+}
+
+export const allbooks = param => {
+  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/gestYouKike?",{
+    method:'GET',
   }).then(res => res.json())
   .then(json => {
     return json

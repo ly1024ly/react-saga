@@ -188,6 +188,7 @@ class Iframe extends Component {
         });
         let param = {
             title:this.props.location.query.title,
+            topicid:this.props.location.query.topicid,
             bookid:this.props.location.query.bookid
         }
         //获得页面
@@ -211,12 +212,14 @@ class Iframe extends Component {
                 if(event.target.tagName=='A'){
                     event.preventDefault();
                     event.stopPropagation();
-                    let title = event.target.innerText;
-                    title = title.replace(/”/,"\"");
+                    let obj = that.ajaxLoadTitle(event.target.href);
+                    let title = obj.title.replace(/”/,"\"");
                     let param = {
                         title:title,
+                        topicid:obj.topicid,
                         bookid:that.props.location.query.bookid
                     };
+                    console.log(title)
                     that.props.getpageAction(param);
                     that.setState({
                         fullpage_show:false,
@@ -293,6 +296,34 @@ class Iframe extends Component {
         }
         this.props.saveValAction(o)
     }
+    ajaxLoadTitle(res){
+        let that = this;
+        let obj = {};
+        $.ajax({
+            url: res,
+            data: null,
+            type: "GET",
+            async:false,
+            contentType: "text/html",
+            success: function (res) {
+              let topicid = res.split("<body id=\"")[1];
+              if(topicid){
+                topicid = topicid.split("\">")[0];
+              }
+              let title = res.split("<title>")[1].split("</title>")[0];
+              obj.title = title;
+              obj.topicid = topicid;
+            },
+            error: function (res) {
+                try{
+                    throw new Error(res)
+                }catch(e){
+                    alert(e)
+                }
+            }
+        });
+        return obj
+    }
     clickEvent = (e,res) => {
         console.log(e)
         if(e.target.getAttribute("href")){
@@ -301,8 +332,18 @@ class Iframe extends Component {
             this.state.innerHtml = [];
             this.state.iscollect = [];
             let title = e.target.text;
+            console.log(this.props.location.query.href)
+            let url = this.props.location.query.href.split("topics")[0]+"topics/";
+            if(e.target.href.split("topics/")[1]){
+                url = url + e.target.href.split("topics/")[1];
+            } else {
+                url = url + e.target.href.split("view/")[1];
+            }
+            let result = this.ajaxLoadTitle(url);
+            console.log(result);
             let obj = {
-                title:title,
+                title:result.title,
+                topicid:result.topicid,
                 bookid:this.props.location.query.bookid
             }
             console.log(this.state.one)
@@ -383,7 +424,6 @@ class Iframe extends Component {
                     addPage = nextProps.iframe.page.data.message[0].OtherPages;
                     page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
                 } else {
-                    console.log("length==5++++++++++++++++++")
                     addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
                     page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
                 }
@@ -621,7 +661,8 @@ class Iframe extends Component {
                             if(this.state.one.length>0){
                                 let obj = {
                                     title:this.state.one[this.state.one.length-1].title,
-                                    bookid:this.props.location.query.bookid
+                                    bookid:this.props.location.query.bookid,
+                                    topicid:this.state.one[this.state.one.length-1].topicid
                                 }
                                 console.log(obj,this.state.one,this.state.searchTitle)
                                 if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
@@ -639,7 +680,7 @@ class Iframe extends Component {
                 }}
             >
                 <Panel>
-                    <PanelHeader onClick={()=>this.openPop()}>
+                    <PanelHeader onClick={()=>this.openPop()} style={{width:'22px',position:"fixed",height:"22px",background:"#fff"}}>
                         <i className="iconfont" >&#xe639;</i>
                     </PanelHeader>
                     <PanelBody>
@@ -695,7 +736,7 @@ class Iframe extends Component {
                                     <Link to="collect"><div>进入"我的收藏"</div></Link>
                                 </div>
                                 <div className="menuIframe">
-                                    <iframe src={src} style={{height:menuHeight}} id="menuiframe"></iframe>
+                                    <iframe src={src} style={{height:menuHeight,border:"none"}} id="menuiframe"></iframe>
                                 </div>
                             </Article>
                         </div>

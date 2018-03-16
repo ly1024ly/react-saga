@@ -9,6 +9,9 @@
 .weui-article .m .iconfont.icon-no,.weui-article .m .iconfont.icon-yes{
   margin:10px 0;
 }
+article{
+  overflow-x:hidden;
+}
 .pop{
   width: 83%;
   height:100%;
