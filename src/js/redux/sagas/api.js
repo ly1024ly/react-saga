@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 require('jquery');
-
+import axios from 'axios';
 const getURL = (url) => "https://nccloud.weihong.com.cn/nccloudOLhelp/" + url;
 
 export const searchFile = (param) =>{
@@ -118,15 +118,26 @@ export const collect = (param) => {
 export const getpage = (param) => {
   return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`,{
     method:'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    
   }).then(res => res.json())
     .then(json => {
+      console.log("hhhhhhhhhhhhhhhhhhhhhhh")
+      console.log(json)
       return json
     })
     .catch(ex => console.log('parsing faild',ex));
 }
+
+// export const getpage = (param) => {
+//   let url = `https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`; 
+//   return axios.get(url)
+//     .then(res => {
+//       return res.data
+//     })
+//     .catch(err => {
+//       return err
+//     })
+// }
 
 export const wechatapi = (param) => {
   console.log("wechat")

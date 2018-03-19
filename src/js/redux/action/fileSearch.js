@@ -74,7 +74,7 @@ export const saveAction = (param,fetching) => {
   }
 }
 
-export const bookAction = (param,fetching) => {
+export const bookAction = (param=null,fetching) => {
   return {
     type:ALL_BOOK,
     data:param,

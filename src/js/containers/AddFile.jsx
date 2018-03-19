@@ -65,7 +65,6 @@ class AddFile extends Component {
             async:false,
             contentType: "text/html",
             success: function (res) {
-              console.log(res.split("<body id=\"")[1].split("\">")[0])
               let topicid = res.split("<body id=\"")[1];
               if(topicid){
                 topicid = topicid.split("\">")[0];
@@ -99,6 +98,7 @@ class AddFile extends Component {
             doc.addEventListener('click',function(e){
                 let topicid = framecont.contentWindow.document.body.getAttribute("id");
                 e.cancelBubble = true;
+                console.log(e)
                 let a = framecont.contentWindow.document.body.querySelectorAll("a");
                 let url = [];
                 for(var i=0;i<a.length;i++){
@@ -125,7 +125,7 @@ class AddFile extends Component {
                 if(hrefs!==""){
                     let data = {
                         href:hrefs,
-                        bookid:topicid,
+                        bookid:message.bookid,
                         filename:filename,
                         title:obj.title,
                         topicid:obj.topicid,

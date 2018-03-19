@@ -52,7 +52,7 @@ class Collect extends Component {
       val:'',
       style:"none",
       hint:false,
-      tag:"all",
+      tag:"page",
       book:{},
       type:"",
       user:{},
@@ -257,7 +257,7 @@ class Collect extends Component {
             <TabBarItem
                 active={this.state.tab == 2}
                 
-                label="帖子"
+                label=""
             />
           </TabBar>
           <Article style={{display: this.state.tab == 0 ? null : 'none'}}>
@@ -323,11 +323,11 @@ class Collect extends Component {
                 </TabBarIcon>
                 <TabBarLabel>扫码求助</TabBarLabel>
               </TabBarItem>
-              <TabBarItem>
+              <TabBarItem style={{background:"#eee",color:"#eee",display:"none"}}>
                 <TabBarIcon>
                     <img src={Iconman}/>
                 </TabBarIcon>
-                <TabBarLabel>用户社区</TabBarLabel>
+                <TabBarLabel style={{color:"#eee"}}>用户社区</TabBarLabel>
               </TabBarItem>
           </TabBar>
           <div className="holder" style={{display:"none"}}>

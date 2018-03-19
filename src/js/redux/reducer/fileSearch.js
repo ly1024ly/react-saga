@@ -109,6 +109,7 @@ export const files = (state = initialState,action = {}) => {
       }
     case ALL_BOOK:
       return {
+        ...state,
         books:{
           fetching:action.fetching,
           data:action.data

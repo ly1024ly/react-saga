@@ -124,6 +124,7 @@ export function* bookAsync() {
   if(fetching){
     return null
   }
+  let param = files.books.data;
   let json = yield call(allbooks,param);
   if(json.result == "success"){
     yield put(bookAction(json,!fetching))

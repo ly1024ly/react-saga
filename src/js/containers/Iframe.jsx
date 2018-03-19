@@ -93,16 +93,7 @@ class Iframe extends Component {
         this.delcollect = this.delcollect.bind(this);
     }
     componentWillMount(){
-        if(sessionStorage.user){
-            this.setState({
-                user:JSON.parse(sessionStorage.user)
-            })
-        }else{
-            let url = window.location.href;
-            url = url.split("view")[0]+"view/prop.html";
-            //window.location.href=url;
-        }
-        this.setState({fullpage_show: false});
+       
     }
     iter = (arr) => {
         let newArr = [];
@@ -180,6 +171,15 @@ class Iframe extends Component {
     }
     componentDidMount(){
         this.swiperChange("1");
+        if(sessionStorage.user){
+            this.setState({
+                user:JSON.parse(sessionStorage.user)
+            })
+        }else{
+            let url = window.location.href;
+            url = url.split("view")[0]+"view/prop.html";
+            //window.location.href=url;
+        }
         console.log(this.props.location.query)
         this.setState({
             head:document.head.innerHTML,
@@ -233,16 +233,6 @@ class Iframe extends Component {
             });
         }
         
-    }
-    onScrollHandle=(event)=>{
-        const clientHeight = event.target.clientHeight
-        const scrollHeight = event.target.scrollHeight
-        const scrollTop = event.target.scrollTop
-        const isBottom = (clientHeight + scrollTop === scrollHeight)
-        console.log(event)
-        if (this.state.isScrollBottom !== isBottom) {
-          this.contentNode.scrollTop = isBottom
-        }
     }
     collect =(id,type,title,index) => {
         if(type===undefined){
@@ -325,20 +315,16 @@ class Iframe extends Component {
         return obj
     }
     clickEvent = (e,res) => {
-        console.log(e)
+        console.log(e.target.href)
         if(e.target.getAttribute("href")){
             e.preventDefault();
             this.state.one = [];
             this.state.innerHtml = [];
             this.state.iscollect = [];
             let title = e.target.text;
-            console.log(this.props.location.query.href)
-            let url = this.props.location.query.href.split("topics")[0]+"topics/";
-            if(e.target.href.split("topics/")[1]){
-                url = url + e.target.href.split("topics/")[1];
-            } else {
-                url = url + e.target.href.split("view/")[1];
-            }
+            let url = this.props.location.query.href.slice(0,this.props.location.query.href.lastIndexOf("/"));
+            url = url + e.target.href.slice(e.target.href.lastIndexOf("/"),e.target.href.length);
+            console.log(url)
             let result = this.ajaxLoadTitle(url);
             console.log(result);
             let obj = {
@@ -379,9 +365,6 @@ class Iframe extends Component {
     }
     componentWillUnmount(){
         document.head.innerHTML = this.state.head;
-        if (this.contentNode) {
-            this.contentNode.removeEventListener('scroll', this.onScrollHandle.bind(this));
-        }
     }
     shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
        const thisProps = this.props || {}, thisState = this.state || {};
@@ -413,16 +396,21 @@ class Iframe extends Component {
    
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
-        console.log("--------------------------------------------------")
-        console.log(nextProps.iframe);
         let addPage = [];
         let that = this;
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result&&nextProps.iframe.page.data.result=="success"){
             if(page.length==0){
                 if(nextProps.iframe.page.data.message[0].OtherPages.length<5){
-                    console.log("length<5&&&&&&&&&&&&&&&&&&&&")
-                    addPage = nextProps.iframe.page.data.message[0].OtherPages;
-                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages);
+                    let current = nextProps.iframe.page.data.message[0].CurrentPage;
+                    let filter = nextProps.iframe.page.data.message[0].OtherPages;
+                    let index = 0;
+                    for(var i=0;i<filter.length;i++){
+                        if(filter[i].page == current) {
+                            index = i
+                        }
+                    }
+                    addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(index,filter.length);
+                    page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(index,filter.length));
                 } else {
                     addPage = nextProps.iframe.page.data.message[0].OtherPages.slice(2,5);
                     page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(2,5));
@@ -431,7 +419,6 @@ class Iframe extends Component {
                 let otherPage = nextProps.iframe.page.data.message[0].OtherPages;
                 let arr = nextProps.iframe.page.data.message[0].OtherPages;
                 if(otherPage.length>0&&page[page.length-1].title!==otherPage[otherPage.length-1].title){
-                    
                     addPage = arr.slice(arr.length-2,arr.length);
                 }
                 page = page.concat(nextProps.iframe.page.data.message[0].OtherPages.slice(3,5));
@@ -618,14 +605,6 @@ class Iframe extends Component {
             show:param,
             shareTitle:title
         })
-    }
-    scrollToAnchor = (anchorName) => {
-        if (anchorName) {
-            // 找到锚点
-            let anchorElement = document.getElementById(anchorName);
-            // 如果对应id的锚点存在，就跳转到锚点
-            if(anchorElement) { anchorElement.scrollIntoView(); }
-        }
     }
     render(){
         let success = false;

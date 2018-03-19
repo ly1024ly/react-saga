@@ -31,7 +31,7 @@ var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
 require('jquery');
-import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction,saveAction} from "../redux/action/fileSearch.js";
+import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction,saveAction,bookAction} from "../redux/action/fileSearch.js";
 import Collect from './Collect.jsx';
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
@@ -50,7 +50,8 @@ class FileSearch extends Component {
     addFileAction:PropTypes.func,
     filterAction:PropTypes.func,
     brandAction:PropTypes.func,
-    saveAction:PropTypes.func
+    saveAction:PropTypes.func,
+    bookAction:PropTypes.func
   }
   constructor(props,context){
     super(props,context)
@@ -63,7 +64,7 @@ class FileSearch extends Component {
         hint:false,
         search:false,
         touchTime:0,
-        tag:'all',
+        tag:'page',
         page:1,
         brand:[],
         product:[],
@@ -88,12 +89,32 @@ class FileSearch extends Component {
     };
   }
   componentDidMount(){
+    if(sessionStorage.user){
+      this.setState({
+        user:JSON.parse(sessionStorage.user)
+      })
+      let user = JSON.parse(sessionStorage.user);
+
+      if(typeof(user.q)!=="undefined"){
+        let q = decodeURI(user.q);
+        this.setState({
+          val:q
+        })
+        delete user.q;
+        sessionStorage.user = JSON.stringify(user);
+      }
+    }else{
+      let url = window.location.href;
+      url = url.split("view")[0]+"view/prop.html";
+      //window.location.href=url;
+    }
     document.body.addEventListener("touchstart",this.touchstart)
     document.body.addEventListener("touchmove",this.touchmove)
     document.body.addEventListener("touchend",this.touchend)
     var menubox = document.getElementById("file");
     this.props.brandAction();
     let that = this;
+    this.props.bookAction();
     const { files } = this.props;
     if(files.save.data!==null){
       this.setState({
@@ -142,7 +163,8 @@ class FileSearch extends Component {
     if(e.target.value==""){
       this.setState({
         search:false
-      })
+      });
+      this.props.files.save.data = null
     }
   }
   closePop = () => {
@@ -152,25 +174,8 @@ class FileSearch extends Component {
     this.setState({fullpage_show: true})
   }
   shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
-     const thisProps = this.props || {}, thisState = this.state || {};
-
-      if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
-          Object.keys(thisState).length !== Object.keys(nextState).length) {
-          return true;
-      }
-
-      for (const key in nextProps) {
-          if (thisProps[key] !== nextProps[key] || !is(thisProps[key], nextProps[key])) {
-              return true;
-          }
-      }
-
-      for (const key in nextState) {
-          if (thisState[key] !== nextState[key] || !is(thisState[key], nextState[key])) {
-              return true;
-          }
-      }
-    return false;
+     
+    return true;
   }
   touchmove = e => {
     e.stopPropagation();
@@ -205,25 +210,6 @@ class FileSearch extends Component {
     clearInterval(this.inter)
   }
   componentWillMount(){
-    if(sessionStorage.user){
-      this.setState({
-        user:JSON.parse(sessionStorage.user)
-      })
-      let user = JSON.parse(sessionStorage.user);
-
-      if(typeof(user.q)!=="undefined"){
-        let q = decodeURI(user.q);
-        this.setState({
-          val:q
-        })
-        delete user.q;
-        sessionStorage.user = JSON.stringify(user);
-      }
-    }else{
-      let url = window.location.href;
-      url = url.split("view")[0]+"view/prop.html";
-      //window.location.href=url;
-    }
     const { files } = this.props;
     let tab = 0;
     if(files.savetab&&files.savetab.data!==null){
@@ -240,7 +226,8 @@ class FileSearch extends Component {
     document.body.removeEventListener('touchstart',this.touchstart);
     document.body.removeEventListener('touchmove',this.touchmove);
     document.body.removeEventListener('touchend',this.touchend);
-    
+    let that = this;
+    clearInterval(that.inter);
   }
   hide(){
     this.setState({
@@ -311,17 +298,6 @@ class FileSearch extends Component {
         type:[]
       })
     } else if(res.class=="完成"){
-      this.setState({
-        fullpage_show: false,
-      })
-    }
-    this.setState({
-        class:res.class
-    })
-  }
-  checkVal=(res) => {
-    if(res=="all"){
-    console.log(res)
       let obj = {
         q:this.state.val,
         page:1,
@@ -334,21 +310,34 @@ class FileSearch extends Component {
       }
       this.setState({
         typ:"doc",
-        page:1
+        page:1,
+        fullpage_show: false,
       });
-      this.props.filterAction(obj)
-    }else{
-      this.setState({
-        typ:"",
-        page:1
-      });
-      this.props.findFileAction({q:this.state.val,page:1,type:""})
+      if(this.state.val!==""){
+        this.props.filterAction(obj);
+      }
     }
     this.setState({
-      search:true,
-      tag:res,
-      hint:false
+        class:res.class
     })
+  }
+  checkVal=(res) => {
+    if(this.state.val!==""){
+      if(res=="all"){
+        this.setState({fullpage_show: true});
+      }else{
+        this.setState({
+          typ:"",
+          page:1
+        });
+        this.props.findFileAction({q:this.state.val,page:1,type:""})
+      }
+      this.setState({
+        search:true,
+        tag:res,
+        hint:false
+      })
+    }
   }
   choosePro = res => {
     let arr = this.state.product;
@@ -397,6 +386,22 @@ class FileSearch extends Component {
       href:res.bookUrl,
       message:JSON.stringify(res)
     }
+    let o = {};
+    if(this.state.typ=="doc"){
+      o.val = this.state.val;
+      o.page = this.state.page;
+      o.type = "doc";
+      o.filter = {
+        Type:this.state.type,
+        base:this.state.brand,
+        product:this.state.product
+      }
+    } else {
+      o.val = this.state.val;
+      o.page = this.state.page;
+      o.type = ""; 
+    }
+    this.props.saveAction(o);
     let path = {
       pathname:"addfile",
       query:data
@@ -421,7 +426,21 @@ class FileSearch extends Component {
     this.props.addFileAction(obj);
     return false;
   }
-
+  allbook = res => {
+    this.setState({
+      val:res,
+      typ:"",
+      page:1,
+      tab:1,
+      search:true,
+      tag:"page"
+    });
+    this.props.findFileAction({
+      q:res,
+      page:1,
+      type:""
+    })
+  }
   pageChange(res){
     this.setState({
       page:res
@@ -447,6 +466,10 @@ class FileSearch extends Component {
     let page;
     let book = [];
     let hbook = [];
+    let all = [];
+    if(files.books.data!==null&&files.books.data.result){
+      all = files.books.data.message;
+    }
     console.log(files)
     if(files.fileList&&files.fileList.data!==null&&files.fileList.data.result){
       page = files.fileList.data.message.Maxpage;
@@ -482,7 +505,7 @@ class FileSearch extends Component {
               <div className="search-btn">
                 <label type="button" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
                 >搜索</label>
-                <label className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")}>筛选</label>
+                <label className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")} style={{background:this.state.tag=='all' ? "#ff9900" : "#eee"}}>筛选</label>
               </div>
             </div>
           </div>
@@ -490,18 +513,17 @@ class FileSearch extends Component {
             <div className="o">猜你喜欢</div>
             <section>
               <Cells>
-                <Cell href="javascript:;" access onClick={() => this.goiframe()} onContextMenu={(e) => this.contextMenus(e,"长按")}>
-                  <CellBody>
-                    <div>进给速度</div>
-                    <span>dsfaa</span>
-                  </CellBody>
-                </Cell>
-                <Cell access >
-                  <CellBody>
-                    <div>主周</div>
-                    <span>dsfaa</span>
-                  </CellBody>
-                </Cell>
+                {
+                  all.map(function(item,index){
+                    return (
+                      <Cell href="javascript:;" access onClick={() => {this.allbook(item)}} key={index} >
+                        <CellBody>
+                          <h3>{item}</h3>
+                        </CellBody>
+                      </Cell>
+                    )
+                  },this)
+                }
               </Cells>
             </section>
           </Article>  
@@ -731,11 +753,11 @@ class FileSearch extends Component {
             </TabBarIcon>
             <TabBarLabel>扫码求助</TabBarLabel>
           </TabBarItem>
-          <TabBarItem>
+          <TabBarItem style={{background:"#eee",color:"#eee",display:"none"}}>
             <TabBarIcon>
               <img src={Iconman}/>
             </TabBarIcon>
-            <TabBarLabel>用户社区</TabBarLabel>
+            <TabBarLabel style={{color:"#eee"}}>用户社区</TabBarLabel>
           </TabBarItem>
         </TabBar>
       </Tab>
@@ -763,5 +785,6 @@ export default connect(mapStateToProps,{
   saveTabAction,
   filterAction,
   brandAction,
-  saveAction
+  saveAction,
+  bookAction
 })(FileSearch)

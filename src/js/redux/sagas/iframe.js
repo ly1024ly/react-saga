@@ -83,6 +83,8 @@ export function* pageAsync (){
   }
   const param = iframe.page.data;
   const json = yield call(getpage,param);
+  console.log("jjjjjjjjjjjjjjjjjjj");
+  console.log(json)
   if(json.result == "success"){
     yield put(getpageAction(json,!fetching))
   } else {
