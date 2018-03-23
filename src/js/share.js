@@ -25,7 +25,6 @@ window.onload = function() {
     var user = getUserMsg();
     var titles;
     var tid = user.topicid;
-    alert("topicid="+tid);
     $.ajax({
         type:'get',
         dataType: "JSON",

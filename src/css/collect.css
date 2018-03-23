@@ -1,3 +1,16 @@
+.icondel{
+  position: absolute;
+  top:12px;
+  right:8px;
+  display:none;
+  font-size:0.6rem;
+}
+.search-input{
+  position: relative;
+}
+.collect .weui-article section .weui-cells{
+  margin-bottom: 80px;
+}
 .changeType.weui-tabbar{
     bottom:initial;
     border-top:none;

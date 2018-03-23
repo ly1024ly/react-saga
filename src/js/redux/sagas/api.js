@@ -44,7 +44,7 @@ export const comFile = (param) => {
 }
 
 export const myCollect = (param) => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/mystore?username=${param.username}`,{
+  return fetch(getURL(`search/mystore?username=${param.username}`),{
     method:'GET',
     headers:{
       'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ export const myCollect = (param) => {
 //iframe******************************
 
 export const iscollect = (param) => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search//filename/allstatus?username=${param.username}&topicid=${param.topicid}&bookid=${param.bookid}`,{
+  return fetch(getURL(`search//filename/allstatus?username=${param.username}&topicid=${param.topicid}&bookid=${param.bookid}`),{
     method:'GET',
     headers:{
       'Content-Type': 'application/json'
@@ -88,7 +88,7 @@ export const ajaxCollect = (param) => {
 }
 
 export const like = (param) => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/laud?`,{
+  return fetch(getURL(`search/laud?`),{
     method:'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ export const like = (param) => {
 }
 
 export const collect = (param) => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/storeup?`,{
+  return fetch(getURL(`search/storeup?`),{
     method:'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -116,28 +116,16 @@ export const collect = (param) => {
 }
 
 export const getpage = (param) => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`,{
+  return fetch(getURL(`search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`),{
     method:'GET',
     
   }).then(res => res.json())
     .then(json => {
-      console.log("hhhhhhhhhhhhhhhhhhhhhhh")
-      console.log(json)
       return json
     })
     .catch(ex => console.log('parsing faild',ex));
 }
 
-// export const getpage = (param) => {
-//   let url = `https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`; 
-//   return axios.get(url)
-//     .then(res => {
-//       return res.data
-//     })
-//     .catch(err => {
-//       return err
-//     })
-// }
 
 export const wechatapi = (param) => {
   console.log("wechat")
@@ -160,7 +148,7 @@ export const wechatapi = (param) => {
 }
 
 export const searchCollect = param => {
-  return fetch(`https://nccloud.weihong.com.cn/nccloudOLhelp/search/searchMystore?username=${param.username}&string=${param.string}`,{
+  return fetch(getURL(`search/searchMystore?username=${param.username}&string=${param.string}`),{
     method:'GET',
     headers:{
       'Content-Type': 'application/json'
@@ -172,7 +160,7 @@ export const searchCollect = param => {
 }
 
 export const filterapi = param => {
-  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/filter?",{
+  return fetch(getURL("search/filter?"),{
     method:'POST',
     headers:{
       'Content-Type': 'application/json'
@@ -186,7 +174,7 @@ export const filterapi = param => {
 }
 
 export const brandapi = param => {
-  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/type/product/base?",{
+  return fetch(getURL("search/type/product/base?"),{
     method:'GET',
     headers:{
       'Content-Type': 'application/json'
@@ -198,7 +186,7 @@ export const brandapi = param => {
 }
 
 export const allbooks = param => {
-  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/gestYouKike?",{
+  return fetch(getURL("search/type/product/base?"),{
     method:'GET',
   }).then(res => res.json())
   .then(json => {

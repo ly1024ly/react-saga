@@ -85,15 +85,13 @@ class Iframe extends Component {
             user:{},
             searchTitle:'',
             shareTitle:"",
+            shareUrl:"",
             message:"",
             two:"https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         }
         this.like = this.like.bind(this);
         this.collect = this.collect.bind(this);
         this.delcollect = this.delcollect.bind(this);
-    }
-    componentWillMount(){
-       
     }
     iter = (arr) => {
         let newArr = [];
@@ -137,12 +135,19 @@ class Iframe extends Component {
                 let lindex = s.lastIndexOf("/");
                 s = s.slice(0,lindex);
                 console.log(s)
-               res = res.replace(/src="..\/../g,'src="'+s);
+                if(res.indexOf("../../../")>=0){
+                    res = res.replace(/src="..\/..\/../g,'src="'+s);
+                    res = res.replace(/href="..\/..\/../g,'href="'+s);
+                } else {
+                    res = res.replace(/src="..\/../g,'src="'+s);
+                    res = res.replace(/href="..\/../g,'href="'+s);
+                }
                 for(var i=0;i<dom.length;i++){ 
                     if(dom[i].nodeName=='LINK'){
-                        let href = s + "/"+ dom[i].href.split("nchelp/")[1];
+                        let href = s + "/css" + dom[i].href.split("/css")[1];
                         dom[i].href = href;
                         all += dom[i].outerHTML; 
+                        console.log(dom[i].href)
                     }else{
                         all += dom[i].outerHTML; 
                     }
@@ -153,14 +158,13 @@ class Iframe extends Component {
                all = css + all;
                all = all.split("<title>")[0] + all.split("</title>")[1];
                document.head.innerHTML = all;
-
                html = res;
             },
             error: function (res) {
                 try{
                     throw new Error(res)
                 }catch(e){
-                    alert(e)
+                    console.log(e)
                 }
             }
         });
@@ -178,9 +182,8 @@ class Iframe extends Component {
         }else{
             let url = window.location.href;
             url = url.split("view")[0]+"view/prop.html";
-            //window.location.href=url;
+            window.location.href=url;
         }
-        console.log(this.props.location.query)
         this.setState({
             head:document.head.innerHTML,
             searchTitle:this.props.location.query.title,
@@ -219,7 +222,6 @@ class Iframe extends Component {
                         topicid:obj.topicid,
                         bookid:that.props.location.query.bookid
                     };
-                    console.log(title)
                     that.props.getpageAction(param);
                     that.setState({
                         fullpage_show:false,
@@ -242,7 +244,7 @@ class Iframe extends Component {
             return val.topicid == id
         })
         let obj ={
-            username:"yang1",
+            username:this.state.user.username,
             topicid:id,
             ContentType:type,
             title:title,
@@ -252,7 +254,6 @@ class Iframe extends Component {
             book_keysjson:JSON.parse(this.props.location.query.message).book_keysjson,
             status:true 
         }
-        console.log(obj,this.state.one)
         this.props.collectAction(obj);
         let o = {
             html:this.state.innerHtml,
@@ -269,7 +270,7 @@ class Iframe extends Component {
             return val.topicid == id
         })
         let obj ={
-            username:"yang1",
+            username:this.state.user.username,
             topicid:id,
             ContentType:type,
             title:title,
@@ -308,14 +309,13 @@ class Iframe extends Component {
                 try{
                     throw new Error(res)
                 }catch(e){
-                    alert(e)
+                    console.log(e)
                 }
             }
         });
         return obj
     }
     clickEvent = (e,res) => {
-        console.log(e.target.href)
         if(e.target.getAttribute("href")){
             e.preventDefault();
             this.state.one = [];
@@ -324,15 +324,12 @@ class Iframe extends Component {
             let title = e.target.text;
             let url = this.props.location.query.href.slice(0,this.props.location.query.href.lastIndexOf("/"));
             url = url + e.target.href.slice(e.target.href.lastIndexOf("/"),e.target.href.length);
-            console.log(url)
             let result = this.ajaxLoadTitle(url);
-            console.log(result);
             let obj = {
                 title:result.title,
                 topicid:result.topicid,
                 bookid:this.props.location.query.bookid
             }
-            console.log(this.state.one)
             this.props.getpageAction(obj);
         }
     }
@@ -345,9 +342,8 @@ class Iframe extends Component {
       return objE.childNodes;
     }
     like = (id,title) => {
-        console.log("like")
         let obj = {
-            username:"yang1",
+            username:this.state.user.username,
             topicid:id,
             title:title,
             status:true,
@@ -429,7 +425,7 @@ class Iframe extends Component {
             })
         } else if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result == "fail"){
             this.setState({
-                massage:nextProps.iframe.page.data.message
+                massage:"请求资源失败，请联系文档部。"
             })
         }
         let s = this.state.url.split("/topics")[0];
@@ -439,15 +435,12 @@ class Iframe extends Component {
         let is = this.state.iscollect;
         let idArr = this.state.id;
         console.log("***************addPage*****************");
-        console.log(addPage)
         if(addPage.length>0) {
             for(var i=0;i<addPage.length;i++){
                 addPage[i].url = s + addPage[i].url;
                 let url = addPage[i].url;
-                console.log(url)
                 let result = this.ajaxLoad(decodeURI(addPage[i].url));
                 let topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                console.log(addPage[i])
                 let o ={
                     title:addPage[i].title,
                     topicid:topicid
@@ -455,7 +448,7 @@ class Iframe extends Component {
                 idArr.push(o)
                 html.push(result);
                 let obj = {
-                    username:"yang1",
+                    username:this.state.user.username,
                     topicid:topicid,
                     bookid:this.props.location.query.bookid
                 }
@@ -574,7 +567,7 @@ class Iframe extends Component {
                 wx.showOptionMenu();
                 var shareDate = {
                     title:"维宏云在线帮助：" + that.state.shareTitle,
-                    link:"https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + topicid + "&shareUrl=" + url,
+                    link:"https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + topicid + "&shareUrl=" + that.state.shareUrl,
                     imgUrl: "https://nccloud.weihong.com.cn/img/share.jpg",
                     trigger: function(res) {
                     },
@@ -598,18 +591,77 @@ class Iframe extends Component {
         }        
        
     }
-    hideFlow(param,title=""){
-        console.log("ggg");
-        console.log(title)
+    hideFlow(param,title,id){
+        let obj = this.state.one.find((val,index,self) => val.topicid==id);
+        let url;
+        if(obj){
+            url = obj.url
+        }
         this.setState({
             show:param,
-            shareTitle:title
-        })
+            shareTitle:title,
+            shareUrl:url
+        });
     }
     render(){
         let success = false;
         let collect = false;
         const { files,iframe } = this.props;
+        let that = this;
+        let wechat;
+        if(iframe.wechat.data&&iframe.wechat.data!==null&&iframe.wechat.data.result=="success"){
+            wechat = iframe.wechat.data.values;
+            wx.config({
+                debug: false,
+                appId: wechat.appId,
+                timestamp: wechat.timestamp,
+                nonceStr: wechat.nonceStr,
+                signature: wechat.signature,
+                jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareQZone',
+                    'showMenuItems',
+                    "showOptionMenu"
+                ],
+
+            });
+            let url = "";
+            let topicid = '';
+            for(var i=0;i<this.state.one.length;i++){
+                if(this.state.one[i].title == this.state.shareTitle){
+                    url = encodeURIComponent(this.state.one[i].url);
+                    topicid = this.state.one[i].topicid
+                }
+            };
+            wx.ready(() => {
+                wx.showOptionMenu();
+                var shareDate = {
+                    title:"维宏云在线帮助：" + that.state.shareTitle,
+                    link:"https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + topicid + "&shareUrl=" + that.state.shareUrl,
+                    imgUrl: "https://nccloud.weihong.com.cn/img/share.jpg",
+                    trigger: function(res) {
+                    },
+                    success: function(res) {
+                        $("#share_btn").css("color","orange");
+                    },
+                    cancel: function(res) {
+                       $("#share_btn").css("color","black");
+                    }
+                };
+
+                wx.onMenuShareTimeline(shareDate);
+                wx.onMenuShareAppMessage(shareDate);
+                wx.onMenuShareQQ(shareDate);
+                wx.onMenuShareQZone(shareDate);
+            });
+            wx.error(function(res) {
+                console.log(res)
+               
+            });
+        }        
         let page = [];
         if(iframe.page.data!==null&&iframe.page.data.result=="success"){
             page = iframe.page.data.message.OtherPages;
@@ -690,7 +742,7 @@ class Iframe extends Component {
                                                     <div className="m">
                                                         {like ? <i className="iconfont icon-yes">&#xe63a;</i> : <i className="iconfont icon-no" onClick={() => this.like(topicid,title)}>&#xe67f;</i>}<span style={{marginRight:"10px"}}>{num}</span>
                                                         {store ? <i className="iconfont icon-yes" onClick={() => this.delcollect(topicid,ContentType,title,index)}>&#xe620;</i> : <i className="iconfont icon-no" onClick={() => this.collect(topicid,ContentType,title,index)}>&#xe616;</i> }
-                                                        <i className="iconfont" onClick={(e) => this.hideFlow("block",title)}>&#xe619;</i>
+                                                        <i id="share_btn" className="iconfont" onClick={(e) => this.hideFlow("block",title,topicid)}>&#xe619;</i>
                                                     </div>
                                                 </Article>
                                             )

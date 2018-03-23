@@ -21,6 +21,7 @@ import {
     Popup,
     Button,
     Flex,
+    SearchBar,
     FlexItem   
 } from "react-weui";
 import Accordion from './accordion.js';
@@ -72,23 +73,12 @@ class FileSearch extends Component {
         user:{},
         typ:"",
         addFile:{
-          bookid:"id17BRF0V03GB",
-          ifsecrecy:"公开",
-          username:"yang1",
-          bookname:"维宏百问",
-          status:true,  
-          audience:"通用",
-          book_keysjson:{
-              base:"维宏",
-              product:"通用",
-              type:"故障排查手册"
-          },
-          deliveryTarget:"wh"
         }
         
     };
   }
   componentDidMount(){
+   let flag = false;
     if(sessionStorage.user){
       this.setState({
         user:JSON.parse(sessionStorage.user)
@@ -97,9 +87,19 @@ class FileSearch extends Component {
 
       if(typeof(user.q)!=="undefined"){
         let q = decodeURI(user.q);
+        flag = true;
         this.setState({
-          val:q
-        })
+          val:q,
+          page:1,
+          typ:"",
+          search:true
+        });
+        let o = {
+          q:q,
+          page:1,
+          type:""
+        }
+        this.props.findFileAction(o);
         delete user.q;
         sessionStorage.user = JSON.stringify(user);
       }
@@ -108,6 +108,8 @@ class FileSearch extends Component {
       url = url.split("view")[0]+"view/prop.html";
       //window.location.href=url;
     }
+    document.title = "维宏云"; 
+    //侧滑筛选
     document.body.addEventListener("touchstart",this.touchstart)
     document.body.addEventListener("touchmove",this.touchmove)
     document.body.addEventListener("touchend",this.touchend)
@@ -116,6 +118,7 @@ class FileSearch extends Component {
     let that = this;
     this.props.bookAction();
     const { files } = this.props;
+    //离开页面时记住页面的数据；
     if(files.save.data!==null){
       this.setState({
         search:true,
@@ -124,6 +127,7 @@ class FileSearch extends Component {
         typ:files.save.data.type
       });
       if(files.save.data.type=="doc"){
+      //保存是筛选的数据
         let obj = {
           q:files.save.data.val,
           page:files.save.data.page,
@@ -137,6 +141,7 @@ class FileSearch extends Component {
         });
         this.props.filterAction(obj);
       } else {
+      //保存搜索的结果
         let o = {
           q:files.save.data.val,
           page:files.save.data.page,
@@ -144,7 +149,12 @@ class FileSearch extends Component {
         }
         this.props.findFileAction(o);
       }
-    } else {
+    } else if(flag){
+      this.setState({
+        search:true
+      })
+    }else {
+    //如果没有保存数据
       this.setState({
         search:false
       })
@@ -161,6 +171,7 @@ class FileSearch extends Component {
       hint:true
     })
     if(e.target.value==""){
+    //当input框值为空将保存的值设置为空
       this.setState({
         search:false
       });
@@ -177,21 +188,6 @@ class FileSearch extends Component {
      
     return true;
   }
-  touchmove = e => {
-    e.stopPropagation();
-    let clientx = e.changedTouches[0].clientX;
-    if(clientx+30<this.state.clientx){
-      this.setState({fullpage_show: true})
-    }
-  }
-  touchstart = e => {
-    this.setState({
-      clientx:e.targetTouches[0].clientX,
-      clienty:e.targetTouches[0].clientY
-    })
-    let that = this;
-    this.inter = setInterval(that.interval(e.changedTouches[0].clientX,e.changedTouches[0].clientY),1000)
-  }
   interval = (x,y) => {
     let time = this.state.touchTime;
     this.setState({
@@ -201,13 +197,6 @@ class FileSearch extends Component {
 
       clearInterval(this.inter)
     }
-  }
-  touchend = e =>{
-    e.stopPropagation();
-    this.setState({
-      touchTime:0
-    })
-    clearInterval(this.inter)
   }
   componentWillMount(){
     const { files } = this.props;
@@ -223,11 +212,8 @@ class FileSearch extends Component {
     }
   }
   componentWillUnmount(){
-    document.body.removeEventListener('touchstart',this.touchstart);
-    document.body.removeEventListener('touchmove',this.touchmove);
-    document.body.removeEventListener('touchend',this.touchend);
     let that = this;
-    clearInterval(that.inter);
+    
   }
   hide(){
     this.setState({
@@ -235,6 +221,7 @@ class FileSearch extends Component {
       fullpage_show: false,
     })
   }
+  //进入分享页面并保存数据
   goiframe = (obj) => {
     let data = {
       href:obj.url,
@@ -289,9 +276,9 @@ class FileSearch extends Component {
         tab:res.tab
     })
   }
+  //筛选按钮
   finish(res){
     if(res.class=="重置"){
-
       this.setState({
         brand:[],
         product:[],
@@ -318,9 +305,10 @@ class FileSearch extends Component {
       }
     }
     this.setState({
-        class:res.class
+      class:res.class
     })
   }
+  //选择搜索和筛选
   checkVal=(res) => {
     if(this.state.val!==""){
       if(res=="all"){
@@ -339,6 +327,7 @@ class FileSearch extends Component {
       })
     }
   }
+  //筛选的复选框
   choosePro = res => {
     let arr = this.state.product;
     let re = arr.find((val) => {
@@ -381,6 +370,7 @@ class FileSearch extends Component {
       type:arr
     })
   }
+  //进入目录页面
   inaddFile = res => {
     let data = {
       href:res.bookUrl,
@@ -408,9 +398,9 @@ class FileSearch extends Component {
     }
     hashHistory.push(path)
   }
+  //自定义菜单栏
   contextMenus = (ev,res) => {
     ev.preventDefault(); 
-    console.log(ev)
     var menubox = document.getElementById("file");
     var e = ev||window.event;
     var x = e.clientX;
@@ -441,6 +431,7 @@ class FileSearch extends Component {
       type:""
     })
   }
+  //分页
   pageChange(res){
     this.setState({
       page:res
@@ -467,10 +458,10 @@ class FileSearch extends Component {
     let book = [];
     let hbook = [];
     let all = [];
+    console.log(this.state.search)
     if(files.books.data!==null&&files.books.data.result){
-      all = files.books.data.message;
+      all = [...files.books.data.message[0].product,...files.books.data.message[0].type];
     }
-    console.log(files)
     if(files.fileList&&files.fileList.data!==null&&files.fileList.data.result){
       page = files.fileList.data.message.Maxpage;
       //手册
@@ -488,109 +479,11 @@ class FileSearch extends Component {
       type = files.brand.data.message[0].type;
     }
     return (
-    <Page className="searchs">
+    <div className="searchs">
       <div id="file" onClick={() => {this.toAddfile()}}>添加至"手册"</div>
       <Tab>
-        <TabBody>
-          <div className="content searchs">
-            <div className="search-box" >
-              <div className="search-input"> 
-                <input type="text" 
-                  placeholder="关键字" 
-                  className="search"
-                  value={this.state.val}
-                  onChange={this.saveValue}
-                />
-              </div>
-              <div className="search-btn">
-                <label type="button" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
-                >搜索</label>
-                <label className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")} style={{background:this.state.tag=='all' ? "#ff9900" : "#eee"}}>筛选</label>
-              </div>
-            </div>
-          </div>
-          <Article style={{display:this.state.search ? "none" : "block"}}>
-            <div className="o">猜你喜欢</div>
-            <section>
-              <Cells>
-                {
-                  all.map(function(item,index){
-                    return (
-                      <Cell href="javascript:;" access onClick={() => {this.allbook(item)}} key={index} >
-                        <CellBody>
-                          <h3>{item}</h3>
-                        </CellBody>
-                      </Cell>
-                    )
-                  },this)
-                }
-              </Cells>
-            </section>
-          </Article>  
-          <Article style={{display:this.state.search ? "block" :"none"}} className="ss">
-            <TabBar className="whichType">
-              <TabBarItem
-                  active={this.state.tab == 0}
-                  onClick={() =>this.changeTab({tab:0})}
-                  label="主题"
-              />
-              <TabBarItem 
-                active={this.state.tab == 1} 
-                onClick={() =>this.changeTab({tab:1})}
-                label="手册"
-              />
-              <TabBarItem
-                 
-                  
-                 
-              />
-            </TabBar>
-          <Article style={{display: this.state.tab == 0 ? null : 'none'}}>
-            <section>
-              <Cells>
-              {
-                book ? book.map(function(item,index){
-                  let key = item.book_keysjson;
-                  return (
-                    <Cell href="javascript:;" access onClick={() => {this.goiframe(item)}} key={index} onContextMenu={(e) => this.contextMenus(e,item)}>
-                      <CellBody>
-                        <h3>{item.title}</h3>
-                        <div>{item.body.slice(0,40)}</div>
-                        <span>{key.base+" | "+key.product+" | "+key.type}</span>
-                      </CellBody>
-                      <CellFooter>
-                      </CellFooter>
-                    </Cell>
-                  )
-                },this) : ""
-              }
-              </Cells>
-            </section>
-          </Article>
-          <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
-             <section>
-              <Cells>
-              {
-                hbook ? hbook.map(function(item,index){
-                  let key = item.book_keysjson;
-                  return (
-                    <Cell key={index} href="javascript:;" access onContextMenu={(e) => this.contextMenus(e,item)} value={item} onClick={() => this.inaddFile(item)}>
-                      <CellBody >
-                        <h3>{item.bookname}</h3>
-                        {item.outputclass=="私密" ? <span className="secret">密</span> : ""}
-                        <span>{key.base+" | "+key.product+" | "+key.type}</span>
-                      </CellBody>
-                      <CellFooter>
-                      </CellFooter>
-                    </Cell>
-                  )
-                },this) : ""
-              }
-              </Cells>
-            </section>
-          </Article>
-          </Article>
-              <div style = {{display:this.state.fullpage_show?"block":"none"}} className="popup">
+        <section>
+              <div style={{display:this.state.fullpage_show ? "block" : "none"}} className="popup">
                   <div className="close" onClick={()=>this.closePop()}></div>
                   <div className="select">
                     <div className="hide"><i className="iconfont" onClick={()=>this.closePop()}>&#xe638;</i></div>
@@ -718,21 +611,120 @@ class FileSearch extends Component {
                     </div>
                   </div>
               </div>
-        </TabBody>
-        <div className="holder" style={{display:display}}>
-             <section>
-              <nav role="navigation">
-                <ul className="cd-pagination">
-                  <li className="s" onClick={() =>this.pageChange(1)}>首页</li>
-                  <li className="button1" onClick={() => this.pageChange(this.state.page-1>=0 ? this.state.page-1 : 0)}>上页</li>
-                  
-                  <li className="button2" onClick={() => this.pageChange(this.state.page+1<=page ? this.state.page+1 : page)}>下页</li>
-                  <li className="e" onClick={() => this.pageChange(page)}>尾页</li>
-                </ul>
-              </nav> 
-            </section>
+              </section>
+        <TabBody>
+          <div className="content searchs">
+            <div className="search-box" >
+              <div className="search-input"> 
+                <input type="text" 
+                  placeholder="关键字" 
+                  className="search"
+                  value={this.state.val}
+                  onChange={this.saveValue}
+                />
+                <i className="iconfont icondel" style={{display:this.state.val=="" ? "none" : "block"}} onClick={() => this.setState({val:"",search:false})}>&#xe638;</i>
+              </div>
+              <div className="search-btn">
+                <label type="button" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
+                >搜索</label>
+                <label className={this.state.tag=='all' ? "btn tag" : "btn"} onClick={() => this.checkVal("all")} style={{background:this.state.tag=='all' ? "#ff9900" : "#eee"}}>筛选</label>
+              </div>
+            </div>
           </div>
-        <TabBar className="footer">
+          <Article style={{display:this.state.search ? "none" : "block"}}>
+            <div className="o">猜你喜欢</div>
+            <section>
+              <Cells>
+                {
+                  all.map(function(item,index){
+                    return (
+                      <Cell href="javascript:;" access onClick={() => {this.allbook(item)}} key={index} >
+                        <CellBody>
+                          <h3>{item}</h3>
+                        </CellBody>
+                      </Cell>
+                    )
+                  },this)
+                }
+              </Cells>
+            </section>
+          </Article>  
+          <Article style={{display:this.state.search ? "block" :"none"}} className="ss">
+            <TabBar className="whichType">
+              <TabBarItem
+                  active={this.state.tab == 0}
+                  onClick={() =>this.changeTab({tab:0})}
+                  label="主题"
+              />
+              <TabBarItem 
+                active={this.state.tab == 1} 
+                onClick={() =>this.changeTab({tab:1})}
+                label="手册"
+              />
+              <TabBarItem
+                 
+                  
+                 
+              />
+            </TabBar>
+            <Article style={{display: this.state.tab == 0 ? null : 'none'}}>
+              <section>
+                <Cells>
+                {
+                  book ? book.map(function(item,index){
+                    let key = item.book_keysjson;
+                    return (
+                      <Cell href="javascript:;" access onClick={() => {this.goiframe(item)}} key={index} >
+                        <CellBody>
+                          <h3>{item.title}</h3>
+                          <div>{item.body.slice(0,40)}</div>
+                          <span>{key.base+" | "+key.product+" | "+key.type}</span>
+                        </CellBody>
+                        <CellFooter>
+                        </CellFooter>
+                      </Cell>
+                    )
+                  },this) : ""
+                }
+                </Cells>
+              </section>
+            </Article>
+            <Article style={{display: this.state.tab == 1 ? null : 'none'}}>
+               <section>
+                <Cells>
+                {
+                  hbook ? hbook.map(function(item,index){
+                    let key = item.book_keysjson;
+                    return (
+                      <Cell key={index} href="javascript:;" access onContextMenu={(e) => this.contextMenus(e,item)} value={item} onClick={() => this.inaddFile(item)} >
+                        <CellBody >
+                          <h3>{item.bookname}</h3>
+                          {item.outputclass=="私密" ? <span className="secret">密</span> : ""}
+                          <span>{key.base+" | "+key.product+" | "+key.type}</span>
+                        </CellBody>
+                        <CellFooter>
+                        </CellFooter>
+                      </Cell>
+                    )
+                  },this) : ""
+                }
+                </Cells>
+              </section>
+            </Article>
+          </Article>
+        </TabBody>
+        <div className="holder" style={{display:display,zIndex:"1"}}>
+          <nav role="navigation">
+            <ul className="cd-pagination">
+              <li className="s" onClick={() =>this.pageChange(1)}>首页</li>
+              <li className="button1" onClick={() => this.pageChange(this.state.page-1>0 ? this.state.page-1 : 1)}>上页</li>
+              
+              <li className="button2" onClick={() => this.pageChange(this.state.page+1<=page ? this.state.page+1 : page)}>下页</li>
+              <li className="e" onClick={() => this.pageChange(page)}>尾页</li>
+            </ul>
+          </nav> 
+          </div>
+        <TabBar className="footer" >
           <TabBarItem
             onClick={() =>this.context.router.push("collect")}
           >
@@ -762,7 +754,7 @@ class FileSearch extends Component {
         </TabBar>
       </Tab>
 
-    </Page>
+    </div>
       );
   }
 }

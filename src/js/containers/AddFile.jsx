@@ -77,28 +77,34 @@ class AddFile extends Component {
                 try{
                     throw new Error(res)
                 }catch(e){
-                    alert(e)
+                    console.log(e)
                 }
             }
         });
         return obj
     }
     componentDidMount(){
+        if(sessionStorage.user){
+            this.setState({
+                user:JSON.parse(sessionStorage.user)
+            })
+        }else{
+            let url = window.location.href;
+            url = url.split("view")[0]+"view/prop.html";
+            window.location.href=url;
+        }
         let message = JSON.parse(this.props.location.query.message);
         this.setState({
             book:message
         })
-        console.log(message)
         const {files} = this.props;
         let framecont = document.getElementById("iframecontent");
         let doc = framecont.contentWindow;
         let that = this;
-        console.log("ttttttttttttttttttttttttttttttttt")
         framecont.onload = function(e){
             doc.addEventListener('click',function(e){
                 let topicid = framecont.contentWindow.document.body.getAttribute("id");
                 e.cancelBubble = true;
-                console.log(e)
                 let a = framecont.contentWindow.document.body.querySelectorAll("a");
                 let url = [];
                 for(var i=0;i<a.length;i++){
@@ -119,7 +125,7 @@ class AddFile extends Component {
                     filename = e.target.filename;
                     title = e.target.innerText;
                 }
-                obj = that.ajaxLoad(hrefs);
+                obj = hrefs ? that.ajaxLoad(hrefs) : {};
                 title = title.replace(/”/,"\"");
                 document.title = title;
                 if(hrefs!==""){
@@ -137,7 +143,6 @@ class AddFile extends Component {
                         pathname:'iframe',
                         query:data
                     }
-                    console.log(hrefs)
                     if(hrefs){
                         hashHistory.push(path);
                     }
@@ -156,15 +161,6 @@ class AddFile extends Component {
         }, 1000);
     }
     componentWillUnmount(){
-        if(sessionStorage.user){
-            this.setState({
-                user:JSON.parse(sessionStorage.user)
-            })
-        }else{
-            let url = window.location.href;
-            url = url.split("view")[0]+"view/prop.html";
-            //window.location.href=url;
-        }
         this.props.files.comfirmfile.data = null;
         window.clearTimeout(this.state.toastTimer)
     }
@@ -206,7 +202,7 @@ class AddFile extends Component {
         console.log(this.state.book);
         let book = this.state.book;
         let obj ={
-            username:"yang1",
+            username:this.state.user.username,
             bookid:book.bookid,
             bookname:book.bookname,
             book_keysjson:book.book_keysjson,

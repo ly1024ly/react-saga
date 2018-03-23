@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "de2024ed288d92ae5483"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b26ba809604206d19c7e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -716,7 +716,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "https://nccloud.weihong.com.cn/nchelp/assets/";
+/******/ 	__webpack_require__.p = "../";
 /******/
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -749,11 +749,16 @@ window.onload = function () {
 	var user = getUserInfo();
 	if ("username" in user && "password" in user && "openid" in user && "token" in user) {
 		// ok
-		sessionStorage.user = JSON.stringify(user);
-		var url1 = window.location.href;
-		var url2 = url1.substring(0, url1.indexOf("home.html")) + "view/index.html";
-		window.location.href = url2;
-
+		if ("q" in user) {
+			var url3 = window.location.href;
+			var url4 = url3.substring(0, url3.indexOf("home.html")) + "view/index.html#/filesearch?_k=xev9nr";
+			window.location.href = url4;
+		} else {
+			sessionStorage.user = JSON.stringify(user);
+			var url1 = window.location.href;
+			var url2 = url1.substring(0, url1.indexOf("home.html")) + "view/index.html#/collect?_k=dy4ej5";
+			window.location.href = url2;
+		}
 		// lo
 	} else {
 		// error
@@ -762,7 +767,7 @@ window.onload = function () {
 		if ("more" in user) {} else {
 			//window.location.href=aurl;
 			var url1 = window.location.href;
-			var url2 = url1.substring(0, url1.indexOf("home.html")) + "view/index.html";
+			var url2 = url1.substring(0, url1.indexOf("home.html")) + "view/index.html#/collect?_k=dy4ej5";
 			window.location.href = url2;
 		}
 	}

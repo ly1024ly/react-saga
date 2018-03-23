@@ -60,6 +60,9 @@ class Collect extends Component {
     }
   }
   componentWillMount(){
+      
+  }
+  componentDidMount(){
     if(sessionStorage.user){
       this.setState({
         user:JSON.parse(sessionStorage.user)
@@ -68,15 +71,15 @@ class Collect extends Component {
       let url = window.location.href;
       url = url.split("view")[0]+"view/prop.html";
       //window.location.href=url;
-    }    
-  }
-  componentDidMount(){
+    } 
+    document.title = "我的收藏"; 
     let width = window.screen.width+"px";
     $(".a").css("width",width)
     $(".react-weui-infiniteloader__content").css("width",width)
     var obox = document.getElementById("collect");
     let that = this;
-    this.props.mycollectAction({username:"yang1"})
+    let user = JSON.parse(sessionStorage.user).username;
+    this.props.mycollectAction({username:user})
     //document.oncontextmenu =  function(ev){
       //ev.preventDefault();  
      // var e = ev||window.event;
@@ -99,7 +102,7 @@ class Collect extends Component {
   }
   checkVal = (res) => {
     let obj = {
-      username:"yang1",
+      username:this.state.user.username,
       string:this.state.val
     }
     this.props.searchAction(obj);
@@ -109,7 +112,6 @@ class Collect extends Component {
    
   }
   changeTab =(res) => {
-    console.log(res)
     this.setState({
         tab:res.tab
     })
@@ -117,7 +119,6 @@ class Collect extends Component {
   iniframe = res => {
     let title = res.title;
     title = title.replace(/”/,"\"");
-    console.log(res)
     let obj = {
       title:title,
       href:res.topicURL,
@@ -126,7 +127,6 @@ class Collect extends Component {
       topicid:res.topicid,
       message:JSON.stringify({book_keysjson:res.book_keysjson})
     }
-    console.log(obj)
     let path = {
       pathname:"iframe",
       query:obj
@@ -153,7 +153,6 @@ class Collect extends Component {
     let obj = {};
     if(res.result){
     //主题
-    console.log(res.result.topicURL)
       obj = {
         username:res.result.username,
         topicid:res.result.topicid,
@@ -200,20 +199,16 @@ class Collect extends Component {
     hashHistory.push(path)
   }
   tabChange = (e) => {
-    console.log(e.target);
     let arr = e.target.parentElement.children;
     for(var i=0;i<arr.length;i++){
       arr[i].setAttribute("class","weui-navbar__item")
     }
     e.target.setAttribute("class","weui-navbar__item weui_bar__item_on");
-    console.log(e.target.innerText)
   }
   render(){
     let display = this.state.style;
     const {collects} = this.props;
-    console.log(collects)
     if(collects.deltheme.data!==null&&collects.deltheme.data.result=="success"){
-      console.log(collects.deltheme.data)
     }
     let topic = [];
     let book = [];
@@ -222,7 +217,7 @@ class Collect extends Component {
       book = collects.mycollect.data.message.books;
     }
     return (
-      <Page className="collect">
+      <div className="collect">
         <div id="collect" onClick={() => this.delCollect(this)}>删除</div>
         <Tab>
           <TabBody>
@@ -235,6 +230,7 @@ class Collect extends Component {
                     className="search" 
                     onChange={this.saveValue}
                   />
+                  <i className="iconfont icondel" style={{display:this.state.val=="" ? "none" : "block"}} onClick={() => this.setState({val:""})}>&#xe638;</i>
                 </div>
                 <div className="search-btn">
                   <label type="button" className="btn tag" className={this.state.tag=='page' ? "btn tag" : "btn"} onClick={() => this.checkVal("page")}
@@ -287,7 +283,7 @@ class Collect extends Component {
                   book.map(function(item,index){
                   let key = item.book_keysjson;
                     return (
-                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)} onClick={() => this.inaddFile(item)}>
+                      <Cell href="javascript:;" access key={index} onContextMenu={(e) => this.contextMenu(e,item)} onClick={() => this.inaddFile(item)} >
                         <CellBody>
                           <h3>{item.bookname}</h3>
                           <span>{key.base+" | "+key.product+" | "+key.type}</span>
@@ -344,7 +340,7 @@ class Collect extends Component {
               </section>
             </div>
         </Tab>
-      </Page>
+      </div>
     )
   }
 }

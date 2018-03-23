@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "de2024ed288d92ae5483"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b26ba809604206d19c7e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -716,7 +716,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "https://nccloud.weihong.com.cn/nchelp/assets/";
+/******/ 	__webpack_require__.p = "../";
 /******/
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -20733,7 +20733,7 @@ var Collect = function (_Component) {
 
     _this.checkVal = function (res) {
       var obj = {
-        username: "yang1",
+        username: _this.state.user.username,
         string: _this.state.val
       };
       _this.props.searchAction(obj);
@@ -20743,7 +20743,6 @@ var Collect = function (_Component) {
     };
 
     _this.changeTab = function (res) {
-      console.log(res);
       _this.setState({
         tab: res.tab
       });
@@ -20752,7 +20751,6 @@ var Collect = function (_Component) {
     _this.iniframe = function (res) {
       var title = res.title;
       title = title.replace(/”/, "\"");
-      console.log(res);
       var obj = {
         title: title,
         href: res.topicURL,
@@ -20761,7 +20759,6 @@ var Collect = function (_Component) {
         topicid: res.topicid,
         message: JSON.stringify({ book_keysjson: res.book_keysjson })
       };
-      console.log(obj);
       var path = {
         pathname: "iframe",
         query: obj
@@ -20794,13 +20791,11 @@ var Collect = function (_Component) {
     };
 
     _this.tabChange = function (e) {
-      console.log(e.target);
       var arr = e.target.parentElement.children;
       for (var i = 0; i < arr.length; i++) {
         arr[i].setAttribute("class", "weui-navbar__item");
       }
       e.target.setAttribute("class", "weui-navbar__item weui_bar__item_on");
-      console.log(e.target.innerText);
     };
 
     _this.state = {
@@ -20820,7 +20815,10 @@ var Collect = function (_Component) {
 
   _createClass(Collect, [{
     key: 'componentWillMount',
-    value: function componentWillMount() {
+    value: function componentWillMount() {}
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       if (sessionStorage.user) {
         this.setState({
           user: JSON.parse(sessionStorage.user)
@@ -20830,16 +20828,14 @@ var Collect = function (_Component) {
         url = url.split("view")[0] + "view/prop.html";
         //window.location.href=url;
       }
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+      document.title = "我的收藏";
       var width = window.screen.width + "px";
       $(".a").css("width", width);
       $(".react-weui-infiniteloader__content").css("width", width);
       var obox = document.getElementById("collect");
       var that = this;
-      this.props.mycollectAction({ username: "yang1" });
+      var user = JSON.parse(sessionStorage.user).username;
+      this.props.mycollectAction({ username: user });
       //document.oncontextmenu =  function(ev){
       //ev.preventDefault();  
       // var e = ev||window.event;
@@ -20865,7 +20861,6 @@ var Collect = function (_Component) {
       var obj = {};
       if (res.result) {
         //主题
-        console.log(res.result.topicURL);
         obj = {
           username: res.result.username,
           topicid: res.result.topicid,
@@ -20910,10 +20905,7 @@ var Collect = function (_Component) {
       var display = this.state.style;
       var collects = this.props.collects;
 
-      console.log(collects);
-      if (collects.deltheme.data !== null && collects.deltheme.data.result == "success") {
-        console.log(collects.deltheme.data);
-      }
+      if (collects.deltheme.data !== null && collects.deltheme.data.result == "success") {}
       var topic = [];
       var book = [];
       if (collects.mycollect.data !== null && collects.mycollect.data.result == "success") {
@@ -20921,7 +20913,7 @@ var Collect = function (_Component) {
         book = collects.mycollect.data.message.books;
       }
       return _react2.default.createElement(
-        _reactWeui.Page,
+        'div',
         { className: 'collect' },
         _react2.default.createElement(
           'div',
@@ -20950,7 +20942,14 @@ var Collect = function (_Component) {
                     value: this.state.val,
                     className: 'search',
                     onChange: this.saveValue
-                  })
+                  }),
+                  _react2.default.createElement(
+                    'i',
+                    { className: 'iconfont icondel', style: { display: this.state.val == "" ? "none" : "block" }, onClick: function onClick() {
+                        return _this2.setState({ val: "" });
+                      } },
+                    '\uE638'
+                  )
                 ),
                 _react2.default.createElement(
                   'div',
@@ -22349,7 +22348,7 @@ var comFile = exports.comFile = function comFile(param) {
 };
 
 var myCollect = exports.myCollect = function myCollect(param) {
-  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/mystore?username=' + param.username, {
+  return fetch(getURL('search/mystore?username=' + param.username), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -22366,7 +22365,7 @@ var myCollect = exports.myCollect = function myCollect(param) {
 //iframe******************************
 
 var iscollect = exports.iscollect = function iscollect(param) {
-  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search//filename/allstatus?username=' + param.username + '&topicid=' + param.topicid + '&bookid=' + param.bookid, {
+  return fetch(getURL('search//filename/allstatus?username=' + param.username + '&topicid=' + param.topicid + '&bookid=' + param.bookid), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -22397,7 +22396,7 @@ var ajaxCollect = exports.ajaxCollect = function ajaxCollect(param) {
 };
 
 var like = exports.like = function like(param) {
-  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/laud?', {
+  return fetch(getURL('search/laud?'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -22413,7 +22412,7 @@ var like = exports.like = function like(param) {
 };
 
 var collect = exports.collect = function collect(param) {
-  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/storeup?', {
+  return fetch(getURL('search/storeup?'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -22429,30 +22428,17 @@ var collect = exports.collect = function collect(param) {
 };
 
 var getpage = exports.getpage = function getpage(param) {
-  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=' + param.title + '&bookid=' + param.bookid + '&topicid=' + param.topicid, {
+  return fetch(getURL('search/getTopicPages?title=' + param.title + '&bookid=' + param.bookid + '&topicid=' + param.topicid), {
     method: 'GET'
 
   }).then(function (res) {
     return res.json();
   }).then(function (json) {
-    console.log("hhhhhhhhhhhhhhhhhhhhhhh");
-    console.log(json);
     return json;
   }).catch(function (ex) {
     return console.log('parsing faild', ex);
   });
 };
-
-// export const getpage = (param) => {
-//   let url = `https://nccloud.weihong.com.cn/nccloudOLhelp/search/getTopicPages?title=${param.title}&bookid=${param.bookid}&topicid=${param.topicid}`; 
-//   return axios.get(url)
-//     .then(res => {
-//       return res.data
-//     })
-//     .catch(err => {
-//       return err
-//     })
-// }
 
 var wechatapi = exports.wechatapi = function wechatapi(param) {
   console.log("wechat");
@@ -22477,7 +22463,7 @@ var wechatapi = exports.wechatapi = function wechatapi(param) {
 };
 
 var searchCollect = exports.searchCollect = function searchCollect(param) {
-  return fetch('https://nccloud.weihong.com.cn/nccloudOLhelp/search/searchMystore?username=' + param.username + '&string=' + param.string, {
+  return fetch(getURL('search/searchMystore?username=' + param.username + '&string=' + param.string), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -22490,7 +22476,7 @@ var searchCollect = exports.searchCollect = function searchCollect(param) {
 };
 
 var filterapi = exports.filterapi = function filterapi(param) {
-  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/filter?", {
+  return fetch(getURL("search/filter?"), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -22506,7 +22492,7 @@ var filterapi = exports.filterapi = function filterapi(param) {
 };
 
 var brandapi = exports.brandapi = function brandapi(param) {
-  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/type/product/base?", {
+  return fetch(getURL("search/type/product/base?"), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -22519,7 +22505,7 @@ var brandapi = exports.brandapi = function brandapi(param) {
 };
 
 var allbooks = exports.allbooks = function allbooks(param) {
-  return fetch("https://nccloud.weihong.com.cn/nccloudOLhelp/search/gestYouKike?", {
+  return fetch(getURL("search/type/product/base?"), {
     method: 'GET'
   }).then(function (res) {
     return res.json();
@@ -73009,6 +72995,8 @@ var _immutable = __webpack_require__(231);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -73043,6 +73031,7 @@ var FileSearch = function (_Component) {
         hint: true
       });
       if (e.target.value == "") {
+        //当input框值为空将保存的值设置为空
         _this.setState({
           search: false
         });
@@ -73066,23 +73055,6 @@ var FileSearch = function (_Component) {
       return true;
     };
 
-    _this.touchmove = function (e) {
-      e.stopPropagation();
-      var clientx = e.changedTouches[0].clientX;
-      if (clientx + 30 < _this.state.clientx) {
-        _this.setState({ fullpage_show: true });
-      }
-    };
-
-    _this.touchstart = function (e) {
-      _this.setState({
-        clientx: e.targetTouches[0].clientX,
-        clienty: e.targetTouches[0].clientY
-      });
-      var that = _this;
-      _this.inter = setInterval(that.interval(e.changedTouches[0].clientX, e.changedTouches[0].clientY), 1000);
-    };
-
     _this.interval = function (x, y) {
       var time = _this.state.touchTime;
       _this.setState({
@@ -73092,14 +73064,6 @@ var FileSearch = function (_Component) {
 
         clearInterval(_this.inter);
       }
-    };
-
-    _this.touchend = function (e) {
-      e.stopPropagation();
-      _this.setState({
-        touchTime: 0
-      });
-      clearInterval(_this.inter);
     };
 
     _this.goiframe = function (obj) {
@@ -73232,7 +73196,6 @@ var FileSearch = function (_Component) {
 
     _this.contextMenus = function (ev, res) {
       ev.preventDefault();
-      console.log(ev);
       var menubox = document.getElementById("file");
       var e = ev || window.event;
       var x = e.clientX;
@@ -73281,20 +73244,7 @@ var FileSearch = function (_Component) {
       type: [],
       user: {},
       typ: "",
-      addFile: {
-        bookid: "id17BRF0V03GB",
-        ifsecrecy: "公开",
-        username: "yang1",
-        bookname: "维宏百问",
-        status: true,
-        audience: "通用",
-        book_keysjson: {
-          base: "维宏",
-          product: "通用",
-          type: "故障排查手册"
-        },
-        deliveryTarget: "wh"
-      }
+      addFile: {}
 
     };
     return _this;
@@ -73303,6 +73253,7 @@ var FileSearch = function (_Component) {
   _createClass(FileSearch, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var flag = false;
       if (sessionStorage.user) {
         this.setState({
           user: JSON.parse(sessionStorage.user)
@@ -73311,9 +73262,19 @@ var FileSearch = function (_Component) {
 
         if (typeof user.q !== "undefined") {
           var q = decodeURI(user.q);
+          flag = true;
           this.setState({
-            val: q
+            val: q,
+            page: 1,
+            typ: "",
+            search: true
           });
+          var o = {
+            q: q,
+            page: 1,
+            type: ""
+          };
+          this.props.findFileAction(o);
           delete user.q;
           sessionStorage.user = JSON.stringify(user);
         }
@@ -73322,6 +73283,8 @@ var FileSearch = function (_Component) {
         url = url.split("view")[0] + "view/prop.html";
         //window.location.href=url;
       }
+      document.title = "维宏云";
+      //侧滑筛选
       document.body.addEventListener("touchstart", this.touchstart);
       document.body.addEventListener("touchmove", this.touchmove);
       document.body.addEventListener("touchend", this.touchend);
@@ -73330,6 +73293,7 @@ var FileSearch = function (_Component) {
       var that = this;
       this.props.bookAction();
       var files = this.props.files;
+      //离开页面时记住页面的数据；
 
       if (files.save.data !== null) {
         this.setState({
@@ -73339,6 +73303,7 @@ var FileSearch = function (_Component) {
           typ: files.save.data.type
         });
         if (files.save.data.type == "doc") {
+          //保存是筛选的数据
           var obj = {
             q: files.save.data.val,
             page: files.save.data.page,
@@ -73352,14 +73317,20 @@ var FileSearch = function (_Component) {
           });
           this.props.filterAction(obj);
         } else {
-          var o = {
+          //保存搜索的结果
+          var _o = {
             q: files.save.data.val,
             page: files.save.data.page,
             type: ""
           };
-          this.props.findFileAction(o);
+          this.props.findFileAction(_o);
         }
+      } else if (flag) {
+        this.setState({
+          search: true
+        });
       } else {
+        //如果没有保存数据
         this.setState({
           search: false
         });
@@ -73389,11 +73360,7 @@ var FileSearch = function (_Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      document.body.removeEventListener('touchstart', this.touchstart);
-      document.body.removeEventListener('touchmove', this.touchmove);
-      document.body.removeEventListener('touchend', this.touchend);
       var that = this;
-      clearInterval(that.inter);
     }
   }, {
     key: 'hide',
@@ -73403,14 +73370,17 @@ var FileSearch = function (_Component) {
         fullpage_show: false
       });
     }
+    //进入分享页面并保存数据
+
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {}
   }, {
     key: 'finish',
+
+    //筛选按钮
     value: function finish(res) {
       if (res.class == "重置") {
-
         this.setState({
           brand: [],
           product: [],
@@ -73440,6 +73410,10 @@ var FileSearch = function (_Component) {
         class: res.class
       });
     }
+    //选择搜索和筛选
+
+    //筛选的复选框
+
   }, {
     key: 'chooseBrand',
     value: function chooseBrand(res) {
@@ -73454,8 +73428,14 @@ var FileSearch = function (_Component) {
         brand: arr
       });
     }
+    //进入目录页面
+
+    //自定义菜单栏
+
   }, {
     key: 'pageChange',
+
+    //分页
     value: function pageChange(res) {
       this.setState({
         page: res
@@ -73487,10 +73467,10 @@ var FileSearch = function (_Component) {
       var book = [];
       var hbook = [];
       var all = [];
+      console.log(this.state.search);
       if (files.books.data !== null && files.books.data.result) {
-        all = files.books.data.message;
+        all = [].concat(_toConsumableArray(files.books.data.message[0].product), _toConsumableArray(files.books.data.message[0].type));
       }
-      console.log(files);
       if (files.fileList && files.fileList.data !== null && files.fileList.data.result) {
         page = files.fileList.data.message.Maxpage;
         //手册
@@ -73508,7 +73488,7 @@ var FileSearch = function (_Component) {
         type = files.brand.data.message[0].type;
       }
       return _react2.default.createElement(
-        _reactWeui.Page,
+        'div',
         { className: 'searchs' },
         _react2.default.createElement(
           'div',
@@ -73521,194 +73501,8 @@ var FileSearch = function (_Component) {
           _reactWeui.Tab,
           null,
           _react2.default.createElement(
-            _reactWeui.TabBody,
+            'section',
             null,
-            _react2.default.createElement(
-              'div',
-              { className: 'content searchs' },
-              _react2.default.createElement(
-                'div',
-                { className: 'search-box' },
-                _react2.default.createElement(
-                  'div',
-                  { className: 'search-input' },
-                  _react2.default.createElement('input', { type: 'text',
-                    placeholder: '\u5173\u952E\u5B57',
-                    className: 'search',
-                    value: this.state.val,
-                    onChange: this.saveValue
-                  })
-                ),
-                _react2.default.createElement(
-                  'div',
-                  { className: 'search-btn' },
-                  _react2.default.createElement(
-                    'label',
-                    { type: 'button', className: this.state.tag == 'page' ? "btn tag" : "btn", onClick: function onClick() {
-                        return _this2.checkVal("page");
-                      }
-                    },
-                    '\u641C\u7D22'
-                  ),
-                  _react2.default.createElement(
-                    'label',
-                    { className: this.state.tag == 'all' ? "btn tag" : "btn", onClick: function onClick() {
-                        return _this2.checkVal("all");
-                      }, style: { background: this.state.tag == 'all' ? "#ff9900" : "#eee" } },
-                    '\u7B5B\u9009'
-                  )
-                )
-              )
-            ),
-            _react2.default.createElement(
-              _reactWeui.Article,
-              { style: { display: this.state.search ? "none" : "block" } },
-              _react2.default.createElement(
-                'div',
-                { className: 'o' },
-                '\u731C\u4F60\u559C\u6B22'
-              ),
-              _react2.default.createElement(
-                'section',
-                null,
-                _react2.default.createElement(
-                  _reactWeui.Cells,
-                  null,
-                  all.map(function (item, index) {
-                    var _this3 = this;
-
-                    return _react2.default.createElement(
-                      _reactWeui.Cell,
-                      { href: 'javascript:;', access: true, onClick: function onClick() {
-                          _this3.allbook(item);
-                        }, key: index },
-                      _react2.default.createElement(
-                        _reactWeui.CellBody,
-                        null,
-                        _react2.default.createElement(
-                          'h3',
-                          null,
-                          item
-                        )
-                      )
-                    );
-                  }, this)
-                )
-              )
-            ),
-            _react2.default.createElement(
-              _reactWeui.Article,
-              { style: { display: this.state.search ? "block" : "none" }, className: 'ss' },
-              _react2.default.createElement(
-                _reactWeui.TabBar,
-                { className: 'whichType' },
-                _react2.default.createElement(_reactWeui.TabBarItem, {
-                  active: this.state.tab == 0,
-                  onClick: function onClick() {
-                    return _this2.changeTab({ tab: 0 });
-                  },
-                  label: '\u4E3B\u9898'
-                }),
-                _react2.default.createElement(_reactWeui.TabBarItem, {
-                  active: this.state.tab == 1,
-                  onClick: function onClick() {
-                    return _this2.changeTab({ tab: 1 });
-                  },
-                  label: '\u624B\u518C'
-                }),
-                _react2.default.createElement(_reactWeui.TabBarItem, null)
-              ),
-              _react2.default.createElement(
-                _reactWeui.Article,
-                { style: { display: this.state.tab == 0 ? null : 'none' } },
-                _react2.default.createElement(
-                  'section',
-                  null,
-                  _react2.default.createElement(
-                    _reactWeui.Cells,
-                    null,
-                    book ? book.map(function (item, index) {
-                      var _this4 = this;
-
-                      var key = item.book_keysjson;
-                      return _react2.default.createElement(
-                        _reactWeui.Cell,
-                        { href: 'javascript:;', access: true, onClick: function onClick() {
-                            _this4.goiframe(item);
-                          }, key: index, onContextMenu: function onContextMenu(e) {
-                            return _this4.contextMenus(e, item);
-                          } },
-                        _react2.default.createElement(
-                          _reactWeui.CellBody,
-                          null,
-                          _react2.default.createElement(
-                            'h3',
-                            null,
-                            item.title
-                          ),
-                          _react2.default.createElement(
-                            'div',
-                            null,
-                            item.body.slice(0, 40)
-                          ),
-                          _react2.default.createElement(
-                            'span',
-                            null,
-                            key.base + " | " + key.product + " | " + key.type
-                          )
-                        ),
-                        _react2.default.createElement(_reactWeui.CellFooter, null)
-                      );
-                    }, this) : ""
-                  )
-                )
-              ),
-              _react2.default.createElement(
-                _reactWeui.Article,
-                { style: { display: this.state.tab == 1 ? null : 'none' } },
-                _react2.default.createElement(
-                  'section',
-                  null,
-                  _react2.default.createElement(
-                    _reactWeui.Cells,
-                    null,
-                    hbook ? hbook.map(function (item, index) {
-                      var _this5 = this;
-
-                      var key = item.book_keysjson;
-                      return _react2.default.createElement(
-                        _reactWeui.Cell,
-                        { key: index, href: 'javascript:;', access: true, onContextMenu: function onContextMenu(e) {
-                            return _this5.contextMenus(e, item);
-                          }, value: item, onClick: function onClick() {
-                            return _this5.inaddFile(item);
-                          } },
-                        _react2.default.createElement(
-                          _reactWeui.CellBody,
-                          null,
-                          _react2.default.createElement(
-                            'h3',
-                            null,
-                            item.bookname
-                          ),
-                          item.outputclass == "私密" ? _react2.default.createElement(
-                            'span',
-                            { className: 'secret' },
-                            '\u5BC6'
-                          ) : "",
-                          _react2.default.createElement(
-                            'span',
-                            null,
-                            key.base + " | " + key.product + " | " + key.type
-                          )
-                        ),
-                        _react2.default.createElement(_reactWeui.CellFooter, null)
-                      );
-                    }, this) : ""
-                  )
-                )
-              )
-            ),
             _react2.default.createElement(
               'div',
               { style: { display: this.state.fullpage_show ? "block" : "none" }, className: 'popup' },
@@ -73763,7 +73557,7 @@ var FileSearch = function (_Component) {
                             _reactWeui.Flex,
                             null,
                             brand.map(function (item, index) {
-                              var _this6 = this;
+                              var _this3 = this;
 
                               var className = this.state.brand.find(function (val) {
                                 return val == item;
@@ -73782,7 +73576,7 @@ var FileSearch = function (_Component) {
                                 _react2.default.createElement(
                                   'div',
                                   { className: 'placeholder', style: choose, onClick: function onClick() {
-                                      return _this6.chooseBrand(item);
+                                      return _this3.chooseBrand(item);
                                     } },
                                   item
                                 )
@@ -73926,45 +73720,238 @@ var FileSearch = function (_Component) {
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'holder', style: { display: display } },
+            _reactWeui.TabBody,
+            null,
             _react2.default.createElement(
-              'section',
-              null,
+              'div',
+              { className: 'content searchs' },
               _react2.default.createElement(
-                'nav',
-                { role: 'navigation' },
+                'div',
+                { className: 'search-box' },
                 _react2.default.createElement(
-                  'ul',
-                  { className: 'cd-pagination' },
+                  'div',
+                  { className: 'search-input' },
+                  _react2.default.createElement('input', { type: 'text',
+                    placeholder: '\u5173\u952E\u5B57',
+                    className: 'search',
+                    value: this.state.val,
+                    onChange: this.saveValue
+                  }),
                   _react2.default.createElement(
-                    'li',
-                    { className: 's', onClick: function onClick() {
-                        return _this2.pageChange(1);
+                    'i',
+                    { className: 'iconfont icondel', style: { display: this.state.val == "" ? "none" : "block" }, onClick: function onClick() {
+                        return _this2.setState({ val: "", search: false });
                       } },
-                    '\u9996\u9875'
-                  ),
-                  _react2.default.createElement(
-                    'li',
-                    { className: 'button1', onClick: function onClick() {
-                        return _this2.pageChange(_this2.state.page - 1 >= 0 ? _this2.state.page - 1 : 0);
-                      } },
-                    '\u4E0A\u9875'
-                  ),
-                  _react2.default.createElement(
-                    'li',
-                    { className: 'button2', onClick: function onClick() {
-                        return _this2.pageChange(_this2.state.page + 1 <= page ? _this2.state.page + 1 : page);
-                      } },
-                    '\u4E0B\u9875'
-                  ),
-                  _react2.default.createElement(
-                    'li',
-                    { className: 'e', onClick: function onClick() {
-                        return _this2.pageChange(page);
-                      } },
-                    '\u5C3E\u9875'
+                    '\uE638'
                   )
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'search-btn' },
+                  _react2.default.createElement(
+                    'label',
+                    { type: 'button', className: this.state.tag == 'page' ? "btn tag" : "btn", onClick: function onClick() {
+                        return _this2.checkVal("page");
+                      }
+                    },
+                    '\u641C\u7D22'
+                  ),
+                  _react2.default.createElement(
+                    'label',
+                    { className: this.state.tag == 'all' ? "btn tag" : "btn", onClick: function onClick() {
+                        return _this2.checkVal("all");
+                      }, style: { background: this.state.tag == 'all' ? "#ff9900" : "#eee" } },
+                    '\u7B5B\u9009'
+                  )
+                )
+              )
+            ),
+            _react2.default.createElement(
+              _reactWeui.Article,
+              { style: { display: this.state.search ? "none" : "block" } },
+              _react2.default.createElement(
+                'div',
+                { className: 'o' },
+                '\u731C\u4F60\u559C\u6B22'
+              ),
+              _react2.default.createElement(
+                'section',
+                null,
+                _react2.default.createElement(
+                  _reactWeui.Cells,
+                  null,
+                  all.map(function (item, index) {
+                    var _this4 = this;
+
+                    return _react2.default.createElement(
+                      _reactWeui.Cell,
+                      { href: 'javascript:;', access: true, onClick: function onClick() {
+                          _this4.allbook(item);
+                        }, key: index },
+                      _react2.default.createElement(
+                        _reactWeui.CellBody,
+                        null,
+                        _react2.default.createElement(
+                          'h3',
+                          null,
+                          item
+                        )
+                      )
+                    );
+                  }, this)
+                )
+              )
+            ),
+            _react2.default.createElement(
+              _reactWeui.Article,
+              { style: { display: this.state.search ? "block" : "none" }, className: 'ss' },
+              _react2.default.createElement(
+                _reactWeui.TabBar,
+                { className: 'whichType' },
+                _react2.default.createElement(_reactWeui.TabBarItem, {
+                  active: this.state.tab == 0,
+                  onClick: function onClick() {
+                    return _this2.changeTab({ tab: 0 });
+                  },
+                  label: '\u4E3B\u9898'
+                }),
+                _react2.default.createElement(_reactWeui.TabBarItem, {
+                  active: this.state.tab == 1,
+                  onClick: function onClick() {
+                    return _this2.changeTab({ tab: 1 });
+                  },
+                  label: '\u624B\u518C'
+                }),
+                _react2.default.createElement(_reactWeui.TabBarItem, null)
+              ),
+              _react2.default.createElement(
+                _reactWeui.Article,
+                { style: { display: this.state.tab == 0 ? null : 'none' } },
+                _react2.default.createElement(
+                  'section',
+                  null,
+                  _react2.default.createElement(
+                    _reactWeui.Cells,
+                    null,
+                    book ? book.map(function (item, index) {
+                      var _this5 = this;
+
+                      var key = item.book_keysjson;
+                      return _react2.default.createElement(
+                        _reactWeui.Cell,
+                        { href: 'javascript:;', access: true, onClick: function onClick() {
+                            _this5.goiframe(item);
+                          }, key: index },
+                        _react2.default.createElement(
+                          _reactWeui.CellBody,
+                          null,
+                          _react2.default.createElement(
+                            'h3',
+                            null,
+                            item.title
+                          ),
+                          _react2.default.createElement(
+                            'div',
+                            null,
+                            item.body.slice(0, 40)
+                          ),
+                          _react2.default.createElement(
+                            'span',
+                            null,
+                            key.base + " | " + key.product + " | " + key.type
+                          )
+                        ),
+                        _react2.default.createElement(_reactWeui.CellFooter, null)
+                      );
+                    }, this) : ""
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                _reactWeui.Article,
+                { style: { display: this.state.tab == 1 ? null : 'none' } },
+                _react2.default.createElement(
+                  'section',
+                  null,
+                  _react2.default.createElement(
+                    _reactWeui.Cells,
+                    null,
+                    hbook ? hbook.map(function (item, index) {
+                      var _this6 = this;
+
+                      var key = item.book_keysjson;
+                      return _react2.default.createElement(
+                        _reactWeui.Cell,
+                        { key: index, href: 'javascript:;', access: true, onContextMenu: function onContextMenu(e) {
+                            return _this6.contextMenus(e, item);
+                          }, value: item, onClick: function onClick() {
+                            return _this6.inaddFile(item);
+                          }, ontouchstart: function ontouchstart(e) {
+                            return _this6.contextMenus(e, item);
+                          } },
+                        _react2.default.createElement(
+                          _reactWeui.CellBody,
+                          null,
+                          _react2.default.createElement(
+                            'h3',
+                            null,
+                            item.bookname
+                          ),
+                          item.outputclass == "私密" ? _react2.default.createElement(
+                            'span',
+                            { className: 'secret' },
+                            '\u5BC6'
+                          ) : "",
+                          _react2.default.createElement(
+                            'span',
+                            null,
+                            key.base + " | " + key.product + " | " + key.type
+                          )
+                        ),
+                        _react2.default.createElement(_reactWeui.CellFooter, null)
+                      );
+                    }, this) : ""
+                  )
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'holder', style: { display: display, zIndex: "1" } },
+            _react2.default.createElement(
+              'nav',
+              { role: 'navigation' },
+              _react2.default.createElement(
+                'ul',
+                { className: 'cd-pagination' },
+                _react2.default.createElement(
+                  'li',
+                  { className: 's', onClick: function onClick() {
+                      return _this2.pageChange(1);
+                    } },
+                  '\u9996\u9875'
+                ),
+                _react2.default.createElement(
+                  'li',
+                  { className: 'button1', onClick: function onClick() {
+                      return _this2.pageChange(_this2.state.page - 1 > 0 ? _this2.state.page - 1 : 1);
+                    } },
+                  '\u4E0A\u9875'
+                ),
+                _react2.default.createElement(
+                  'li',
+                  { className: 'button2', onClick: function onClick() {
+                      return _this2.pageChange(_this2.state.page + 1 <= page ? _this2.state.page + 1 : page);
+                    } },
+                  '\u4E0B\u9875'
+                ),
+                _react2.default.createElement(
+                  'li',
+                  { className: 'e', onClick: function onClick() {
+                      return _this2.pageChange(page);
+                    } },
+                  '\u5C3E\u9875'
                 )
               )
             )
@@ -75073,7 +75060,7 @@ var AddFile = function (_Component) {
             console.log(_this.state.book);
             var book = _this.state.book;
             var obj = {
-                username: "yang1",
+                username: _this.state.user.username,
                 bookid: book.bookid,
                 bookname: book.bookname,
                 book_keysjson: book.book_keysjson,
@@ -75118,7 +75105,7 @@ var AddFile = function (_Component) {
                     try {
                         throw new Error(res);
                     } catch (e) {
-                        alert(e);
+                        console.log(e);
                     }
                 }
             });
@@ -75127,22 +75114,28 @@ var AddFile = function (_Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
+            if (sessionStorage.user) {
+                this.setState({
+                    user: JSON.parse(sessionStorage.user)
+                });
+            } else {
+                var url = window.location.href;
+                url = url.split("view")[0] + "view/prop.html";
+                window.location.href = url;
+            }
             var message = JSON.parse(this.props.location.query.message);
             this.setState({
                 book: message
             });
-            console.log(message);
             var files = this.props.files;
 
             var framecont = document.getElementById("iframecontent");
             var doc = framecont.contentWindow;
             var that = this;
-            console.log("ttttttttttttttttttttttttttttttttt");
             framecont.onload = function (e) {
                 doc.addEventListener('click', function (e) {
                     var topicid = framecont.contentWindow.document.body.getAttribute("id");
                     e.cancelBubble = true;
-                    console.log(e);
                     var a = framecont.contentWindow.document.body.querySelectorAll("a");
                     var url = [];
                     for (var i = 0; i < a.length; i++) {
@@ -75163,7 +75156,7 @@ var AddFile = function (_Component) {
                         filename = e.target.filename;
                         title = e.target.innerText;
                     }
-                    obj = that.ajaxLoad(hrefs);
+                    obj = hrefs ? that.ajaxLoad(hrefs) : {};
                     title = title.replace(/”/, "\"");
                     document.title = title;
                     if (hrefs !== "") {
@@ -75181,7 +75174,6 @@ var AddFile = function (_Component) {
                             pathname: 'iframe',
                             query: data
                         };
-                        console.log(hrefs);
                         if (hrefs) {
                             _reactRouter.hashHistory.push(path);
                         }
@@ -75205,15 +75197,6 @@ var AddFile = function (_Component) {
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            if (sessionStorage.user) {
-                this.setState({
-                    user: JSON.parse(sessionStorage.user)
-                });
-            } else {
-                var url = window.location.href;
-                url = url.split("view")[0] + "view/prop.html";
-                //window.location.href=url;
-            }
             this.props.files.comfirmfile.data = null;
             window.clearTimeout(this.state.toastTimer);
         }
@@ -75393,7 +75376,7 @@ var Iframe = function (_Component) {
                 return val.topicid == id;
             });
             var obj = {
-                username: "yang1",
+                username: _this.state.user.username,
                 topicid: id,
                 ContentType: type,
                 title: title,
@@ -75403,7 +75386,6 @@ var Iframe = function (_Component) {
                 book_keysjson: JSON.parse(_this.props.location.query.message).book_keysjson,
                 status: true
             };
-            console.log(obj, _this.state.one);
             _this.props.collectAction(obj);
             var o = {
                 html: _this.state.innerHtml,
@@ -75420,7 +75402,7 @@ var Iframe = function (_Component) {
                 return val.topicid == id;
             });
             var obj = {
-                username: "yang1",
+                username: _this.state.user.username,
                 topicid: id,
                 ContentType: type,
                 title: title,
@@ -75439,7 +75421,6 @@ var Iframe = function (_Component) {
         };
 
         _this.clickEvent = function (e, res) {
-            console.log(e.target.href);
             if (e.target.getAttribute("href")) {
                 e.preventDefault();
                 _this.state.one = [];
@@ -75448,15 +75429,12 @@ var Iframe = function (_Component) {
                 var title = e.target.text;
                 var url = _this.props.location.query.href.slice(0, _this.props.location.query.href.lastIndexOf("/"));
                 url = url + e.target.href.slice(e.target.href.lastIndexOf("/"), e.target.href.length);
-                console.log(url);
                 var result = _this.ajaxLoadTitle(url);
-                console.log(result);
                 var obj = {
                     title: result.title,
                     topicid: result.topicid,
                     bookid: _this.props.location.query.bookid
                 };
-                console.log(_this.state.one);
                 _this.props.getpageAction(obj);
             }
         };
@@ -75466,9 +75444,8 @@ var Iframe = function (_Component) {
         };
 
         _this.like = function (id, title) {
-            console.log("like");
             var obj = {
-                username: "yang1",
+                username: _this.state.user.username,
                 topicid: id,
                 title: title,
                 status: true,
@@ -75528,6 +75505,7 @@ var Iframe = function (_Component) {
             user: {},
             searchTitle: '',
             shareTitle: "",
+            shareUrl: "",
             message: "",
             two: "https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
         };
@@ -75538,9 +75516,6 @@ var Iframe = function (_Component) {
     }
 
     _createClass(Iframe, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {}
-    }, {
         key: 'ajaxLoad',
         value: function ajaxLoad(res) {
             var html = "";
@@ -75562,12 +75537,19 @@ var Iframe = function (_Component) {
                     var lindex = s.lastIndexOf("/");
                     s = s.slice(0, lindex);
                     console.log(s);
-                    res = res.replace(/src="..\/../g, 'src="' + s);
+                    if (res.indexOf("../../../") >= 0) {
+                        res = res.replace(/src="..\/..\/../g, 'src="' + s);
+                        res = res.replace(/href="..\/..\/../g, 'href="' + s);
+                    } else {
+                        res = res.replace(/src="..\/../g, 'src="' + s);
+                        res = res.replace(/href="..\/../g, 'href="' + s);
+                    }
                     for (var i = 0; i < dom.length; i++) {
                         if (dom[i].nodeName == 'LINK') {
-                            var href = s + "/" + dom[i].href.split("nchelp/")[1];
+                            var href = s + "/css" + dom[i].href.split("/css")[1];
                             dom[i].href = href;
                             all += dom[i].outerHTML;
+                            console.log(dom[i].href);
                         } else {
                             all += dom[i].outerHTML;
                         }
@@ -75577,14 +75559,13 @@ var Iframe = function (_Component) {
                     all = css + all;
                     all = all.split("<title>")[0] + all.split("</title>")[1];
                     document.head.innerHTML = all;
-
                     html = res;
                 },
                 error: function error(res) {
                     try {
                         throw new Error(res);
                     } catch (e) {
-                        alert(e);
+                        console.log(e);
                     }
                 }
             });
@@ -75606,9 +75587,8 @@ var Iframe = function (_Component) {
             } else {
                 var url = window.location.href;
                 url = url.split("view")[0] + "view/prop.html";
-                //window.location.href=url;
+                window.location.href = url;
             }
-            console.log(this.props.location.query);
             this.setState({
                 head: document.head.innerHTML,
                 searchTitle: this.props.location.query.title,
@@ -75647,7 +75627,6 @@ var Iframe = function (_Component) {
                             topicid: obj.topicid,
                             bookid: that.props.location.query.bookid
                         };
-                        console.log(title);
                         that.props.getpageAction(_param);
                         that.setState({
                             fullpage_show: false,
@@ -75684,7 +75663,7 @@ var Iframe = function (_Component) {
                     try {
                         throw new Error(res);
                     } catch (e) {
-                        alert(e);
+                        console.log(e);
                     }
                 }
             });
@@ -75749,7 +75728,7 @@ var Iframe = function (_Component) {
                 });
             } else if (nextProps.iframe.page.data !== null && nextProps.iframe.page.data.result == "fail") {
                 this.setState({
-                    massage: nextProps.iframe.page.data.message
+                    massage: "请求资源失败，请联系文档部。"
                 });
             }
             var s = this.state.url.split("/topics")[0];
@@ -75759,15 +75738,12 @@ var Iframe = function (_Component) {
             var is = this.state.iscollect;
             var idArr = this.state.id;
             console.log("***************addPage*****************");
-            console.log(addPage);
             if (addPage.length > 0) {
                 for (var i = 0; i < addPage.length; i++) {
                     addPage[i].url = s + addPage[i].url;
                     var url = addPage[i].url;
-                    console.log(url);
                     var result = this.ajaxLoad(decodeURI(addPage[i].url));
                     var topicid = result.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                    console.log(addPage[i]);
                     var o = {
                         title: addPage[i].title,
                         topicid: topicid
@@ -75775,7 +75751,7 @@ var Iframe = function (_Component) {
                     idArr.push(o);
                     html.push(result);
                     var obj = {
-                        username: "yang1",
+                        username: this.state.user.username,
                         topicid: topicid,
                         bookid: this.props.location.query.bookid
                     };
@@ -75883,7 +75859,7 @@ var Iframe = function (_Component) {
                     wx.showOptionMenu();
                     var shareDate = {
                         title: "维宏云在线帮助：" + that.state.shareTitle,
-                        link: "https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + _topicid + "&shareUrl=" + _url,
+                        link: "https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + _topicid + "&shareUrl=" + that.state.shareUrl,
                         imgUrl: "https://nccloud.weihong.com.cn/img/share.jpg",
                         trigger: function trigger(res) {},
                         success: function success(res) {
@@ -75906,14 +75882,18 @@ var Iframe = function (_Component) {
         }
     }, {
         key: 'hideFlow',
-        value: function hideFlow(param) {
-            var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-
-            console.log("ggg");
-            console.log(title);
+        value: function hideFlow(param, title, id) {
+            var obj = this.state.one.find(function (val, index, self) {
+                return val.topicid == id;
+            });
+            var url = void 0;
+            if (obj) {
+                url = obj.url;
+            }
             this.setState({
                 show: param,
-                shareTitle: title
+                shareTitle: title,
+                shareUrl: url
             });
         }
     }, {
@@ -75927,6 +75907,51 @@ var Iframe = function (_Component) {
                 files = _props.files,
                 iframe = _props.iframe;
 
+            var that = this;
+            var wechat = void 0;
+            if (iframe.wechat.data && iframe.wechat.data !== null && iframe.wechat.data.result == "success") {
+                wechat = iframe.wechat.data.values;
+                wx.config({
+                    debug: false,
+                    appId: wechat.appId,
+                    timestamp: wechat.timestamp,
+                    nonceStr: wechat.nonceStr,
+                    signature: wechat.signature,
+                    jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareQZone', 'showMenuItems', "showOptionMenu"]
+
+                });
+                var url = "";
+                var topicid = '';
+                for (var i = 0; i < this.state.one.length; i++) {
+                    if (this.state.one[i].title == this.state.shareTitle) {
+                        url = encodeURIComponent(this.state.one[i].url);
+                        topicid = this.state.one[i].topicid;
+                    }
+                };
+                wx.ready(function () {
+                    wx.showOptionMenu();
+                    var shareDate = {
+                        title: "维宏云在线帮助：" + that.state.shareTitle,
+                        link: "https://nccloud.weihong.com.cn/nchelp/share.html?topicid=" + topicid + "&shareUrl=" + that.state.shareUrl,
+                        imgUrl: "https://nccloud.weihong.com.cn/img/share.jpg",
+                        trigger: function trigger(res) {},
+                        success: function success(res) {
+                            $("#share_btn").css("color", "orange");
+                        },
+                        cancel: function cancel(res) {
+                            $("#share_btn").css("color", "black");
+                        }
+                    };
+
+                    wx.onMenuShareTimeline(shareDate);
+                    wx.onMenuShareAppMessage(shareDate);
+                    wx.onMenuShareQQ(shareDate);
+                    wx.onMenuShareQZone(shareDate);
+                });
+                wx.error(function (res) {
+                    console.log(res);
+                });
+            }
             var page = [];
             if (iframe.page.data !== null && iframe.page.data.result == "success") {
                 page = iframe.page.data.message.OtherPages;
@@ -76019,11 +76044,11 @@ var Iframe = function (_Component) {
                                     var num = 0;
                                     console.log(this.state.message);
                                     if (iscollect.length > 0) {
-                                        for (var i = 0; i < iscollect.length; i++) {
-                                            if (iscollect[i].topicid == topicid) {
-                                                like = iscollect[i].luad;
-                                                store = iscollect[i].store;
-                                                num = iscollect[i].luadnum;
+                                        for (var _i = 0; _i < iscollect.length; _i++) {
+                                            if (iscollect[_i].topicid == topicid) {
+                                                like = iscollect[_i].luad;
+                                                store = iscollect[_i].store;
+                                                num = iscollect[_i].luadnum;
                                                 return _react2.default.createElement(
                                                     _reactWeui.Article,
                                                     { key: index, className: 'one', onClick: function onClick(e) {
@@ -76068,8 +76093,8 @@ var Iframe = function (_Component) {
                                                         ),
                                                         _react2.default.createElement(
                                                             'i',
-                                                            { className: 'iconfont', onClick: function onClick(e) {
-                                                                    return _this3.hideFlow("block", title);
+                                                            { id: 'share_btn', className: 'iconfont', onClick: function onClick(e) {
+                                                                    return _this3.hideFlow("block", title, topicid);
                                                                 } },
                                                             '\uE619'
                                                         )

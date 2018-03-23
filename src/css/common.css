@@ -110,6 +110,7 @@ header{
 }
 .holder{
 	text-align: center;
+    margin-bottom:80px;
 }
 div.weui-cells{
     min-height:initial; 
@@ -385,7 +386,7 @@ body, .page {
 }
 .popup{
     position: fixed;
-    z-index: 1000;
+    z-index: 100000;
     top: 0;
     right: 0;
     left: 0;
