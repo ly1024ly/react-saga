@@ -34,7 +34,7 @@ import WeUI from 'react-weui';
 var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
-require('jquery');
+var jQuery = require('jquery');
 var wx = require("weixin-js-sdk");
 import Collect from './Collect.jsx';
 import {  } from "../redux/action/fileSearch.js";
@@ -83,6 +83,8 @@ class Iframe extends Component {
             iscollect:[],
             id:[],
             user:{},
+            mouseX:0,
+            mouseY:0,
             searchTitle:'',
             shareTitle:"",
             shareUrl:"",
@@ -101,11 +103,9 @@ class Iframe extends Component {
                 arr[i].src = this.state.url.split("xml")[0] + "image" + arr[i].src.split("image")[1];
                 str += arr[i].outerHTML;
                 console.log("----------------------------")
-                console.log(str)
             } else {
                 //str += arr[i].cloneNode();
                 console.log("++++++++++++++++++++++++++++++");
-                console.log(str)
                 if(arr[i].children.length>0){
                     this.iter(arr[i].children)
                 }
@@ -134,7 +134,6 @@ class Iframe extends Component {
                let s = that.state.url.split("/topics")[0];
                 let lindex = s.lastIndexOf("/");
                 s = s.slice(0,lindex);
-                console.log(s)
                 if(res.indexOf("../../../")>=0){
                     res = res.replace(/src="..\/..\/../g,'src="'+s);
                     res = res.replace(/href="..\/..\/../g,'href="'+s);
@@ -147,7 +146,6 @@ class Iframe extends Component {
                         let href = s + "/css" + dom[i].href.split("/css")[1];
                         dom[i].href = href;
                         all += dom[i].outerHTML; 
-                        console.log(dom[i].href)
                     }else{
                         all += dom[i].outerHTML; 
                     }
@@ -182,8 +180,8 @@ class Iframe extends Component {
         }else{
             let url = window.location.href;
             url = url.split("view")[0]+"view/prop.html";
-            window.location.href=url;
-        }
+            //window.location.href=url;
+        }  
         this.setState({
             head:document.head.innerHTML,
             searchTitle:this.props.location.query.title,
@@ -236,6 +234,7 @@ class Iframe extends Component {
         }
         
     }
+    
     collect =(id,type,title,index) => {
         if(type===undefined){
             type = "其他";
@@ -361,6 +360,7 @@ class Iframe extends Component {
     }
     componentWillUnmount(){
         document.head.innerHTML = this.state.head;
+        
     }
     shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
        const thisProps = this.props || {}, thisState = this.state || {};
@@ -434,7 +434,6 @@ class Iframe extends Component {
         let html = this.state.innerHtml;
         let is = this.state.iscollect;
         let idArr = this.state.id;
-        console.log("***************addPage*****************");
         if(addPage.length>0) {
             for(var i=0;i<addPage.length;i++){
                 addPage[i].url = s + addPage[i].url;
@@ -591,6 +590,41 @@ class Iframe extends Component {
         }        
        
     }
+
+    //ios上面iframe不会滑动的解决办法
+    toScrollFrame = (iFrame,mask) => {
+        if (!navigator.userAgent.match(/iPad|iPhone/i))  
+            return false;  
+        //do nothing if not iOS devie  
+        alert("ready")
+        var mouseY = this.state.mouseY;  
+        var mouseX = this.state.mouseX;  
+        jQuery(iFrame).ready(function() {
+            //wait for iFrame to load  
+            //remeber initial drag motition  
+            jQuery(iFrame).contents()[0].body.addEventListener('touchstart', function(e) {  
+                mouseY = e.targetTouches[0].pageY;  
+                mouseX = e.targetTouches[0].pageX;  
+            });  
+            alert("start")
+            this.setState({
+                mouseX:mouseX,
+                mouseY:mouseY
+            })
+            //update scroll position based on initial drag position  
+            jQuery(iFrame).contents()[0].body.addEventListener('touchmove', function(e) {  
+                e.preventDefault();  
+                //prevent whole page dragging  
+                alert("move")
+                var box = jQuery(mask);  
+                box.scrollLeft(box.scrollLeft() + mouseX - e.targetTouches[0].pageX);  
+                box.scrollTop(box.scrollTop() + mouseY - e.targetTouches[0].pageY); 
+                alert(box.scrollTop() + mouseY - e.targetTouches[0].pageY) 
+            });  
+        });  
+
+        
+    }
     hideFlow(param,title,id){
         let obj = this.state.one.find((val,index,self) => val.topicid==id);
         let url;
@@ -671,8 +705,12 @@ class Iframe extends Component {
         let iscollect = this.state.iscollect;
         let show = this.state.show;
         let src = JSON.parse(this.props.location.query.message).bookUrl;
-        console.log("**********************************");
-        console.log(src)
+        let scroll = {
+            WebkitOverflowScrolling:"touch",
+            overflowY: "scroll",
+            overflowX: "hidden",
+            paddingBottom:"20px"
+        }
         return (
             <div className="iframe">
                 <div id="shareit" style={{display:show}} onClick={(e) => this.hideFlow("none")}>
@@ -686,7 +724,6 @@ class Iframe extends Component {
                     //mock request
                     
                         if(1==2){
-                            console.log("finish")
                             finish()
                         }else{
                             if(this.state.one.length>0){
@@ -695,7 +732,6 @@ class Iframe extends Component {
                                     bookid:this.props.location.query.bookid,
                                     topicid:this.state.one[this.state.one.length-1].topicid
                                 }
-                                console.log(obj,this.state.one,this.state.searchTitle)
                                 if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
                                     this.props.getpageAction(obj);
                                 }
@@ -727,7 +763,6 @@ class Iframe extends Component {
                                 let like = false;
                                 let store = false;
                                 let num = 0;
-                                console.log(this.state.message)
                                 if(iscollect.length>0){
                                     for(let i=0;i<iscollect.length;i++){
                                         if(iscollect[i].topicid == topicid){
@@ -766,7 +801,7 @@ class Iframe extends Component {
                                     <i className="iconfont" onClick={()=>this.closePop()}>&#xe638;</i>
                                     <Link to="collect"><div>进入"我的收藏"</div></Link>
                                 </div>
-                                <div className="menuIframe">
+                                <div className="menuIframe" style={scroll}>
                                     <iframe src={src} style={{height:menuHeight,border:"none"}} id="menuiframe"></iframe>
                                 </div>
                             </Article>

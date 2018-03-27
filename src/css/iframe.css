@@ -3,6 +3,9 @@ iframe{
 
   
 }
+.menuIframe{
+  padding-bottom: 20px;
+}
 .none{
   margin: 70px auto;
   text-align: center;
@@ -168,4 +171,11 @@ article{
   background: #fff;
   box-show:5px 5px 10px #eee;
   overflow-x:hidden;
+}
+.menuIframe{
+  width:100%;
+  height:100vh;
+  -webkit-overflow-scrolling:touch; 
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

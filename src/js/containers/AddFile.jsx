@@ -91,7 +91,7 @@ class AddFile extends Component {
         }else{
             let url = window.location.href;
             url = url.split("view")[0]+"view/prop.html";
-            window.location.href=url;
+            //window.location.href=url;
         }
         let message = JSON.parse(this.props.location.query.message);
         this.setState({

@@ -31,7 +31,7 @@ import WeUI from 'react-weui';
 var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
-require('jquery');
+var jQuery = require('jquery');
 import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction,saveAction,bookAction} from "../redux/action/fileSearch.js";
 import Collect from './Collect.jsx';
 import 'react-weui/build/packages/react-weui.css';
@@ -109,10 +109,6 @@ class FileSearch extends Component {
       //window.location.href=url;
     }
     document.title = "维宏云"; 
-    //侧滑筛选
-    document.body.addEventListener("touchstart",this.touchstart)
-    document.body.addEventListener("touchmove",this.touchmove)
-    document.body.addEventListener("touchend",this.touchend)
     var menubox = document.getElementById("file");
     this.props.brandAction();
     let that = this;
