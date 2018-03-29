@@ -1,3 +1,7 @@
+import 'react-weui/build/packages/react-weui.css';
+require("../../font/iconfont.css");
+require("../../css/common.css");
+require("../../css/addfile.css");
 import React, { Component,PropTypes } from 'react';
 import { createStore,bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
@@ -34,10 +38,7 @@ require('jquery');
 import { is } from 'immutable';
 import Collect from './Collect.jsx';
 import {comfirmFileAction,menuurlAction} from '../redux/action/fileSearch.js';
-import 'react-weui/build/packages/react-weui.css';
-require("../../font/iconfont.css");
-require("../../css/common.css");
-require("../../css/addfile.css");
+
 
 class AddFile extends Component {
     static propTypes = {

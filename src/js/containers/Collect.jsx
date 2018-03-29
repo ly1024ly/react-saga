@@ -1,3 +1,11 @@
+import 'react-weui/build/packages/react-weui.css';
+require("../../font/iconfont.css");
+require("../../css/collect.css");
+require("../../css/collect.css");
+let IconMsg = require("../../img/collect.png");
+let Iconsearch = require("../../img/none.png");
+let Iconar = require("../../img/ar.png");
+let Iconman = require("../../img/nman.png");
 import React, { Component,PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import {
@@ -9,14 +17,7 @@ import WeUI from 'react-weui';
 import { connect } from 'react-redux';
 import { createStore,bindActionCreators } from 'redux';
 import {mycollectAction,delthemeAction,delbookAction,searchAction} from '../redux/action/collect.js';
-import 'react-weui/build/packages/react-weui.css';
-require("../../font/iconfont.css");
-require("../../css/collect.css");
-require("../../css/collect.css");
-let IconMsg = require("../../img/collect.png");
-let Iconsearch = require("../../img/none.png");
-let Iconar = require("../../img/ar.png");
-let Iconman = require("../../img/nman.png");
+
 
 var History = require('react-router').History;
 import {

@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b26ba809604206d19c7e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "082055b6ef07fefb43f4"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -716,7 +716,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "../";
+/******/ 	__webpack_require__.p = "https://nccloud.weihong.com.cn/nchelptest/assets/";
 /******/
 /******/ 	// __webpack_hash__
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
@@ -17528,7 +17528,7 @@ exports['default'] = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(85);
-var createDesc = __webpack_require__(150);
+var createDesc = __webpack_require__(151);
 module.exports = __webpack_require__(86) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
@@ -17576,7 +17576,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var store = __webpack_require__(217)('wks');
-var uid = __webpack_require__(151);
+var uid = __webpack_require__(152);
 var Symbol = __webpack_require__(66).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -20674,6 +20674,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+__webpack_require__(149);
+
 var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
@@ -20684,7 +20686,7 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = __webpack_require__(98);
 
-var _reactWeui = __webpack_require__(149);
+var _reactWeui = __webpack_require__(150);
 
 var _reactWeui2 = _interopRequireDefault(_reactWeui);
 
@@ -20692,9 +20694,7 @@ var _reactRedux = __webpack_require__(117);
 
 var _redux = __webpack_require__(82);
 
-var _collect = __webpack_require__(154);
-
-__webpack_require__(155);
+var _collect = __webpack_require__(155);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20713,6 +20713,7 @@ var IconMsg = __webpack_require__(861);
 var Iconsearch = __webpack_require__(862);
 var Iconar = __webpack_require__(354);
 var Iconman = __webpack_require__(355);
+
 
 var History = __webpack_require__(98).History;
 
@@ -20814,10 +20815,10 @@ var Collect = function (_Component) {
   }
 
   _createClass(Collect, [{
-    key: 'componentWillMount',
+    key: "componentWillMount",
     value: function componentWillMount() {}
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       if (sessionStorage.user) {
         this.setState({
@@ -20850,7 +20851,7 @@ var Collect = function (_Component) {
       };
     }
   }, {
-    key: 'contextMenu',
+    key: "contextMenu",
     value: function contextMenu(ev, res) {
       ev.preventDefault();
       var obox = document.getElementById("collect");
@@ -20896,7 +20897,7 @@ var Collect = function (_Component) {
       return false;
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this,
           _React$createElement,
@@ -20913,14 +20914,14 @@ var Collect = function (_Component) {
         book = collects.mycollect.data.message.books;
       }
       return _react2.default.createElement(
-        'div',
-        { className: 'collect' },
+        "div",
+        { className: "collect" },
         _react2.default.createElement(
-          'div',
-          { id: 'collect', onClick: function onClick() {
+          "div",
+          { id: "collect", onClick: function onClick() {
               return _this2.delCollect(_this2);
             } },
-          '\u5220\u9664'
+          "\u5220\u9664"
         ),
         _react2.default.createElement(
           _reactWeui.Tab,
@@ -20929,76 +20930,76 @@ var Collect = function (_Component) {
             _reactWeui.TabBody,
             null,
             _react2.default.createElement(
-              'div',
-              { className: 'content searchs' },
+              "div",
+              { className: "content searchs" },
               _react2.default.createElement(
-                'div',
-                { className: 'search-box' },
+                "div",
+                { className: "search-box" },
                 _react2.default.createElement(
-                  'div',
-                  { className: 'search-input' },
-                  _react2.default.createElement('input', { type: 'text',
-                    placeholder: '\u5173\u952E\u5B57',
+                  "div",
+                  { className: "search-input" },
+                  _react2.default.createElement("input", { type: "text",
+                    placeholder: "\u5173\u952E\u5B57",
                     value: this.state.val,
-                    className: 'search',
+                    className: "search",
                     onChange: this.saveValue
                   }),
                   _react2.default.createElement(
-                    'i',
-                    { className: 'iconfont icondel', style: { display: this.state.val == "" ? "none" : "block" }, onClick: function onClick() {
+                    "i",
+                    { className: "iconfont icondel", style: { display: this.state.val == "" ? "none" : "block" }, onClick: function onClick() {
                         return _this2.setState({ val: "" });
                       } },
-                    '\uE638'
+                    "\uE638"
                   )
                 ),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'search-btn' },
+                  "div",
+                  { className: "search-btn" },
                   _react2.default.createElement(
-                    'label',
-                    (_React$createElement = { type: 'button', className: 'btn tag' }, _defineProperty(_React$createElement, 'className', this.state.tag == 'page' ? "btn tag" : "btn"), _defineProperty(_React$createElement, 'onClick', function onClick() {
+                    "label",
+                    (_React$createElement = { type: "button", className: "btn tag" }, _defineProperty(_React$createElement, "className", this.state.tag == 'page' ? "btn tag" : "btn"), _defineProperty(_React$createElement, "onClick", function onClick() {
                       return _this2.checkVal("page");
                     }), _React$createElement),
-                    '\u641C\u7D22'
+                    "\u641C\u7D22"
                   ),
                   _react2.default.createElement(
-                    'label',
-                    (_React$createElement2 = { className: 'btn' }, _defineProperty(_React$createElement2, 'className', this.state.tag == 'all' ? "btn tag" : "btn"), _defineProperty(_React$createElement2, 'onClick', function onClick() {
+                    "label",
+                    (_React$createElement2 = { className: "btn" }, _defineProperty(_React$createElement2, "className", this.state.tag == 'all' ? "btn tag" : "btn"), _defineProperty(_React$createElement2, "onClick", function onClick() {
                       return _this2.checkVal("all");
                     }), _React$createElement2),
-                    '\u6DFB\u52A0'
+                    "\u6DFB\u52A0"
                   )
                 )
               )
             ),
             _react2.default.createElement(
               _reactWeui.TabBar,
-              { className: 'changeType' },
+              { className: "changeType" },
               _react2.default.createElement(_reactWeui.TabBarItem, {
                 active: this.state.tab == 0,
                 onClick: function onClick() {
                   return _this2.changeTab({ tab: 0 });
                 },
-                label: '\u4E3B\u9898'
+                label: "\u4E3B\u9898"
               }),
               _react2.default.createElement(_reactWeui.TabBarItem, {
                 active: this.state.tab == 1,
                 onClick: function onClick() {
                   return _this2.changeTab({ tab: 1 });
                 },
-                label: '\u624B\u518C'
+                label: "\u624B\u518C"
               }),
               _react2.default.createElement(_reactWeui.TabBarItem, {
                 active: this.state.tab == 2,
 
-                label: ''
+                label: ""
               })
             ),
             _react2.default.createElement(
               _reactWeui.Article,
               { style: { display: this.state.tab == 0 ? null : 'none' } },
               _react2.default.createElement(
-                'section',
+                "section",
                 null,
                 _react2.default.createElement(
                   _reactWeui.Cells,
@@ -21009,7 +21010,7 @@ var Collect = function (_Component) {
                     var key = item.result && item.result.book_keysjson ? item.result.book_keysjson : item.book_keysjson;
                     return _react2.default.createElement(
                       _reactWeui.Cell,
-                      { href: 'javascript:;', access: true, key: index, onContextMenu: function onContextMenu(e) {
+                      { href: "javascript:;", access: true, key: index, onContextMenu: function onContextMenu(e) {
                           return _this3.contextMenu(e, item);
                         }, onClick: function onClick() {
                           return _this3.iniframe(item.result ? item.result : item);
@@ -21018,12 +21019,12 @@ var Collect = function (_Component) {
                         _reactWeui.CellBody,
                         null,
                         _react2.default.createElement(
-                          'h3',
+                          "h3",
                           null,
                           item.result && item.result.title ? item.result.title : item.title
                         ),
                         _react2.default.createElement(
-                          'span',
+                          "span",
                           null,
                           key.base + " | " + key.product + " | " + key.type
                         )
@@ -21037,7 +21038,7 @@ var Collect = function (_Component) {
               _reactWeui.Article,
               { style: { display: this.state.tab == 1 ? null : 'none' } },
               _react2.default.createElement(
-                'section',
+                "section",
                 null,
                 _react2.default.createElement(
                   _reactWeui.Cells,
@@ -21048,7 +21049,7 @@ var Collect = function (_Component) {
                     var key = item.book_keysjson;
                     return _react2.default.createElement(
                       _reactWeui.Cell,
-                      { href: 'javascript:;', access: true, key: index, onContextMenu: function onContextMenu(e) {
+                      { href: "javascript:;", access: true, key: index, onContextMenu: function onContextMenu(e) {
                           return _this4.contextMenu(e, item);
                         }, onClick: function onClick() {
                           return _this4.inaddFile(item);
@@ -21057,12 +21058,12 @@ var Collect = function (_Component) {
                         _reactWeui.CellBody,
                         null,
                         _react2.default.createElement(
-                          'h3',
+                          "h3",
                           null,
                           item.bookname
                         ),
                         _react2.default.createElement(
-                          'span',
+                          "span",
                           null,
                           key.base + " | " + key.product + " | " + key.type
                         )
@@ -21075,19 +21076,19 @@ var Collect = function (_Component) {
           ),
           _react2.default.createElement(
             _reactWeui.TabBar,
-            { className: 'footer' },
+            { className: "footer" },
             _react2.default.createElement(
               _reactWeui.TabBarItem,
               null,
               _react2.default.createElement(
                 _reactWeui.TabBarIcon,
                 null,
-                _react2.default.createElement('img', { src: IconMsg })
+                _react2.default.createElement("img", { src: IconMsg })
               ),
               _react2.default.createElement(
                 _reactWeui.TabBarLabel,
                 null,
-                '\u6211\u7684\u6536\u85CF'
+                "\u6211\u7684\u6536\u85CF"
               )
             ),
             _react2.default.createElement(
@@ -21095,16 +21096,16 @@ var Collect = function (_Component) {
               null,
               _react2.default.createElement(
                 _reactRouter.Link,
-                { to: 'filesearch' },
+                { to: "filesearch" },
                 _react2.default.createElement(
                   _reactWeui.TabBarIcon,
                   null,
-                  _react2.default.createElement('img', { src: Iconsearch })
+                  _react2.default.createElement("img", { src: Iconsearch })
                 ),
                 _react2.default.createElement(
                   _reactWeui.TabBarLabel,
                   null,
-                  '\u5E2E\u52A9\u6587\u6863'
+                  "\u5E2E\u52A9\u6587\u6863"
                 )
               )
             ),
@@ -21114,12 +21115,12 @@ var Collect = function (_Component) {
               _react2.default.createElement(
                 _reactWeui.TabBarIcon,
                 null,
-                _react2.default.createElement('img', { src: Iconar })
+                _react2.default.createElement("img", { src: Iconar })
               ),
               _react2.default.createElement(
                 _reactWeui.TabBarLabel,
                 null,
-                '\u626B\u7801\u6C42\u52A9'
+                "\u626B\u7801\u6C42\u52A9"
               )
             ),
             _react2.default.createElement(
@@ -21128,54 +21129,54 @@ var Collect = function (_Component) {
               _react2.default.createElement(
                 _reactWeui.TabBarIcon,
                 null,
-                _react2.default.createElement('img', { src: Iconman })
+                _react2.default.createElement("img", { src: Iconman })
               ),
               _react2.default.createElement(
                 _reactWeui.TabBarLabel,
                 { style: { color: "#eee" } },
-                '\u7528\u6237\u793E\u533A'
+                "\u7528\u6237\u793E\u533A"
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'holder', style: { display: "none" } },
+            "div",
+            { className: "holder", style: { display: "none" } },
             _react2.default.createElement(
-              'section',
+              "section",
               null,
               _react2.default.createElement(
-                'nav',
-                { role: 'navigation' },
+                "nav",
+                { role: "navigation" },
                 _react2.default.createElement(
-                  'ul',
-                  { className: 'cd-pagination' },
+                  "ul",
+                  { className: "cd-pagination" },
                   _react2.default.createElement(
-                    'li',
-                    { className: 's', onClick: function onClick() {
+                    "li",
+                    { className: "s", onClick: function onClick() {
                         return _this2.pageChange(_this2, 1);
                       } },
-                    '\u9996\u9875'
+                    "\u9996\u9875"
                   ),
                   _react2.default.createElement(
-                    'li',
-                    { className: 'button1', onClick: function onClick() {
+                    "li",
+                    { className: "button1", onClick: function onClick() {
                         return _this2.pageChange(_this2, "pre");
                       } },
-                    '\u4E0A\u9875'
+                    "\u4E0A\u9875"
                   ),
                   _react2.default.createElement(
-                    'li',
-                    { className: 'button2', onClick: function onClick() {
+                    "li",
+                    { className: "button2", onClick: function onClick() {
                         return _this2.pageChange(_this2, "next");
                       } },
-                    '\u4E0B\u9875'
+                    "\u4E0B\u9875"
                   ),
                   _react2.default.createElement(
-                    'li',
-                    { className: 'e', onClick: function onClick() {
+                    "li",
+                    { className: "e", onClick: function onClick() {
                         return _this2.pageChange(_this2, max);
                       } },
-                    '\u5C3E\u9875'
+                    "\u5C3E\u9875"
                   )
                 )
               )
@@ -21217,6 +21218,12 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, {
 
 /***/ }),
 /* 149 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21426,7 +21433,7 @@ exports.default = {
 module.exports = exports['default'];
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -21440,7 +21447,7 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -21451,14 +21458,14 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports) {
 
 exports.f = {}.propertyIsEnumerable;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
@@ -21469,7 +21476,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21514,12 +21521,6 @@ var searchAction = exports.searchAction = function searchAction(param, fetching)
     fetching: fetching
   };
 };
-
-/***/ }),
-/* 155 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 156 */
@@ -26199,7 +26200,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(217)('keys');
-var uid = __webpack_require__(151);
+var uid = __webpack_require__(152);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
@@ -26551,12 +26552,6 @@ module.exports = exports['default'];
 
 /***/ }),
 /* 230 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31536,6 +31531,12 @@ module.exports = exports['default'];
   return Immutable;
 
 }));
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 232 */
@@ -38539,7 +38540,7 @@ module.exports = { "default": __webpack_require__(737), __esModule: true };
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = __webpack_require__(87);
-var toObject = __webpack_require__(153);
+var toObject = __webpack_require__(154);
 var IE_PROTO = __webpack_require__(216)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -38669,8 +38670,8 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 /* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pIE = __webpack_require__(152);
-var createDesc = __webpack_require__(150);
+var pIE = __webpack_require__(153);
+var createDesc = __webpack_require__(151);
 var toIObject = __webpack_require__(104);
 var toPrimitive = __webpack_require__(213);
 var has = __webpack_require__(87);
@@ -42200,9 +42201,9 @@ function proc(iterator) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return takeEvery; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return takeLatest; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return throttle; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__takeEvery__ = __webpack_require__(902);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__takeLatest__ = __webpack_require__(903);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__throttle__ = __webpack_require__(904);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__takeEvery__ = __webpack_require__(904);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__takeLatest__ = __webpack_require__(905);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__throttle__ = __webpack_require__(906);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(43);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__takeEvery__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__takeLatest__["a"]; });
@@ -47576,7 +47577,7 @@ var _Iframe = __webpack_require__(877);
 
 var _Iframe2 = _interopRequireDefault(_Iframe);
 
-var _store = __webpack_require__(899);
+var _store = __webpack_require__(901);
 
 var _store2 = _interopRequireDefault(_store);
 
@@ -63607,8 +63608,8 @@ module.exports = function (it) {
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys = __webpack_require__(119);
 var gOPS = __webpack_require__(219);
-var pIE = __webpack_require__(152);
-var toObject = __webpack_require__(153);
+var pIE = __webpack_require__(153);
+var toObject = __webpack_require__(154);
 var IObject = __webpack_require__(328);
 var $assign = Object.assign;
 
@@ -63726,7 +63727,7 @@ module.exports = __webpack_require__(47).Object.getPrototypeOf;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
-var toObject = __webpack_require__(153);
+var toObject = __webpack_require__(154);
 var $getPrototypeOf = __webpack_require__(331);
 
 __webpack_require__(332)('getPrototypeOf', function () {
@@ -63805,7 +63806,7 @@ module.exports = function (TO_STRING) {
 "use strict";
 
 var create = __webpack_require__(223);
-var descriptor = __webpack_require__(150);
+var descriptor = __webpack_require__(151);
 var setToStringTag = __webpack_require__(224);
 var IteratorPrototype = {};
 
@@ -63960,7 +63961,7 @@ var META = __webpack_require__(755).KEY;
 var $fails = __webpack_require__(103);
 var shared = __webpack_require__(217);
 var setToStringTag = __webpack_require__(224);
-var uid = __webpack_require__(151);
+var uid = __webpack_require__(152);
 var wks = __webpack_require__(105);
 var wksExt = __webpack_require__(225);
 var wksDefine = __webpack_require__(226);
@@ -63970,7 +63971,7 @@ var anObject = __webpack_require__(118);
 var isObject = __webpack_require__(102);
 var toIObject = __webpack_require__(104);
 var toPrimitive = __webpack_require__(213);
-var createDesc = __webpack_require__(150);
+var createDesc = __webpack_require__(151);
 var _create = __webpack_require__(223);
 var gOPNExt = __webpack_require__(758);
 var $GOPD = __webpack_require__(336);
@@ -64099,7 +64100,7 @@ if (!USE_NATIVE) {
   $GOPD.f = $getOwnPropertyDescriptor;
   $DP.f = $defineProperty;
   __webpack_require__(335).f = gOPNExt.f = $getOwnPropertyNames;
-  __webpack_require__(152).f = $propertyIsEnumerable;
+  __webpack_require__(153).f = $propertyIsEnumerable;
   __webpack_require__(219).f = $getOwnPropertySymbols;
 
   if (DESCRIPTORS && !__webpack_require__(221)) {
@@ -64189,7 +64190,7 @@ setToStringTag(global.JSON, 'JSON', true);
 /* 755 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(151)('meta');
+var META = __webpack_require__(152)('meta');
 var isObject = __webpack_require__(102);
 var has = __webpack_require__(87);
 var setDesc = __webpack_require__(85).f;
@@ -64251,7 +64252,7 @@ var meta = module.exports = {
 // all enumerable object keys, includes symbols
 var getKeys = __webpack_require__(119);
 var gOPS = __webpack_require__(219);
-var pIE = __webpack_require__(152);
+var pIE = __webpack_require__(153);
 module.exports = function (it) {
   var result = getKeys(it);
   var getSymbols = gOPS.f;
@@ -66636,7 +66637,7 @@ module.exports = __webpack_require__(47).Object.keys;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(153);
+var toObject = __webpack_require__(154);
 var $keys = __webpack_require__(119);
 
 __webpack_require__(332)('keys', function () {
@@ -72967,9 +72968,13 @@ var _reactDom = __webpack_require__(40);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+__webpack_require__(149);
+
+var _immutable = __webpack_require__(230);
+
 var _reactRouter = __webpack_require__(98);
 
-var _reactWeui = __webpack_require__(149);
+var _reactWeui = __webpack_require__(150);
 
 var _reactWeui2 = _interopRequireDefault(_reactWeui);
 
@@ -72981,17 +72986,13 @@ var _redux = __webpack_require__(82);
 
 var _reactRedux = __webpack_require__(117);
 
-__webpack_require__(230);
+__webpack_require__(231);
 
 var _fileSearch = __webpack_require__(107);
 
 var _Collect = __webpack_require__(148);
 
 var _Collect2 = _interopRequireDefault(_Collect);
-
-__webpack_require__(155);
-
-var _immutable = __webpack_require__(231);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73003,11 +73004,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var wx = __webpack_require__(156);
-//import styles
-
-__webpack_require__(57);
-
 __webpack_require__(88);
 __webpack_require__(232);
 __webpack_require__(872);
@@ -73016,6 +73012,11 @@ var Iconsearch = __webpack_require__(873);
 var Iconar = __webpack_require__(354);
 var Iconman = __webpack_require__(355);
 var Iconcn = __webpack_require__(874);
+
+var wx = __webpack_require__(156);
+//import styles
+
+var jQuery = __webpack_require__(57);
 
 var FileSearch = function (_Component) {
   _inherits(FileSearch, _Component);
@@ -73284,10 +73285,6 @@ var FileSearch = function (_Component) {
         //window.location.href=url;
       }
       document.title = "维宏云";
-      //侧滑筛选
-      document.body.addEventListener("touchstart", this.touchstart);
-      document.body.addEventListener("touchmove", this.touchmove);
-      document.body.addEventListener("touchend", this.touchend);
       var menubox = document.getElementById("file");
       this.props.brandAction();
       var that = this;
@@ -73886,8 +73883,6 @@ var FileSearch = function (_Component) {
                             return _this6.contextMenus(e, item);
                           }, value: item, onClick: function onClick() {
                             return _this6.inaddFile(item);
-                          }, ontouchstart: function ontouchstart(e) {
-                            return _this6.contextMenus(e, item);
                           } },
                         _react2.default.createElement(
                           _reactWeui.CellBody,
@@ -74976,6 +74971,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+__webpack_require__(149);
+
 var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
@@ -74988,23 +74985,21 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = __webpack_require__(98);
 
-var _reactWeui = __webpack_require__(149);
+var _reactWeui = __webpack_require__(150);
 
 var _reactWeui2 = _interopRequireDefault(_reactWeui);
 
 var _reactRedux = __webpack_require__(117);
 
-__webpack_require__(230);
+__webpack_require__(231);
 
-var _immutable = __webpack_require__(231);
+var _immutable = __webpack_require__(230);
 
 var _Collect = __webpack_require__(148);
 
 var _Collect2 = _interopRequireDefault(_Collect);
 
 var _fileSearch = __webpack_require__(107);
-
-__webpack_require__(155);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75014,14 +75009,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+__webpack_require__(88);
+__webpack_require__(232);
+__webpack_require__(876);
+
 var wx = __webpack_require__(156);
 //import styles
 
 __webpack_require__(57);
-
-__webpack_require__(88);
-__webpack_require__(232);
-__webpack_require__(876);
 
 var AddFile = function (_Component) {
     _inherits(AddFile, _Component);
@@ -75082,7 +75077,7 @@ var AddFile = function (_Component) {
     }
 
     _createClass(AddFile, [{
-        key: 'ajaxLoad',
+        key: "ajaxLoad",
         value: function ajaxLoad(res) {
             var that = this;
             var obj = {};
@@ -75112,7 +75107,7 @@ var AddFile = function (_Component) {
             return obj;
         }
     }, {
-        key: 'componentDidMount',
+        key: "componentDidMount",
         value: function componentDidMount() {
             if (sessionStorage.user) {
                 this.setState({
@@ -75121,7 +75116,7 @@ var AddFile = function (_Component) {
             } else {
                 var url = window.location.href;
                 url = url.split("view")[0] + "view/prop.html";
-                window.location.href = url;
+                //window.location.href=url;
             }
             var message = JSON.parse(this.props.location.query.message);
             this.setState({
@@ -75184,7 +75179,7 @@ var AddFile = function (_Component) {
             };
         }
     }, {
-        key: 'showToast',
+        key: "showToast",
         value: function showToast() {
             var _this2 = this;
 
@@ -75195,13 +75190,13 @@ var AddFile = function (_Component) {
             }, 1000);
         }
     }, {
-        key: 'componentWillUnmount',
+        key: "componentWillUnmount",
         value: function componentWillUnmount() {
             this.props.files.comfirmfile.data = null;
             window.clearTimeout(this.state.toastTimer);
         }
     }, {
-        key: 'componentWillReceiveProps',
+        key: "componentWillReceiveProps",
         value: function componentWillReceiveProps(nextProps) {
             if (nextProps.files.comfirmfile.data !== null && nextProps.files.comfirmfile.data.result && nextProps.files.comfirmfile.data.result == "success") {
                 this.setState({
@@ -75216,7 +75211,7 @@ var AddFile = function (_Component) {
             }
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             var _this3 = this;
 
@@ -75227,19 +75222,19 @@ var AddFile = function (_Component) {
 
             return _react2.default.createElement(
                 _reactWeui.Page,
-                { className: 'addfile' },
+                { className: "addfile" },
                 _react2.default.createElement(
                     _reactWeui.Toast,
-                    { icon: 'success-no-circle', show: this.state.showToast },
+                    { icon: "success-no-circle", show: this.state.showToast },
                     this.state.message
                 ),
-                _react2.default.createElement('iframe', { src: this.props.location.query.href, style: { height: height, overFlow: 'auto' }, id: 'iframecontent' }),
+                _react2.default.createElement("iframe", { src: this.props.location.query.href, style: { height: height, overFlow: 'auto' }, id: "iframecontent" }),
                 _react2.default.createElement(
-                    'div',
-                    { className: 'add', onClick: function onClick() {
+                    "div",
+                    { className: "add", onClick: function onClick() {
                             return _this3.comfirAdd();
                         } },
-                    '\u6536\u85CF\u81F3"\u624B\u518C"'
+                    "\u6536\u85CF\u81F3\"\u624B\u518C\""
                 )
             );
         }
@@ -75296,13 +75291,15 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = __webpack_require__(98);
 
-var _reactWeui = __webpack_require__(149);
+var _reactWeui = __webpack_require__(150);
 
 var _reactWeui2 = _interopRequireDefault(_reactWeui);
 
 var _reactRedux = __webpack_require__(117);
 
-__webpack_require__(230);
+__webpack_require__(231);
+
+__webpack_require__(149);
 
 var _Collect = __webpack_require__(148);
 
@@ -75310,13 +75307,19 @@ var _Collect2 = _interopRequireDefault(_Collect);
 
 __webpack_require__(107);
 
-__webpack_require__(155);
-
 var _iframe = __webpack_require__(157);
 
 var _api = __webpack_require__(158);
 
-var _immutable = __webpack_require__(231);
+var _immutable = __webpack_require__(230);
+
+var _reactLimitedInfiniteScroll = __webpack_require__(898);
+
+var _reactLimitedInfiniteScroll2 = _interopRequireDefault(_reactLimitedInfiniteScroll);
+
+var _betterScroll = __webpack_require__(899);
+
+var _betterScroll2 = _interopRequireDefault(_betterScroll);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75329,14 +75332,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var wx = __webpack_require__(156);
 //import styles
 
-__webpack_require__(57);
-var wx = __webpack_require__(156);
-
 __webpack_require__(88);
 __webpack_require__(232);
 __webpack_require__(234);
+var jQuery = __webpack_require__(57);
+var wx = __webpack_require__(156);
 
-var firstGuid = __webpack_require__(898);
+var firstGuid = __webpack_require__(900);
 
 var Iframe = function (_Component) {
     _inherits(Iframe, _Component);
@@ -75354,11 +75356,9 @@ var Iframe = function (_Component) {
                     arr[i].src = _this.state.url.split("xml")[0] + "image" + arr[i].src.split("image")[1];
                     str += arr[i].outerHTML;
                     console.log("----------------------------");
-                    console.log(str);
                 } else {
                     //str += arr[i].cloneNode();
                     console.log("++++++++++++++++++++++++++++++");
-                    console.log(str);
                     if (arr[i].children.length > 0) {
                         _this.iter(arr[i].children);
                     }
@@ -75502,13 +75502,16 @@ var Iframe = function (_Component) {
             pageY: 0,
             iscollect: [],
             id: [],
+            height: "100vh",
             user: {},
+            mouseX: 0,
+            mouseY: 0,
             searchTitle: '',
             shareTitle: "",
             shareUrl: "",
-            message: "",
-            two: "https://nccloud.weihong.com.cn/nchelp/booklist/维宏百问/xml/ts_自识别写号导致软件无法使用.html"
+            message: ""
         };
+        _this.scroll = null;
         _this.like = _this.like.bind(_this);
         _this.collect = _this.collect.bind(_this);
         _this.delcollect = _this.delcollect.bind(_this);
@@ -75536,7 +75539,6 @@ var Iframe = function (_Component) {
                     var s = that.state.url.split("/topics")[0];
                     var lindex = s.lastIndexOf("/");
                     s = s.slice(0, lindex);
-                    console.log(s);
                     if (res.indexOf("../../../") >= 0) {
                         res = res.replace(/src="..\/..\/../g, 'src="' + s);
                         res = res.replace(/href="..\/..\/../g, 'href="' + s);
@@ -75549,7 +75551,6 @@ var Iframe = function (_Component) {
                             var href = s + "/css" + dom[i].href.split("/css")[1];
                             dom[i].href = href;
                             all += dom[i].outerHTML;
-                            console.log(dom[i].href);
                         } else {
                             all += dom[i].outerHTML;
                         }
@@ -75577,9 +75578,55 @@ var Iframe = function (_Component) {
             this.props.wechatAction();
         }
     }, {
+        key: 'scrollev',
+        value: function scrollev() {}
+    }, {
+        key: 'scrollend',
+        value: function scrollend() {
+            if (this.state.one.length > 0) {
+                var obj = {
+                    title: this.state.one[this.state.one.length - 1].title,
+                    bookid: this.props.location.query.bookid,
+                    topicid: this.state.one[this.state.one.length - 1].topicid
+                };
+                if (this.state.one[this.state.one.length - 1].title !== this.state.searchTitle) {
+                    this.props.getpageAction(obj);
+                }
+                this.setState({
+                    searchTitle: this.state.one[this.state.one.length - 1].title
+                });
+            }
+            this.setState({
+                searchTitle: this.state.one.length > 0 ? this.state.one[this.state.one.length - 1].title : ""
+            });
+        }
+    }, {
+        key: 'pullingup',
+        value: function pullingup() {
+            alert("pullingdown");
+        }
+    }, {
+        key: 'finishpull',
+        value: function finishpull() {
+            alert("finish");
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.swiperChange("1");
+            var option = {
+                scrollY: true,
+                useTransition: false,
+                probeType: 1,
+                click: true
+            };
+
+            var wrapper = document.getElementById("wrap");
+            this.scroll = new _betterScroll2.default(wrapper, option);
+            this.scroll.on("scroll", this.scrollev.bind(this));
+            this.scroll.on("pullingDown", this.pullingup.bind(this));
+            this.scroll.on("scrollEnd", this.scrollend.bind(this));
+            this.scroll.on("finishPullDown", this.finishpull.bind(this));
             if (sessionStorage.user) {
                 this.setState({
                     user: JSON.parse(sessionStorage.user)
@@ -75587,7 +75634,7 @@ var Iframe = function (_Component) {
             } else {
                 var url = window.location.href;
                 url = url.split("view")[0] + "view/prop.html";
-                window.location.href = url;
+                //window.location.href=url;
             }
             this.setState({
                 head: document.head.innerHTML,
@@ -75697,6 +75744,12 @@ var Iframe = function (_Component) {
             var page = this.state.one;
             var addPage = [];
             var that = this;
+            var height = $(this.refs.content).height();
+            this.setState({
+                height: height
+            });
+            //this.scroll.refresh();
+            console.log(this.scroll);
             if (nextProps.iframe.page.data !== null && nextProps.iframe.page.data.result && nextProps.iframe.page.data.result == "success") {
                 if (page.length == 0) {
                     if (nextProps.iframe.page.data.message[0].OtherPages.length < 5) {
@@ -75737,7 +75790,6 @@ var Iframe = function (_Component) {
             var html = this.state.innerHtml;
             var is = this.state.iscollect;
             var idArr = this.state.id;
-            console.log("***************addPage*****************");
             if (addPage.length > 0) {
                 for (var i = 0; i < addPage.length; i++) {
                     addPage[i].url = s + addPage[i].url;
@@ -75953,16 +76005,26 @@ var Iframe = function (_Component) {
                 });
             }
             var page = [];
+            var bh = this.state.height;
             if (iframe.page.data !== null && iframe.page.data.result == "success") {
                 page = iframe.page.data.message.OtherPages;
+                if (this.state.height == 0) {
+                    bh = "100vh";
+                } else {
+                    bh = this.state.height + "px";
+                }
             }
-            var height = window.innerHeight - 30;
+            var height = window.innerHeight;
             var menuHeight = window.innerHeight - 35 + "px";
             var iscollect = this.state.iscollect;
             var show = this.state.show;
             var src = JSON.parse(this.props.location.query.message).bookUrl;
-            console.log("**********************************");
-            console.log(src);
+            var scroll = {
+                WebkitOverflowScrolling: "touch",
+                overflowY: "scroll",
+                overflowX: "hidden",
+                paddingBottom: "20px"
+            };
             return _react2.default.createElement(
                 'div',
                 { className: 'iframe' },
@@ -75979,179 +76041,150 @@ var Iframe = function (_Component) {
                     )
                 ),
                 _react2.default.createElement(
-                    _reactWeui.InfiniteLoader,
-                    {
-                        onLoadMore: function onLoadMore(resolve, finish) {
-                            //mock request
+                    'i',
+                    { className: 'iconfont icon-tag', onClick: function onClick() {
+                            return _this2.openPop();
+                        } },
+                    '\uE639'
+                ),
+                _react2.default.createElement(
+                    _reactWeui.Panel,
+                    null,
+                    _react2.default.createElement(_reactWeui.PanelHeader, { style: { width: '22px', position: "fixed", height: "22px", background: "#fff" } }),
+                    _react2.default.createElement(
+                        _reactWeui.PanelBody,
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: height, overFlow: "auto" }, id: 'frabox' },
+                            _react2.default.createElement(
+                                'div',
+                                { id: 'wrap', ref: 'content', style: { height: "100vh" } },
+                                _react2.default.createElement(
+                                    'div',
+                                    null,
+                                    this.state.innerHtml.map(function (item, index) {
+                                        var _this3 = this;
 
-                            if (false) {
-                                console.log("finish");
-                                finish();
-                            } else {
-                                if (_this2.state.one.length > 0) {
-                                    var obj = {
-                                        title: _this2.state.one[_this2.state.one.length - 1].title,
-                                        bookid: _this2.props.location.query.bookid,
-                                        topicid: _this2.state.one[_this2.state.one.length - 1].topicid
-                                    };
-                                    console.log(obj, _this2.state.one, _this2.state.searchTitle);
-                                    if (_this2.state.one[_this2.state.one.length - 1].title !== _this2.state.searchTitle) {
-                                        _this2.props.getpageAction(obj);
-                                    }
-                                    _this2.setState({
-                                        searchTitle: _this2.state.one[_this2.state.one.length - 1].title
-                                    });
-                                }
-                                _this2.setState({
-                                    searchTitle: _this2.state.one.length > 0 ? _this2.state.one[_this2.state.one.length - 1].title : ""
-                                }, function () {
-                                    return resolve();
-                                });
-                            }
+                                        var topicid = item.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
+                                        var title = item.split("h1")[1].split(">")[1].split("<")[0];
+                                        var ContentType = void 0;
+                                        if (item.indexOf("ContentType") >= 0) {
+                                            ContentType = item.split("ContentType")[1].split("content=")[1].split(">")[0].split("\"")[1];
+                                        }
+                                        var like = false;
+                                        var store = false;
+                                        var num = 0;
+                                        if (iscollect.length > 0) {
+                                            for (var _i = 0; _i < iscollect.length; _i++) {
+                                                if (iscollect[_i].topicid == topicid) {
+                                                    like = iscollect[_i].luad;
+                                                    store = iscollect[_i].store;
+                                                    num = iscollect[_i].luadnum;
+                                                    return _react2.default.createElement(
+                                                        _reactWeui.Article,
+                                                        { key: index, className: 'one', onClick: function onClick(e) {
+                                                                return _this3.clickEvent(e, index);
+                                                            } },
+                                                        _react2.default.createElement(
+                                                            'a',
+                                                            { id: "md" + index },
+                                                            _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: item } })
+                                                        ),
+                                                        _react2.default.createElement(
+                                                            'div',
+                                                            { className: 'm' },
+                                                            like ? _react2.default.createElement(
+                                                                'i',
+                                                                { className: 'iconfont icon-yes' },
+                                                                '\uE63A'
+                                                            ) : _react2.default.createElement(
+                                                                'i',
+                                                                { className: 'iconfont icon-no', onClick: function onClick() {
+                                                                        return _this3.like(topicid, title);
+                                                                    } },
+                                                                '\uE67F'
+                                                            ),
+                                                            _react2.default.createElement(
+                                                                'span',
+                                                                { style: { marginRight: "10px" } },
+                                                                num
+                                                            ),
+                                                            store ? _react2.default.createElement(
+                                                                'i',
+                                                                { className: 'iconfont icon-yes', onClick: function onClick() {
+                                                                        return _this3.delcollect(topicid, ContentType, title, index);
+                                                                    } },
+                                                                '\uE620'
+                                                            ) : _react2.default.createElement(
+                                                                'i',
+                                                                { className: 'iconfont icon-no', onClick: function onClick() {
+                                                                        return _this3.collect(topicid, ContentType, title, index);
+                                                                    } },
+                                                                '\uE616'
+                                                            ),
+                                                            _react2.default.createElement(
+                                                                'i',
+                                                                { id: 'share_btn', className: 'iconfont', onClick: function onClick(e) {
+                                                                        return _this3.hideFlow("block", title, topicid);
+                                                                    } },
+                                                                '\uE619'
+                                                            )
+                                                        )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }, this)
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'none', style: { display: iframe.page.data !== null && iframe.page.data.result == "fail" ? "block" : "none" } },
+                                iframe.page.data !== null && iframe.page.data.result == "fail" ? iframe.page.data.message : ""
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    {
+                        className: 'pop',
+                        style: { display: this.state.fullpage_show ? "block" : "none" },
+                        onClick: function onClick() {
+                            return _this2.closePop();
                         }
                     },
                     _react2.default.createElement(
-                        _reactWeui.Panel,
-                        null,
+                        'div',
+                        { style: { height: '100vh', overflow: 'scroll' } },
                         _react2.default.createElement(
-                            _reactWeui.PanelHeader,
-                            { onClick: function onClick() {
-                                    return _this2.openPop();
-                                }, style: { width: '22px', position: "fixed", height: "22px", background: "#fff" } },
-                            _react2.default.createElement(
-                                'i',
-                                { className: 'iconfont' },
-                                '\uE639'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            _reactWeui.PanelBody,
+                            _reactWeui.Article,
                             null,
                             _react2.default.createElement(
                                 'div',
-                                { style: { height: height, overFlow: "auto" }, id: 'frabox' },
-                                this.state.innerHtml.map(function (item, index) {
-                                    var _this3 = this;
-
-                                    var topicid = item.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
-                                    var title = item.split("h1")[1].split(">")[1].split("<")[0];
-                                    var ContentType = void 0;
-                                    if (item.indexOf("ContentType") >= 0) {
-                                        ContentType = item.split("ContentType")[1].split("content=")[1].split(">")[0].split("\"")[1];
-                                    }
-                                    var like = false;
-                                    var store = false;
-                                    var num = 0;
-                                    console.log(this.state.message);
-                                    if (iscollect.length > 0) {
-                                        for (var _i = 0; _i < iscollect.length; _i++) {
-                                            if (iscollect[_i].topicid == topicid) {
-                                                like = iscollect[_i].luad;
-                                                store = iscollect[_i].store;
-                                                num = iscollect[_i].luadnum;
-                                                return _react2.default.createElement(
-                                                    _reactWeui.Article,
-                                                    { key: index, className: 'one', onClick: function onClick(e) {
-                                                            return _this3.clickEvent(e, index);
-                                                        } },
-                                                    _react2.default.createElement(
-                                                        'a',
-                                                        { id: "md" + index },
-                                                        _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: item } })
-                                                    ),
-                                                    _react2.default.createElement(
-                                                        'div',
-                                                        { className: 'm' },
-                                                        like ? _react2.default.createElement(
-                                                            'i',
-                                                            { className: 'iconfont icon-yes' },
-                                                            '\uE63A'
-                                                        ) : _react2.default.createElement(
-                                                            'i',
-                                                            { className: 'iconfont icon-no', onClick: function onClick() {
-                                                                    return _this3.like(topicid, title);
-                                                                } },
-                                                            '\uE67F'
-                                                        ),
-                                                        _react2.default.createElement(
-                                                            'span',
-                                                            { style: { marginRight: "10px" } },
-                                                            num
-                                                        ),
-                                                        store ? _react2.default.createElement(
-                                                            'i',
-                                                            { className: 'iconfont icon-yes', onClick: function onClick() {
-                                                                    return _this3.delcollect(topicid, ContentType, title, index);
-                                                                } },
-                                                            '\uE620'
-                                                        ) : _react2.default.createElement(
-                                                            'i',
-                                                            { className: 'iconfont icon-no', onClick: function onClick() {
-                                                                    return _this3.collect(topicid, ContentType, title, index);
-                                                                } },
-                                                            '\uE616'
-                                                        ),
-                                                        _react2.default.createElement(
-                                                            'i',
-                                                            { id: 'share_btn', className: 'iconfont', onClick: function onClick(e) {
-                                                                    return _this3.hideFlow("block", title, topicid);
-                                                                } },
-                                                            '\uE619'
-                                                        )
-                                                    )
-                                                );
-                                            }
-                                        }
-                                    }
-                                }, this),
+                                { className: 'menu' },
                                 _react2.default.createElement(
-                                    'div',
-                                    { className: 'none', style: { display: iframe.page.data !== null && iframe.page.data.result == "fail" ? "block" : "none" } },
-                                    iframe.page.data !== null && iframe.page.data.result == "fail" ? iframe.page.data.message : ""
-                                )
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        {
-                            className: 'pop',
-                            style: { display: this.state.fullpage_show ? "block" : "none" },
-                            onClick: function onClick() {
-                                return _this2.closePop();
-                            }
-                        },
-                        _react2.default.createElement(
-                            'div',
-                            { style: { height: '100vh', overflow: 'scroll' } },
-                            _react2.default.createElement(
-                                _reactWeui.Article,
-                                null,
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'menu' },
-                                    _react2.default.createElement(
-                                        'i',
-                                        { className: 'iconfont', onClick: function onClick() {
-                                                return _this2.closePop();
-                                            } },
-                                        '\uE638'
-                                    ),
-                                    _react2.default.createElement(
-                                        _reactRouter.Link,
-                                        { to: 'collect' },
-                                        _react2.default.createElement(
-                                            'div',
-                                            null,
-                                            '\u8FDB\u5165"\u6211\u7684\u6536\u85CF"'
-                                        )
-                                    )
+                                    'i',
+                                    { className: 'iconfont', onClick: function onClick() {
+                                            return _this2.closePop();
+                                        } },
+                                    '\uE638'
                                 ),
                                 _react2.default.createElement(
-                                    'div',
-                                    { className: 'menuIframe' },
-                                    _react2.default.createElement('iframe', { src: src, style: { height: menuHeight, border: "none" }, id: 'menuiframe' })
+                                    _reactRouter.Link,
+                                    { to: 'collect' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        null,
+                                        '\u8FDB\u5165"\u6211\u7684\u6536\u85CF"'
+                                    )
                                 )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'menuIframe', style: scroll },
+                                _react2.default.createElement('iframe', { src: src, style: { height: menuHeight, border: "none" }, id: 'menuiframe' })
                             )
                         )
                     )
@@ -77552,10 +77585,2831 @@ module.exports = function spread(callback) {
 /* 898 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "img/f5ec05bc9d7c9cfb388461913d849e95.png";
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(6);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LimitedInfiniteScroll = function (_Component) {
+    _inherits(LimitedInfiniteScroll, _Component);
+
+    function LimitedInfiniteScroll() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, LimitedInfiniteScroll);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = LimitedInfiniteScroll.__proto__ || Object.getPrototypeOf(LimitedInfiniteScroll)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            loading: false
+        }, _this.calcTop = function (element) {
+            if (!element) {
+                return 0;
+            }
+            return element.offsetTop + _this.calcTop(element.offsetParent);
+        }, _this.scrollHandler = function () {
+            var offset = void 0;
+            var el = _this.selfComponent;
+            if (_this.props.useWindow) {
+                var scrollTop = window.pageYOffset !== undefined ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+                offset = _this.calcTop(el) + el.offsetHeight - scrollTop - window.innerHeight;
+            } else {
+                offset = el.scrollHeight - el.parentNode.scrollTop - el.parentNode.clientHeight;
+            }
+
+            if (offset < Number(_this.props.threshold)) {
+                _this.detachScrollEvent();
+
+                if (typeof _this.props.loadNext === 'function') {
+                    _this.setState({
+                        loading: true
+                    });
+                    _this.props.loadNext(_this.page += 1);
+                }
+            }
+        }, _this.attachScrollEvent = function () {
+            if (!_this.props.hasMore) {
+                return;
+            }
+
+            var scrollEl = _this.props.useWindow ? window : _this.selfComponent.parentNode;
+            scrollEl.addEventListener('scroll', _this.scrollHandler, false);
+            scrollEl.addEventListener('resize', _this.scrollHandler, false);
+
+            if (_this.props.autoLoad && !_this.autoLoaded) {
+                _this.autoLoaded = true;
+                _this.scrollHandler();
+            }
+        }, _this.detachScrollEvent = function () {
+            var scrollEl = _this.props.useWindow ? window : _this.selfComponent.parentNode;
+
+            scrollEl.removeEventListener('scroll', _this.scrollHandler, false);
+            scrollEl.removeEventListener('resize', _this.scrollHandler, false);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(LimitedInfiniteScroll, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.page = this.props.pageStart;
+            this.autoLoaded = false;
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.attachScrollEvent();
+        }
+    }, {
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate(nextProps, nextState) {
+            if (this.props.children.length < nextProps.children.length) {
+                this.setState({
+                    loading: false
+                });
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            var _this2 = this;
+
+            if ((!this.props.limit || this.page < this.props.limit) && this.props.children.length > prevProps.children.length) {
+                setTimeout(function () {
+                    _this2.attachScrollEvent();
+                }, 0);
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.detachScrollEvent();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            var _props = this.props,
+                limit = _props.limit,
+                pageStart = _props.pageStart,
+                threshold = _props.threshold,
+                hasMore = _props.hasMore,
+                autoLoad = _props.autoLoad,
+                useWindow = _props.useWindow,
+                loadNext = _props.loadNext,
+                spinLoader = _props.spinLoader,
+                mannualLoader = _props.mannualLoader,
+                noMore = _props.noMore,
+                children = _props.children,
+                props = _objectWithoutProperties(_props, ['limit', 'pageStart', 'threshold', 'hasMore', 'autoLoad', 'useWindow', 'loadNext', 'spinLoader', 'mannualLoader', 'noMore', 'children']);
+
+            var cloneMannualLoader = _react2.default.cloneElement(mannualLoader, {
+                onClick: function onClick() {
+                    _this3.setState({
+                        loading: true
+                    });
+                    loadNext(_this3.page += 1);
+                }
+            });
+
+            props.ref = function (node) {
+                _this3.selfComponent = node;
+            };
+
+            return _react2.default.createElement(
+                'div',
+                props,
+                children,
+                this.state.loading && hasMore && _react2.default.createElement(
+                    'div',
+                    { style: { textAlign: 'center' } },
+                    spinLoader
+                ),
+                !this.state.loading && hasMore && limit > 0 && this.page >= limit && _react2.default.createElement(
+                    'div',
+                    { style: { textAlign: 'center' } },
+                    cloneMannualLoader
+                ),
+                !hasMore && noMore
+            );
+        }
+    }]);
+
+    return LimitedInfiniteScroll;
+}(_react.Component);
+
+LimitedInfiniteScroll.propTypes = {
+    limit: _propTypes2.default.number,
+    pageStart: _propTypes2.default.number,
+    threshold: _propTypes2.default.number,
+    hasMore: _propTypes2.default.bool,
+    autoLoad: _propTypes2.default.bool,
+    useWindow: _propTypes2.default.bool,
+    loadNext: _propTypes2.default.func.isRequired,
+    spinLoader: _propTypes2.default.element,
+    mannualLoader: _propTypes2.default.element,
+    noMore: _propTypes2.default.element
+};
+LimitedInfiniteScroll.defaultProps = {
+    limit: 5,
+    pageStart: 0,
+    threshold: 200,
+    hasMore: false,
+    autoLoad: true,
+    useWindow: true,
+    spinLoader: _react2.default.createElement(
+        'div',
+        { style: { textAlign: 'center', fontSize: 20, lineHeight: 1.5, paddingTop: 20, paddingBottom: 20, clear: 'both' } },
+        'Loading...'
+    ),
+    mannualLoader: _react2.default.createElement(
+        'div',
+        { style: { textAlign: 'center', clear: 'both', display: 'inline-block' } },
+        _react2.default.createElement(
+            'span',
+            { style: { fontSize: 20, lineHeight: 1.5, marginTop: 20, marginBottom: 20, display: 'inline-block', color: '#88899a', border: '1px solid #88899a', borderTopLeftRadius: 3, borderTopRightRadius: 3, borderBottomRightRadius: 3, borderBottomLeftRadius: 3, padding: '10px 20px', cursor: 'pointer' } },
+            'Load More'
+        )
+    ),
+    noMore: null
+};
+exports.default = LimitedInfiniteScroll;
+module.exports = exports['default'];
+
 
 /***/ }),
 /* 899 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/*!
+ * better-normal-scroll v1.9.1
+ * (c) 2016-2018 ustbhuangyi
+ * Released under the MIT License.
+ */
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
+function eventMixin(BScroll) {
+  BScroll.prototype.on = function (type, fn) {
+    var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
+
+    if (!this._events[type]) {
+      this._events[type] = [];
+    }
+
+    this._events[type].push([fn, context]);
+  };
+
+  BScroll.prototype.once = function (type, fn) {
+    var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
+
+    function magic() {
+      this.off(type, magic);
+
+      fn.apply(context, arguments);
+    }
+    // To expose the corresponding function method in order to execute the off method
+    magic.fn = fn;
+
+    this.on(type, magic);
+  };
+
+  BScroll.prototype.off = function (type, fn) {
+    var _events = this._events[type];
+    if (!_events) {
+      return;
+    }
+
+    var count = _events.length;
+    while (count--) {
+      if (_events[count][0] === fn || _events[count][0] && _events[count][0].fn === fn) {
+        _events[count][0] = undefined;
+      }
+    }
+  };
+
+  BScroll.prototype.trigger = function (type) {
+    var events = this._events[type];
+    if (!events) {
+      return;
+    }
+
+    var len = events.length;
+    var eventsCopy = [].concat(toConsumableArray(events));
+    for (var i = 0; i < len; i++) {
+      var event = eventsCopy[i];
+
+      var _event = slicedToArray(event, 2),
+          fn = _event[0],
+          context = _event[1];
+
+      if (fn) {
+        fn.apply(context, [].slice.call(arguments, 1));
+      }
+    }
+  };
+}
+
+// ssr support
+var inBrowser = typeof window !== 'undefined';
+var ua = inBrowser && navigator.userAgent.toLowerCase();
+var isWeChatDevTools = ua && /wechatdevtools/.test(ua);
+var isAndroid = ua && ua.indexOf('android') > 0;
+
+function getNow() {
+  return window.performance && window.performance.now ? window.performance.now() + window.performance.timing.navigationStart : +new Date();
+}
+
+function extend(target) {
+  for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    rest[_key - 1] = arguments[_key];
+  }
+
+  for (var i = 0; i < rest.length; i++) {
+    var source = rest[i];
+    for (var key in source) {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+function isUndef(v) {
+  return v === undefined || v === null;
+}
+
+var elementStyle = inBrowser && document.createElement('div').style;
+
+var vendor = function () {
+  if (!inBrowser) {
+    return false;
+  }
+  var transformNames = {
+    webkit: 'webkitTransform',
+    Moz: 'MozTransform',
+    O: 'OTransform',
+    ms: 'msTransform',
+    standard: 'transform'
+  };
+
+  for (var key in transformNames) {
+    if (elementStyle[transformNames[key]] !== undefined) {
+      return key;
+    }
+  }
+
+  return false;
+}();
+
+function prefixStyle(style) {
+  if (vendor === false) {
+    return false;
+  }
+
+  if (vendor === 'standard') {
+    if (style === 'transitionEnd') {
+      return 'transitionend';
+    }
+    return style;
+  }
+
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1);
+}
+
+function addEvent(el, type, fn, capture) {
+  el.addEventListener(type, fn, { passive: false, capture: !!capture });
+}
+
+function removeEvent(el, type, fn, capture) {
+  el.removeEventListener(type, fn, { passive: false, capture: !!capture });
+}
+
+function offset(el) {
+  var left = 0;
+  var top = 0;
+
+  while (el) {
+    left -= el.offsetLeft;
+    top -= el.offsetTop;
+    el = el.offsetParent;
+  }
+
+  return {
+    left: left,
+    top: top
+  };
+}
+
+var transform = prefixStyle('transform');
+
+var hasPerspective = inBrowser && prefixStyle('perspective') in elementStyle;
+// fix issue #361
+var hasTouch = inBrowser && ('ontouchstart' in window || isWeChatDevTools);
+var hasTransform = transform !== false;
+var hasTransition = inBrowser && prefixStyle('transition') in elementStyle;
+
+var style = {
+  transform: transform,
+  transitionTimingFunction: prefixStyle('transitionTimingFunction'),
+  transitionDuration: prefixStyle('transitionDuration'),
+  transitionProperty: prefixStyle('transitionProperty'),
+  transitionDelay: prefixStyle('transitionDelay'),
+  transformOrigin: prefixStyle('transformOrigin'),
+  transitionEnd: prefixStyle('transitionEnd')
+};
+
+var TOUCH_EVENT = 1;
+var MOUSE_EVENT = 2;
+
+var eventType = {
+  touchstart: TOUCH_EVENT,
+  touchmove: TOUCH_EVENT,
+  touchend: TOUCH_EVENT,
+
+  mousedown: MOUSE_EVENT,
+  mousemove: MOUSE_EVENT,
+  mouseup: MOUSE_EVENT
+};
+
+function getRect(el) {
+  if (el instanceof window.SVGElement) {
+    var rect = el.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height
+    };
+  } else {
+    return {
+      top: el.offsetTop,
+      left: el.offsetLeft,
+      width: el.offsetWidth,
+      height: el.offsetHeight
+    };
+  }
+}
+
+function preventDefaultException(el, exceptions) {
+  for (var i in exceptions) {
+    if (exceptions[i].test(el[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function tap(e, eventName) {
+  var ev = document.createEvent('Event');
+  ev.initEvent(eventName, true, true);
+  ev.pageX = e.pageX;
+  ev.pageY = e.pageY;
+  e.target.dispatchEvent(ev);
+}
+
+function click(e) {
+  var eventSource = void 0;
+  if (e.type === 'mouseup' || e.type === 'mousecancel') {
+    eventSource = e;
+  } else if (e.type === 'touchend' || e.type === 'touchcancel') {
+    eventSource = e.changedTouches[0];
+  }
+  var posSrc = {};
+  if (eventSource) {
+    posSrc.screenX = eventSource.screenX || 0;
+    posSrc.screenY = eventSource.screenY || 0;
+    posSrc.clientX = eventSource.clientX || 0;
+    posSrc.clientY = eventSource.clientY || 0;
+  }
+  var ev = void 0;
+  var event = 'click';
+  var bubbles = true;
+  var cancelable = true;
+  if (typeof MouseEvent !== 'undefined') {
+    try {
+      ev = new MouseEvent(event, extend({
+        bubbles: bubbles,
+        cancelable: cancelable
+      }, posSrc));
+    } catch (e) {
+      createEvent();
+    }
+  } else {
+    createEvent();
+  }
+
+  function createEvent() {
+    ev = document.createEvent('Event');
+    ev.initEvent(event, bubbles, cancelable);
+    extend(ev, posSrc);
+  }
+
+  // forwardedTouchEvent set to true in case of the conflict with fastclick
+  ev.forwardedTouchEvent = true;
+  ev._constructed = true;
+  e.target.dispatchEvent(ev);
+}
+
+function prepend(el, target) {
+  if (target.firstChild) {
+    before(el, target.firstChild);
+  } else {
+    target.appendChild(el);
+  }
+}
+
+function before(el, target) {
+  target.parentNode.insertBefore(el, target);
+}
+
+function removeChild(el, child) {
+  el.removeChild(child);
+}
+
+var DEFAULT_OPTIONS = {
+  startX: 0,
+  startY: 0,
+  scrollX: false,
+  scrollY: true,
+  freeScroll: false,
+  directionLockThreshold: 5,
+  eventPassthrough: '',
+  click: false,
+  tap: false,
+  bounce: true,
+  bounceTime: 800,
+  momentum: true,
+  momentumLimitTime: 300,
+  momentumLimitDistance: 15,
+  swipeTime: 2500,
+  swipeBounceTime: 500,
+  deceleration: 0.001,
+  flickLimitTime: 200,
+  flickLimitDistance: 100,
+  resizePolling: 60,
+  probeType: 0,
+  preventDefault: true,
+  preventDefaultException: {
+    tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/
+  },
+  HWCompositing: true,
+  useTransition: true,
+  useTransform: true,
+  bindToWrapper: false,
+  disableMouse: hasTouch,
+  disableTouch: !hasTouch,
+  observeDOM: true,
+  autoBlur: true,
+  /**
+   * for picker
+   * wheel: {
+   *   selectedIndex: 0,
+   *   rotate: 25,
+   *   adjustTime: 400
+   *   wheelWrapperClass: 'wheel-scroll',
+   *   wheelItemClass: 'wheel-item'
+   * }
+   */
+  wheel: false,
+  /**
+   * for slide
+   * snap: {
+   *   loop: false,
+   *   el: domEl,
+   *   threshold: 0.1,
+   *   stepX: 100,
+   *   stepY: 100,
+   *   speed: 400,
+   *   easing: {
+   *     style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+   *     fn: function (t) {
+   *       return t * (2 - t)
+   *     }
+   *   }
+   *   listenFlick: true
+   * }
+   */
+  snap: false,
+  /**
+   * for scrollbar
+   * scrollbar: {
+   *   fade: true,
+   *   interactive: false
+   * }
+   */
+  scrollbar: false,
+  /**
+   * for pull down and refresh
+   * pullDownRefresh: {
+   *   threshold: 50,
+   *   stop: 20
+   * }
+   */
+  pullDownRefresh: false,
+  /**
+   * for pull up and load
+   * pullUpLoad: {
+   *   threshold: 50
+   * }
+   */
+  pullUpLoad: false,
+  /**
+   * for mouse wheel
+   * mouseWheel:{
+   *   speed: 20,
+   *   invert: false
+   * }
+   */
+  mouseWheel: false,
+  stopPropagation: false
+};
+
+function initMixin(BScroll) {
+  BScroll.prototype._init = function (el, options) {
+    this._handleOptions(options);
+
+    // init private custom events
+    this._events = {};
+
+    this.x = 0;
+    this.y = 0;
+    this.directionX = 0;
+    this.directionY = 0;
+
+    this._addDOMEvents();
+
+    this._initExtFeatures();
+
+    this._watchTransition();
+
+    if (this.options.observeDOM) {
+      this._initDOMObserver();
+    }
+
+    if (this.options.autoBlur) {
+      this._handleAutoBlur();
+    }
+
+    this.refresh();
+
+    if (!this.options.snap) {
+      this.scrollTo(this.options.startX, this.options.startY);
+    }
+
+    this.enable();
+  };
+
+  BScroll.prototype._handleOptions = function (options) {
+    this.options = extend({}, DEFAULT_OPTIONS, options);
+
+    this.translateZ = this.options.HWCompositing && hasPerspective ? ' translateZ(0)' : '';
+
+    this.options.useTransition = this.options.useTransition && hasTransition;
+    this.options.useTransform = this.options.useTransform && hasTransform;
+
+    this.options.preventDefault = !this.options.eventPassthrough && this.options.preventDefault;
+
+    // If you want eventPassthrough I have to lock one of the axes
+    this.options.scrollX = this.options.eventPassthrough === 'horizontal' ? false : this.options.scrollX;
+    this.options.scrollY = this.options.eventPassthrough === 'vertical' ? false : this.options.scrollY;
+
+    // With eventPassthrough we also need lockDirection mechanism
+    this.options.freeScroll = this.options.freeScroll && !this.options.eventPassthrough;
+    this.options.directionLockThreshold = this.options.eventPassthrough ? 0 : this.options.directionLockThreshold;
+
+    if (this.options.tap === true) {
+      this.options.tap = 'tap';
+    }
+  };
+
+  BScroll.prototype._addDOMEvents = function () {
+    var eventOperation = addEvent;
+    this._handleDOMEvents(eventOperation);
+  };
+
+  BScroll.prototype._removeDOMEvents = function () {
+    var eventOperation = removeEvent;
+    this._handleDOMEvents(eventOperation);
+  };
+
+  BScroll.prototype._handleDOMEvents = function (eventOperation) {
+    var target = this.options.bindToWrapper ? this.wrapper : window;
+    eventOperation(window, 'orientationchange', this);
+    eventOperation(window, 'resize', this);
+
+    if (this.options.click) {
+      eventOperation(this.wrapper, 'click', this, true);
+    }
+
+    if (!this.options.disableMouse) {
+      eventOperation(this.wrapper, 'mousedown', this);
+      eventOperation(target, 'mousemove', this);
+      eventOperation(target, 'mousecancel', this);
+      eventOperation(target, 'mouseup', this);
+    }
+
+    if (hasTouch && !this.options.disableTouch) {
+      eventOperation(this.wrapper, 'touchstart', this);
+      eventOperation(target, 'touchmove', this);
+      eventOperation(target, 'touchcancel', this);
+      eventOperation(target, 'touchend', this);
+    }
+
+    eventOperation(this.scroller, style.transitionEnd, this);
+  };
+
+  BScroll.prototype._initExtFeatures = function () {
+    if (this.options.snap) {
+      this._initSnap();
+    }
+    if (this.options.scrollbar) {
+      this._initScrollbar();
+    }
+    if (this.options.pullUpLoad) {
+      this._initPullUp();
+    }
+    if (this.options.pullDownRefresh) {
+      this._initPullDown();
+    }
+    if (this.options.wheel) {
+      this._initWheel();
+    }
+    if (this.options.mouseWheel) {
+      this._initMouseWheel();
+    }
+  };
+
+  BScroll.prototype._watchTransition = function () {
+    if (typeof Object.defineProperty !== 'function') {
+      return;
+    }
+    var me = this;
+    var isInTransition = false;
+    Object.defineProperty(this, 'isInTransition', {
+      get: function get() {
+        return isInTransition;
+      },
+      set: function set(newVal) {
+        isInTransition = newVal;
+        // fix issue #359
+        var el = me.scroller.children.length ? me.scroller.children : [me.scroller];
+        var pointerEvents = isInTransition && !me.pulling ? 'none' : 'auto';
+        for (var i = 0; i < el.length; i++) {
+          el[i].style.pointerEvents = pointerEvents;
+        }
+      }
+    });
+  };
+
+  BScroll.prototype._handleAutoBlur = function () {
+    this.on('beforeScrollStart', function () {
+      var activeElement = document.activeElement;
+      if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA')) {
+        activeElement.blur();
+      }
+    });
+  };
+
+  BScroll.prototype._initDOMObserver = function () {
+    var _this = this;
+
+    if (typeof MutationObserver !== 'undefined') {
+      var timer = void 0;
+      var observer = new MutationObserver(function (mutations) {
+        // don't do any refresh during the transition, or outside of the boundaries
+        if (_this._shouldNotRefresh()) {
+          return;
+        }
+        var immediateRefresh = false;
+        var deferredRefresh = false;
+        for (var i = 0; i < mutations.length; i++) {
+          var mutation = mutations[i];
+          if (mutation.type !== 'attributes') {
+            immediateRefresh = true;
+            break;
+          } else {
+            if (mutation.target !== _this.scroller) {
+              deferredRefresh = true;
+              break;
+            }
+          }
+        }
+        if (immediateRefresh) {
+          _this.refresh();
+        } else if (deferredRefresh) {
+          // attributes changes too often
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            if (!_this._shouldNotRefresh()) {
+              _this.refresh();
+            }
+          }, 60);
+        }
+      });
+      var config = {
+        attributes: true,
+        childList: true,
+        subtree: true
+      };
+      observer.observe(this.scroller, config);
+
+      this.on('destroy', function () {
+        observer.disconnect();
+      });
+    } else {
+      this._checkDOMUpdate();
+    }
+  };
+
+  BScroll.prototype._shouldNotRefresh = function () {
+    var outsideBoundaries = this.x > 0 || this.x < this.maxScrollX || this.y > 0 || this.y < this.maxScrollY;
+
+    return this.isInTransition || this.stopFromTransition || outsideBoundaries;
+  };
+
+  BScroll.prototype._checkDOMUpdate = function () {
+    var scrollerRect = getRect(this.scroller);
+    var oldWidth = scrollerRect.width;
+    var oldHeight = scrollerRect.height;
+
+    function check() {
+      if (this.destroyed) {
+        return;
+      }
+      scrollerRect = getRect(this.scroller);
+      var newWidth = scrollerRect.width;
+      var newHeight = scrollerRect.height;
+
+      if (oldWidth !== newWidth || oldHeight !== newHeight) {
+        this.refresh();
+      }
+      oldWidth = newWidth;
+      oldHeight = newHeight;
+
+      next.call(this);
+    }
+
+    function next() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        check.call(_this2);
+      }, 1000);
+    }
+
+    next.call(this);
+  };
+
+  BScroll.prototype.handleEvent = function (e) {
+    switch (e.type) {
+      case 'touchstart':
+      case 'mousedown':
+        this._start(e);
+        break;
+      case 'touchmove':
+      case 'mousemove':
+        this._move(e);
+        break;
+      case 'touchend':
+      case 'mouseup':
+      case 'touchcancel':
+      case 'mousecancel':
+        this._end(e);
+        break;
+      case 'orientationchange':
+      case 'resize':
+        this._resize();
+        break;
+      case 'transitionend':
+      case 'webkitTransitionEnd':
+      case 'oTransitionEnd':
+      case 'MSTransitionEnd':
+        this._transitionEnd(e);
+        break;
+      case 'click':
+        if (this.enabled && !e._constructed) {
+          if (!preventDefaultException(e.target, this.options.preventDefaultException)) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }
+        break;
+      case 'wheel':
+      case 'DOMMouseScroll':
+      case 'mousewheel':
+        this._onMouseWheel(e);
+        break;
+    }
+  };
+
+  BScroll.prototype.refresh = function () {
+    var wrapperRect = getRect(this.wrapper);
+    this.wrapperWidth = wrapperRect.width;
+    this.wrapperHeight = wrapperRect.height;
+
+    var scrollerRect = getRect(this.scroller);
+    this.scrollerWidth = scrollerRect.width;
+    this.scrollerHeight = scrollerRect.height;
+
+    var wheel = this.options.wheel;
+    if (wheel) {
+      this.items = this.scroller.children;
+      this.options.itemHeight = this.itemHeight = this.items.length ? this.scrollerHeight / this.items.length : 0;
+      if (this.selectedIndex === undefined) {
+        this.selectedIndex = wheel.selectedIndex || 0;
+      }
+      this.options.startY = -this.selectedIndex * this.itemHeight;
+      this.maxScrollX = 0;
+      this.maxScrollY = -this.itemHeight * (this.items.length - 1);
+    } else {
+      this.maxScrollX = this.wrapperWidth - this.scrollerWidth;
+      this.maxScrollY = this.wrapperHeight - this.scrollerHeight;
+    }
+
+    this.hasHorizontalScroll = this.options.scrollX && this.maxScrollX < 0;
+    this.hasVerticalScroll = this.options.scrollY && this.maxScrollY < 0;
+
+    if (!this.hasHorizontalScroll) {
+      this.maxScrollX = 0;
+      this.scrollerWidth = this.wrapperWidth;
+    }
+
+    if (!this.hasVerticalScroll) {
+      this.maxScrollY = 0;
+      this.scrollerHeight = this.wrapperHeight;
+    }
+
+    this.endTime = 0;
+    this.directionX = 0;
+    this.directionY = 0;
+    this.wrapperOffset = offset(this.wrapper);
+
+    this.trigger('refresh');
+
+    this.resetPosition();
+  };
+
+  BScroll.prototype.enable = function () {
+    this.enabled = true;
+  };
+
+  BScroll.prototype.disable = function () {
+    this.enabled = false;
+  };
+}
+
+var ease = {
+	// easeOutQuint
+	swipe: {
+		style: 'cubic-bezier(0.23, 1, 0.32, 1)',
+		fn: function fn(t) {
+			return 1 + --t * t * t * t * t;
+		}
+	},
+	// easeOutQuard
+	swipeBounce: {
+		style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+		fn: function fn(t) {
+			return t * (2 - t);
+		}
+	},
+	// easeOutQuart
+	bounce: {
+		style: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+		fn: function fn(t) {
+			return 1 - --t * t * t * t;
+		}
+	}
+};
+
+function momentum(current, start, time, lowerMargin, wrapperSize, options) {
+  var distance = current - start;
+  var speed = Math.abs(distance) / time;
+
+  var deceleration = options.deceleration,
+      itemHeight = options.itemHeight,
+      swipeBounceTime = options.swipeBounceTime,
+      wheel = options.wheel,
+      swipeTime = options.swipeTime;
+
+  var duration = swipeTime;
+  var rate = wheel ? 4 : 15;
+
+  var destination = current + speed / deceleration * (distance < 0 ? -1 : 1);
+
+  if (wheel && itemHeight) {
+    destination = Math.round(destination / itemHeight) * itemHeight;
+  }
+
+  if (destination < lowerMargin) {
+    destination = wrapperSize ? Math.max(lowerMargin - wrapperSize / 4, lowerMargin - wrapperSize / rate * speed) : lowerMargin;
+    duration = swipeBounceTime;
+  } else if (destination > 0) {
+    destination = wrapperSize ? Math.min(wrapperSize / 4, wrapperSize / rate * speed) : 0;
+    duration = swipeBounceTime;
+  }
+
+  return {
+    destination: Math.round(destination),
+    duration: duration
+  };
+}
+
+var DEFAULT_INTERVAL = 100 / 60;
+
+function noop() {}
+
+var requestAnimationFrame = function () {
+  if (!inBrowser) {
+    /* istanbul ignore if */
+    return noop;
+  }
+  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame ||
+  // if all else fails, use setTimeout
+  function (callback) {
+    return window.setTimeout(callback, (callback.interval || DEFAULT_INTERVAL) / 2); // make interval as precise as possible.
+  };
+}();
+
+var cancelAnimationFrame = function () {
+  if (!inBrowser) {
+    /* istanbul ignore if */
+    return noop;
+  }
+  return window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
+    window.clearTimeout(id);
+  };
+}();
+
+var DIRECTION_UP = 1;
+var DIRECTION_DOWN = -1;
+var DIRECTION_LEFT = 1;
+var DIRECTION_RIGHT = -1;
+
+var PROBE_DEBOUNCE = 1;
+
+var PROBE_REALTIME = 3;
+
+function warn(msg) {
+  console.error('[BScroll warn]: ' + msg);
+}
+
+function assert(condition, msg) {
+  if (!condition) {
+    throw new Error('[BScroll] ' + msg);
+  }
+}
+
+function coreMixin(BScroll) {
+  BScroll.prototype._start = function (e) {
+    var _eventType = eventType[e.type];
+    if (_eventType !== TOUCH_EVENT) {
+      if (e.button !== 0) {
+        return;
+      }
+    }
+    if (!this.enabled || this.destroyed || this.initiated && this.initiated !== _eventType) {
+      return;
+    }
+    this.initiated = _eventType;
+
+    if (this.options.preventDefault && !preventDefaultException(e.target, this.options.preventDefaultException)) {
+      e.preventDefault();
+    }
+    if (this.options.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    this.moved = false;
+    this.distX = 0;
+    this.distY = 0;
+    this.directionX = 0;
+    this.directionY = 0;
+    this.movingDirectionX = 0;
+    this.movingDirectionY = 0;
+    this.directionLocked = 0;
+
+    this._transitionTime();
+    this.startTime = getNow();
+
+    if (this.options.wheel) {
+      this.target = e.target;
+    }
+
+    this.stop();
+
+    var point = e.touches ? e.touches[0] : e;
+
+    this.startX = this.x;
+    this.startY = this.y;
+    this.absStartX = this.x;
+    this.absStartY = this.y;
+    this.pointX = point.pageX;
+    this.pointY = point.pageY;
+
+    this.trigger('beforeScrollStart');
+  };
+
+  BScroll.prototype._move = function (e) {
+    if (!this.enabled || this.destroyed || eventType[e.type] !== this.initiated) {
+      return;
+    }
+
+    if (this.options.preventDefault) {
+      e.preventDefault();
+    }
+    if (this.options.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    var point = e.touches ? e.touches[0] : e;
+    var deltaX = point.pageX - this.pointX;
+    var deltaY = point.pageY - this.pointY;
+
+    this.pointX = point.pageX;
+    this.pointY = point.pageY;
+
+    this.distX += deltaX;
+    this.distY += deltaY;
+
+    var absDistX = Math.abs(this.distX);
+    var absDistY = Math.abs(this.distY);
+
+    var timestamp = getNow();
+
+    // We need to move at least momentumLimitDistance pixels for the scrolling to initiate
+    if (timestamp - this.endTime > this.options.momentumLimitTime && absDistY < this.options.momentumLimitDistance && absDistX < this.options.momentumLimitDistance) {
+      return;
+    }
+
+    // If you are scrolling in one direction lock the other
+    if (!this.directionLocked && !this.options.freeScroll) {
+      if (absDistX > absDistY + this.options.directionLockThreshold) {
+        this.directionLocked = 'h'; // lock horizontally
+      } else if (absDistY >= absDistX + this.options.directionLockThreshold) {
+        this.directionLocked = 'v'; // lock vertically
+      } else {
+        this.directionLocked = 'n'; // no lock
+      }
+    }
+
+    if (this.directionLocked === 'h') {
+      if (this.options.eventPassthrough === 'vertical') {
+        e.preventDefault();
+      } else if (this.options.eventPassthrough === 'horizontal') {
+        this.initiated = false;
+        return;
+      }
+      deltaY = 0;
+    } else if (this.directionLocked === 'v') {
+      if (this.options.eventPassthrough === 'horizontal') {
+        e.preventDefault();
+      } else if (this.options.eventPassthrough === 'vertical') {
+        this.initiated = false;
+        return;
+      }
+      deltaX = 0;
+    }
+
+    deltaX = this.hasHorizontalScroll ? deltaX : 0;
+    deltaY = this.hasVerticalScroll ? deltaY : 0;
+    this.movingDirectionX = deltaX > 0 ? DIRECTION_RIGHT : deltaX < 0 ? DIRECTION_LEFT : 0;
+    this.movingDirectionY = deltaY > 0 ? DIRECTION_DOWN : deltaY < 0 ? DIRECTION_UP : 0;
+
+    var newX = this.x + deltaX;
+    var newY = this.y + deltaY;
+
+    // Slow down or stop if outside of the boundaries
+    if (newX > 0 || newX < this.maxScrollX) {
+      if (this.options.bounce) {
+        newX = this.x + deltaX / 3;
+      } else {
+        newX = newX > 0 ? 0 : this.maxScrollX;
+      }
+    }
+    if (newY > 0 || newY < this.maxScrollY) {
+      if (this.options.bounce) {
+        newY = this.y + deltaY / 3;
+      } else {
+        newY = newY > 0 ? 0 : this.maxScrollY;
+      }
+    }
+
+    if (!this.moved) {
+      this.moved = true;
+      this.trigger('scrollStart');
+    }
+
+    this._translate(newX, newY);
+
+    if (timestamp - this.startTime > this.options.momentumLimitTime) {
+      this.startTime = timestamp;
+      this.startX = this.x;
+      this.startY = this.y;
+
+      if (this.options.probeType === PROBE_DEBOUNCE) {
+        this.trigger('scroll', {
+          x: this.x,
+          y: this.y
+        });
+      }
+    }
+
+    if (this.options.probeType > PROBE_DEBOUNCE) {
+      this.trigger('scroll', {
+        x: this.x,
+        y: this.y
+      });
+    }
+
+    var scrollLeft = document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
+    var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+
+    var pX = this.pointX - scrollLeft;
+    var pY = this.pointY - scrollTop;
+
+    if (pX > document.documentElement.clientWidth - this.options.momentumLimitDistance || pX < this.options.momentumLimitDistance || pY < this.options.momentumLimitDistance || pY > document.documentElement.clientHeight - this.options.momentumLimitDistance) {
+      this._end(e);
+    }
+  };
+
+  BScroll.prototype._end = function (e) {
+    if (!this.enabled || this.destroyed || eventType[e.type] !== this.initiated) {
+      return;
+    }
+    this.initiated = false;
+
+    if (this.options.preventDefault && !preventDefaultException(e.target, this.options.preventDefaultException)) {
+      e.preventDefault();
+    }
+    if (this.options.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    this.trigger('touchEnd', {
+      x: this.x,
+      y: this.y
+    });
+
+    this.isInTransition = false;
+
+    // ensures that the last position is rounded
+    var newX = Math.round(this.x);
+    var newY = Math.round(this.y);
+
+    var deltaX = newX - this.absStartX;
+    var deltaY = newY - this.absStartY;
+    this.directionX = deltaX > 0 ? DIRECTION_RIGHT : deltaX < 0 ? DIRECTION_LEFT : 0;
+    this.directionY = deltaY > 0 ? DIRECTION_DOWN : deltaY < 0 ? DIRECTION_UP : 0;
+
+    // if configure pull down refresh, check it first
+    if (this.options.pullDownRefresh && this._checkPullDown()) {
+      return;
+    }
+
+    // check if it is a click operation
+    if (this._checkClick(e)) {
+      this.trigger('scrollCancel');
+      return;
+    }
+
+    // reset if we are outside of the boundaries
+    if (this.resetPosition(this.options.bounceTime, ease.bounce)) {
+      return;
+    }
+
+    this.scrollTo(newX, newY);
+
+    this.endTime = getNow();
+    var duration = this.endTime - this.startTime;
+    var absDistX = Math.abs(newX - this.startX);
+    var absDistY = Math.abs(newY - this.startY);
+
+    // flick
+    if (this._events.flick && duration < this.options.flickLimitTime && absDistX < this.options.flickLimitDistance && absDistY < this.options.flickLimitDistance) {
+      this.trigger('flick');
+      return;
+    }
+
+    var time = 0;
+    // start momentum animation if needed
+    if (this.options.momentum && duration < this.options.momentumLimitTime && (absDistY > this.options.momentumLimitDistance || absDistX > this.options.momentumLimitDistance)) {
+      var momentumX = this.hasHorizontalScroll ? momentum(this.x, this.startX, duration, this.maxScrollX, this.options.bounce ? this.wrapperWidth : 0, this.options) : { destination: newX, duration: 0 };
+      var momentumY = this.hasVerticalScroll ? momentum(this.y, this.startY, duration, this.maxScrollY, this.options.bounce ? this.wrapperHeight : 0, this.options) : { destination: newY, duration: 0 };
+      newX = momentumX.destination;
+      newY = momentumY.destination;
+      time = Math.max(momentumX.duration, momentumY.duration);
+      this.isInTransition = true;
+    } else {
+      if (this.options.wheel) {
+        newY = Math.round(newY / this.itemHeight) * this.itemHeight;
+        time = this.options.wheel.adjustTime || 400;
+      }
+    }
+
+    var easing = ease.swipe;
+    if (this.options.snap) {
+      var snap = this._nearestSnap(newX, newY);
+      this.currentPage = snap;
+      time = this.options.snapSpeed || Math.max(Math.max(Math.min(Math.abs(newX - snap.x), 1000), Math.min(Math.abs(newY - snap.y), 1000)), 300);
+      newX = snap.x;
+      newY = snap.y;
+
+      this.directionX = 0;
+      this.directionY = 0;
+      easing = this.options.snap.easing || ease.bounce;
+    }
+
+    if (newX !== this.x || newY !== this.y) {
+      // change easing function when scroller goes out of the boundaries
+      if (newX > 0 || newX < this.maxScrollX || newY > 0 || newY < this.maxScrollY) {
+        easing = ease.swipeBounce;
+      }
+      this.scrollTo(newX, newY, time, easing);
+      return;
+    }
+
+    if (this.options.wheel) {
+      this.selectedIndex = Math.round(Math.abs(this.y / this.itemHeight));
+    }
+    this.trigger('scrollEnd', {
+      x: this.x,
+      y: this.y
+    });
+  };
+
+  BScroll.prototype._checkClick = function (e) {
+    // when in the process of pulling down, it should not prevent click
+    var preventClick = this.stopFromTransition && !this.pulling;
+    this.stopFromTransition = false;
+
+    // we scrolled less than 15 pixels
+    if (!this.moved) {
+      if (this.options.wheel) {
+        if (this.target && this.target.className === this.options.wheel.wheelWrapperClass) {
+          var index = Math.abs(Math.round(this.y / this.itemHeight));
+          var _offset = Math.round((this.pointY + offset(this.target).top - this.itemHeight / 2) / this.itemHeight);
+          this.target = this.items[index + _offset];
+        }
+        this.scrollToElement(this.target, this.options.wheel.adjustTime || 400, true, true, ease.swipe);
+        return true;
+      } else {
+        if (!preventClick) {
+          if (this.options.tap) {
+            tap(e, this.options.tap);
+          }
+
+          if (this.options.click && !preventDefaultException(e.target, this.options.preventDefaultException)) {
+            click(e);
+          }
+          return true;
+        }
+        return false;
+      }
+    }
+    return false;
+  };
+
+  BScroll.prototype._resize = function () {
+    var _this = this;
+
+    if (!this.enabled) {
+      return;
+    }
+    // fix a scroll problem under Android condition
+    if (isAndroid) {
+      this.wrapper.scrollTop = 0;
+    }
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(function () {
+      _this.refresh();
+    }, this.options.resizePolling);
+  };
+
+  BScroll.prototype._startProbe = function () {
+    cancelAnimationFrame(this.probeTimer);
+    this.probeTimer = requestAnimationFrame(probe);
+
+    var me = this;
+
+    function probe() {
+      var pos = me.getComputedPosition();
+      me.trigger('scroll', pos);
+      if (!me.isInTransition) {
+        me.trigger('scrollEnd', pos);
+        return;
+      }
+      me.probeTimer = requestAnimationFrame(probe);
+    }
+  };
+
+  BScroll.prototype._transitionProperty = function () {
+    var property = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'transform';
+
+    this.scrollerStyle[style.transitionProperty] = property;
+  };
+
+  BScroll.prototype._transitionTime = function () {
+    var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    this.scrollerStyle[style.transitionDuration] = time + 'ms';
+
+    if (this.options.wheel) {
+      for (var i = 0; i < this.items.length; i++) {
+        this.items[i].style[style.transitionDuration] = time + 'ms';
+      }
+    }
+
+    if (this.indicators) {
+      for (var _i = 0; _i < this.indicators.length; _i++) {
+        this.indicators[_i].transitionTime(time);
+      }
+    }
+  };
+
+  BScroll.prototype._transitionTimingFunction = function (easing) {
+    this.scrollerStyle[style.transitionTimingFunction] = easing;
+
+    if (this.options.wheel) {
+      for (var i = 0; i < this.items.length; i++) {
+        this.items[i].style[style.transitionTimingFunction] = easing;
+      }
+    }
+
+    if (this.indicators) {
+      for (var _i2 = 0; _i2 < this.indicators.length; _i2++) {
+        this.indicators[_i2].transitionTimingFunction(easing);
+      }
+    }
+  };
+
+  BScroll.prototype._transitionEnd = function (e) {
+    if (e.target !== this.scroller || !this.isInTransition) {
+      return;
+    }
+
+    this._transitionTime();
+    if (!this.pulling && !this.resetPosition(this.options.bounceTime, ease.bounce)) {
+      this.isInTransition = false;
+      if (this.options.probeType !== PROBE_REALTIME) {
+        this.trigger('scrollEnd', {
+          x: this.x,
+          y: this.y
+        });
+      }
+    }
+  };
+
+  BScroll.prototype._translate = function (x, y) {
+    assert(!isUndef(x) && !isUndef(y), 'Oops! translate x or y is null or undefined. please check your code.');
+    if (this.options.useTransform) {
+      this.scrollerStyle[style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.translateZ;
+    } else {
+      x = Math.round(x);
+      y = Math.round(y);
+      this.scrollerStyle.left = x + 'px';
+      this.scrollerStyle.top = y + 'px';
+    }
+
+    if (this.options.wheel) {
+      var _options$wheel$rotate = this.options.wheel.rotate,
+          rotate = _options$wheel$rotate === undefined ? 25 : _options$wheel$rotate;
+
+      for (var i = 0; i < this.items.length; i++) {
+        var deg = rotate * (y / this.itemHeight + i);
+        this.items[i].style[style.transform] = 'rotateX(' + deg + 'deg)';
+      }
+    }
+
+    this.x = x;
+    this.y = y;
+
+    if (this.indicators) {
+      for (var _i3 = 0; _i3 < this.indicators.length; _i3++) {
+        this.indicators[_i3].updatePosition();
+      }
+    }
+  };
+
+  BScroll.prototype._animate = function (destX, destY, duration, easingFn) {
+    var me = this;
+    var startX = this.x;
+    var startY = this.y;
+    var startTime = getNow();
+    var destTime = startTime + duration;
+
+    function step() {
+      var now = getNow();
+
+      if (now >= destTime) {
+        me.isAnimating = false;
+        me._translate(destX, destY);
+
+        if (!me.pulling && !me.resetPosition(me.options.bounceTime)) {
+          me.trigger('scrollEnd', {
+            x: me.x,
+            y: me.y
+          });
+        }
+        return;
+      }
+      now = (now - startTime) / duration;
+      var easing = easingFn(now);
+      var newX = (destX - startX) * easing + startX;
+      var newY = (destY - startY) * easing + startY;
+
+      me._translate(newX, newY);
+
+      if (me.isAnimating) {
+        me.animateTimer = requestAnimationFrame(step);
+      }
+
+      if (me.options.probeType === PROBE_REALTIME) {
+        me.trigger('scroll', {
+          x: me.x,
+          y: me.y
+        });
+      }
+    }
+
+    this.isAnimating = true;
+    cancelAnimationFrame(this.animateTimer);
+    step();
+  };
+
+  BScroll.prototype.scrollBy = function (x, y) {
+    var time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : ease.bounce;
+
+    x = this.x + x;
+    y = this.y + y;
+
+    this.scrollTo(x, y, time, easing);
+  };
+
+  BScroll.prototype.scrollTo = function (x, y) {
+    var time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : ease.bounce;
+
+    this.isInTransition = this.options.useTransition && time > 0 && (x !== this.x || y !== this.y);
+
+    if (!time || this.options.useTransition) {
+      this._transitionProperty();
+      this._transitionTimingFunction(easing.style);
+      this._transitionTime(time);
+      this._translate(x, y);
+
+      if (time && this.options.probeType === PROBE_REALTIME) {
+        this._startProbe();
+      }
+
+      if (this.options.wheel) {
+        if (y > 0) {
+          this.selectedIndex = 0;
+        } else if (y < this.maxScrollY) {
+          this.selectedIndex = this.items.length - 1;
+        } else {
+          this.selectedIndex = Math.round(Math.abs(y / this.itemHeight));
+        }
+      }
+    } else {
+      this._animate(x, y, time, easing.fn);
+    }
+  };
+
+  BScroll.prototype.scrollToElement = function (el, time, offsetX, offsetY, easing) {
+    if (!el) {
+      return;
+    }
+    el = el.nodeType ? el : this.scroller.querySelector(el);
+
+    if (this.options.wheel && el.className !== this.options.wheel.wheelItemClass) {
+      return;
+    }
+
+    var pos = offset(el);
+    pos.left -= this.wrapperOffset.left;
+    pos.top -= this.wrapperOffset.top;
+
+    // if offsetX/Y are true we center the element to the screen
+    if (offsetX === true) {
+      offsetX = Math.round(el.offsetWidth / 2 - this.wrapper.offsetWidth / 2);
+    }
+    if (offsetY === true) {
+      offsetY = Math.round(el.offsetHeight / 2 - this.wrapper.offsetHeight / 2);
+    }
+
+    pos.left -= offsetX || 0;
+    pos.top -= offsetY || 0;
+    pos.left = pos.left > 0 ? 0 : pos.left < this.maxScrollX ? this.maxScrollX : pos.left;
+    pos.top = pos.top > 0 ? 0 : pos.top < this.maxScrollY ? this.maxScrollY : pos.top;
+
+    if (this.options.wheel) {
+      pos.top = Math.round(pos.top / this.itemHeight) * this.itemHeight;
+    }
+
+    this.scrollTo(pos.left, pos.top, time, easing);
+  };
+
+  BScroll.prototype.resetPosition = function () {
+    var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var easeing = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ease.bounce;
+
+    var x = this.x;
+    var roundX = Math.round(x);
+    if (!this.hasHorizontalScroll || roundX > 0) {
+      x = 0;
+    } else if (roundX < this.maxScrollX) {
+      x = this.maxScrollX;
+    }
+
+    var y = this.y;
+    var roundY = Math.round(y);
+    if (!this.hasVerticalScroll || roundY > 0) {
+      y = 0;
+    } else if (roundY < this.maxScrollY) {
+      y = this.maxScrollY;
+    }
+
+    if (x === this.x && y === this.y) {
+      return false;
+    }
+
+    this.scrollTo(x, y, time, easeing);
+
+    return true;
+  };
+
+  BScroll.prototype.getComputedPosition = function () {
+    var matrix = window.getComputedStyle(this.scroller, null);
+    var x = void 0;
+    var y = void 0;
+
+    if (this.options.useTransform) {
+      matrix = matrix[style.transform].split(')')[0].split(', ');
+      x = +(matrix[12] || matrix[4]);
+      y = +(matrix[13] || matrix[5]);
+    } else {
+      x = +matrix.left.replace(/[^-\d.]/g, '');
+      y = +matrix.top.replace(/[^-\d.]/g, '');
+    }
+
+    return {
+      x: x,
+      y: y
+    };
+  };
+
+  BScroll.prototype.stop = function () {
+    if (this.options.useTransition && this.isInTransition) {
+      this.isInTransition = false;
+      var pos = this.getComputedPosition();
+      this._translate(pos.x, pos.y);
+      if (this.options.wheel) {
+        this.target = this.items[Math.round(-pos.y / this.itemHeight)];
+      } else {
+        this.trigger('scrollEnd', {
+          x: this.x,
+          y: this.y
+        });
+      }
+      this.stopFromTransition = true;
+    } else if (!this.options.useTransition && this.isAnimating) {
+      this.isAnimating = false;
+      this.trigger('scrollEnd', {
+        x: this.x,
+        y: this.y
+      });
+      this.stopFromTransition = true;
+    }
+  };
+
+  BScroll.prototype.destroy = function () {
+    this.destroyed = true;
+    this.trigger('destroy');
+
+    this._removeDOMEvents();
+    // remove custom events
+    this._events = {};
+  };
+}
+
+function snapMixin(BScroll) {
+  BScroll.prototype._initSnap = function () {
+    var _this = this;
+
+    this.currentPage = {};
+    var snap = this.options.snap;
+
+    if (snap.loop) {
+      var children = this.scroller.children;
+      if (children.length > 1) {
+        prepend(children[children.length - 1].cloneNode(true), this.scroller);
+        this.scroller.appendChild(children[1].cloneNode(true));
+      } else {
+        // Loop does not make any sense if there is only one child.
+        snap.loop = false;
+      }
+    }
+
+    var el = snap.el;
+    if (typeof el === 'string') {
+      el = this.scroller.querySelectorAll(el);
+    }
+
+    this.on('refresh', function () {
+      _this.pages = [];
+
+      if (!_this.wrapperWidth || !_this.wrapperHeight || !_this.scrollerWidth || !_this.scrollerHeight) {
+        return;
+      }
+
+      var stepX = snap.stepX || _this.wrapperWidth;
+      var stepY = snap.stepY || _this.wrapperHeight;
+
+      var x = 0;
+      var y = void 0;
+      var cx = void 0;
+      var cy = void 0;
+      var i = 0;
+      var l = void 0;
+      var m = 0;
+      var n = void 0;
+      var rect = void 0;
+      if (!el) {
+        cx = Math.round(stepX / 2);
+        cy = Math.round(stepY / 2);
+
+        while (x > -_this.scrollerWidth) {
+          _this.pages[i] = [];
+          l = 0;
+          y = 0;
+
+          while (y > -_this.scrollerHeight) {
+            _this.pages[i][l] = {
+              x: Math.max(x, _this.maxScrollX),
+              y: Math.max(y, _this.maxScrollY),
+              width: stepX,
+              height: stepY,
+              cx: x - cx,
+              cy: y - cy
+            };
+
+            y -= stepY;
+            l++;
+          }
+
+          x -= stepX;
+          i++;
+        }
+      } else {
+        l = el.length;
+        n = -1;
+
+        for (; i < l; i++) {
+          rect = getRect(el[i]);
+          if (i === 0 || rect.left <= getRect(el[i - 1]).left) {
+            m = 0;
+            n++;
+          }
+
+          if (!_this.pages[m]) {
+            _this.pages[m] = [];
+          }
+
+          x = Math.max(-rect.left, _this.maxScrollX);
+          y = Math.max(-rect.top, _this.maxScrollY);
+          cx = x - Math.round(rect.width / 2);
+          cy = y - Math.round(rect.height / 2);
+
+          _this.pages[m][n] = {
+            x: x,
+            y: y,
+            width: rect.width,
+            height: rect.height,
+            cx: cx,
+            cy: cy
+          };
+
+          if (x > _this.maxScrollX) {
+            m++;
+          }
+        }
+      }
+
+      _this._checkSnapLoop();
+
+      var initPageX = snap._loopX ? 1 : 0;
+      var initPageY = snap._loopY ? 1 : 0;
+      _this._goToPage(_this.currentPage.pageX || initPageX, _this.currentPage.pageY || initPageY, 0);
+
+      // Update snap threshold if needed.
+      var snapThreshold = snap.threshold;
+      if (snapThreshold % 1 === 0) {
+        _this.snapThresholdX = snapThreshold;
+        _this.snapThresholdY = snapThreshold;
+      } else {
+        _this.snapThresholdX = Math.round(_this.pages[_this.currentPage.pageX][_this.currentPage.pageY].width * snapThreshold);
+        _this.snapThresholdY = Math.round(_this.pages[_this.currentPage.pageX][_this.currentPage.pageY].height * snapThreshold);
+      }
+    });
+
+    this.on('scrollEnd', function () {
+      if (snap.loop) {
+        if (snap._loopX) {
+          if (_this.currentPage.pageX === 0) {
+            _this._goToPage(_this.pages.length - 2, _this.currentPage.pageY, 0);
+          }
+          if (_this.currentPage.pageX === _this.pages.length - 1) {
+            _this._goToPage(1, _this.currentPage.pageY, 0);
+          }
+        } else {
+          if (_this.currentPage.pageY === 0) {
+            _this._goToPage(_this.currentPage.pageX, _this.pages[0].length - 2, 0);
+          }
+          if (_this.currentPage.pageY === _this.pages[0].length - 1) {
+            _this._goToPage(_this.currentPage.pageX, 1, 0);
+          }
+        }
+      }
+    });
+
+    if (snap.listenFlick !== false) {
+      this.on('flick', function () {
+        var time = snap.speed || Math.max(Math.max(Math.min(Math.abs(_this.x - _this.startX), 1000), Math.min(Math.abs(_this.y - _this.startY), 1000)), 300);
+
+        _this._goToPage(_this.currentPage.pageX + _this.directionX, _this.currentPage.pageY + _this.directionY, time);
+      });
+    }
+
+    this.on('destroy', function () {
+      if (snap.loop) {
+        var _children = _this.scroller.children;
+        if (_children.length > 2) {
+          removeChild(_this.scroller, _children[_children.length - 1]);
+          removeChild(_this.scroller, _children[0]);
+        }
+      }
+    });
+  };
+
+  BScroll.prototype._checkSnapLoop = function () {
+    var snap = this.options.snap;
+
+    if (!snap.loop || !this.pages) {
+      return;
+    }
+
+    if (this.pages.length > 1) {
+      snap._loopX = true;
+    }
+    if (this.pages[0] && this.pages[0].length > 1) {
+      snap._loopY = true;
+    }
+    if (snap._loopX && snap._loopY) {
+      warn('Loop does not support two direction at the same time.');
+    }
+  };
+
+  BScroll.prototype._nearestSnap = function (x, y) {
+    if (!this.pages.length) {
+      return { x: 0, y: 0, pageX: 0, pageY: 0 };
+    }
+
+    var i = 0;
+    // Check if we exceeded the snap threshold
+    if (Math.abs(x - this.absStartX) <= this.snapThresholdX && Math.abs(y - this.absStartY) <= this.snapThresholdY) {
+      return this.currentPage;
+    }
+
+    if (x > 0) {
+      x = 0;
+    } else if (x < this.maxScrollX) {
+      x = this.maxScrollX;
+    }
+
+    if (y > 0) {
+      y = 0;
+    } else if (y < this.maxScrollY) {
+      y = this.maxScrollY;
+    }
+
+    var l = this.pages.length;
+    for (; i < l; i++) {
+      if (x >= this.pages[i][0].cx) {
+        x = this.pages[i][0].x;
+        break;
+      }
+    }
+
+    l = this.pages[i].length;
+
+    var m = 0;
+    for (; m < l; m++) {
+      if (y >= this.pages[0][m].cy) {
+        y = this.pages[0][m].y;
+        break;
+      }
+    }
+
+    if (i === this.currentPage.pageX) {
+      i += this.directionX;
+
+      if (i < 0) {
+        i = 0;
+      } else if (i >= this.pages.length) {
+        i = this.pages.length - 1;
+      }
+
+      x = this.pages[i][0].x;
+    }
+
+    if (m === this.currentPage.pageY) {
+      m += this.directionY;
+
+      if (m < 0) {
+        m = 0;
+      } else if (m >= this.pages[0].length) {
+        m = this.pages[0].length - 1;
+      }
+
+      y = this.pages[0][m].y;
+    }
+
+    return {
+      x: x,
+      y: y,
+      pageX: i,
+      pageY: m
+    };
+  };
+
+  BScroll.prototype._goToPage = function (x) {
+    var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    var time = arguments[2];
+    var easing = arguments[3];
+
+    var snap = this.options.snap;
+
+    if (!snap || !this.pages) {
+      return;
+    }
+
+    easing = easing || snap.easing || ease.bounce;
+
+    if (x >= this.pages.length) {
+      x = this.pages.length - 1;
+    } else if (x < 0) {
+      x = 0;
+    }
+
+    if (!this.pages[x]) {
+      return;
+    }
+
+    if (y >= this.pages[x].length) {
+      y = this.pages[x].length - 1;
+    } else if (y < 0) {
+      y = 0;
+    }
+
+    var posX = this.pages[x][y].x;
+    var posY = this.pages[x][y].y;
+
+    time = time === undefined ? snap.speed || Math.max(Math.max(Math.min(Math.abs(posX - this.x), 1000), Math.min(Math.abs(posY - this.y), 1000)), 300) : time;
+
+    this.currentPage = {
+      x: posX,
+      y: posY,
+      pageX: x,
+      pageY: y
+    };
+    this.scrollTo(posX, posY, time, easing);
+  };
+
+  BScroll.prototype.goToPage = function (x, y, time, easing) {
+    var snap = this.options.snap;
+    if (!snap) {
+      return;
+    }
+
+    if (snap.loop) {
+      var len = void 0;
+      if (snap._loopX) {
+        len = this.pages.length - 2;
+        if (x >= len) {
+          x = len - 1;
+        } else if (x < 0) {
+          x = 0;
+        }
+        x += 1;
+      } else {
+        len = this.pages[0].length - 2;
+        if (y >= len) {
+          y = len - 1;
+        } else if (y < 0) {
+          y = 0;
+        }
+        y += 1;
+      }
+    }
+    this._goToPage(x, y, time, easing);
+  };
+
+  BScroll.prototype.next = function (time, easing) {
+    var snap = this.options.snap;
+    if (!snap) {
+      return;
+    }
+
+    var x = this.currentPage.pageX;
+    var y = this.currentPage.pageY;
+
+    x++;
+    if (x >= this.pages.length && this.hasVerticalScroll) {
+      x = 0;
+      y++;
+    }
+
+    this._goToPage(x, y, time, easing);
+  };
+
+  BScroll.prototype.prev = function (time, easing) {
+    var snap = this.options.snap;
+    if (!snap) {
+      return;
+    }
+
+    var x = this.currentPage.pageX;
+    var y = this.currentPage.pageY;
+
+    x--;
+    if (x < 0 && this.hasVerticalScroll) {
+      x = 0;
+      y--;
+    }
+
+    this._goToPage(x, y, time, easing);
+  };
+
+  BScroll.prototype.getCurrentPage = function () {
+    var snap = this.options.snap;
+    if (!snap) {
+      return null;
+    }
+
+    if (snap.loop) {
+      var currentPage = void 0;
+      if (snap._loopX) {
+        currentPage = extend({}, this.currentPage, {
+          pageX: this.currentPage.pageX - 1
+        });
+      } else {
+        currentPage = extend({}, this.currentPage, {
+          pageY: this.currentPage.pageY - 1
+        });
+      }
+      return currentPage;
+    }
+    return this.currentPage;
+  };
+}
+
+function wheelMixin(BScroll) {
+  BScroll.prototype.wheelTo = function () {
+    var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+    if (this.options.wheel) {
+      this.y = -index * this.itemHeight;
+      this.scrollTo(0, this.y);
+    }
+  };
+
+  BScroll.prototype.getSelectedIndex = function () {
+    return this.options.wheel && this.selectedIndex;
+  };
+
+  BScroll.prototype._initWheel = function () {
+    var wheel = this.options.wheel;
+    if (!wheel.wheelWrapperClass) {
+      wheel.wheelWrapperClass = 'wheel-scroll';
+    }
+    if (!wheel.wheelItemClass) {
+      wheel.wheelItemClass = 'wheel-item';
+    }
+    if (wheel.selectedIndex === undefined) {
+      wheel.selectedIndex = 0;
+      warn('wheel option selectedIndex is required!');
+    }
+  };
+}
+
+var INDICATOR_MIN_LEN = 8;
+
+function scrollbarMixin(BScroll) {
+  BScroll.prototype._initScrollbar = function () {
+    var _this = this;
+
+    var _options$scrollbar = this.options.scrollbar,
+        _options$scrollbar$fa = _options$scrollbar.fade,
+        fade = _options$scrollbar$fa === undefined ? true : _options$scrollbar$fa,
+        _options$scrollbar$in = _options$scrollbar.interactive,
+        interactive = _options$scrollbar$in === undefined ? false : _options$scrollbar$in;
+
+    this.indicators = [];
+    var indicator = void 0;
+
+    if (this.options.scrollX) {
+      indicator = {
+        el: createScrollbar('horizontal'),
+        direction: 'horizontal',
+        fade: fade,
+        interactive: interactive
+      };
+      this._insertScrollBar(indicator.el);
+
+      this.indicators.push(new Indicator(this, indicator));
+    }
+
+    if (this.options.scrollY) {
+      indicator = {
+        el: createScrollbar('vertical'),
+        direction: 'vertical',
+        fade: fade,
+        interactive: interactive
+      };
+      this._insertScrollBar(indicator.el);
+      this.indicators.push(new Indicator(this, indicator));
+    }
+
+    this.on('refresh', function () {
+      for (var i = 0; i < _this.indicators.length; i++) {
+        _this.indicators[i].refresh();
+      }
+    });
+
+    if (fade) {
+      this.on('scrollEnd', function () {
+        for (var i = 0; i < _this.indicators.length; i++) {
+          _this.indicators[i].fade();
+        }
+      });
+
+      this.on('scrollCancel', function () {
+        for (var i = 0; i < _this.indicators.length; i++) {
+          _this.indicators[i].fade();
+        }
+      });
+
+      this.on('scrollStart', function () {
+        for (var i = 0; i < _this.indicators.length; i++) {
+          _this.indicators[i].fade(true);
+        }
+      });
+
+      this.on('beforeScrollStart', function () {
+        for (var i = 0; i < _this.indicators.length; i++) {
+          _this.indicators[i].fade(true, true);
+        }
+      });
+    }
+
+    this.on('destroy', function () {
+      _this._removeScrollBars();
+    });
+  };
+
+  BScroll.prototype._insertScrollBar = function (scrollbar) {
+    this.wrapper.appendChild(scrollbar);
+  };
+
+  BScroll.prototype._removeScrollBars = function () {
+    for (var i = 0; i < this.indicators.length; i++) {
+      this.indicators[i].destroy();
+    }
+  };
+}
+
+function createScrollbar(direction) {
+  var scrollbar = document.createElement('div');
+  var indicator = document.createElement('div');
+
+  scrollbar.style.cssText = 'position:absolute;z-index:9999;pointerEvents:none';
+  indicator.style.cssText = 'box-sizing:border-box;position:absolute;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);border-radius:3px;';
+
+  indicator.className = 'bscroll-indicator';
+
+  if (direction === 'horizontal') {
+    scrollbar.style.cssText += ';height:7px;left:2px;right:2px;bottom:0';
+    indicator.style.height = '100%';
+    scrollbar.className = 'bscroll-horizontal-scrollbar';
+  } else {
+    scrollbar.style.cssText += ';width:7px;bottom:2px;top:2px;right:1px';
+    indicator.style.width = '100%';
+    scrollbar.className = 'bscroll-vertical-scrollbar';
+  }
+
+  scrollbar.style.cssText += ';overflow:hidden';
+  scrollbar.appendChild(indicator);
+
+  return scrollbar;
+}
+
+function Indicator(scroller, options) {
+  this.wrapper = options.el;
+  this.wrapperStyle = this.wrapper.style;
+  this.indicator = this.wrapper.children[0];
+  this.indicatorStyle = this.indicator.style;
+  this.scroller = scroller;
+  this.direction = options.direction;
+  if (options.fade) {
+    this.visible = 0;
+    this.wrapperStyle.opacity = '0';
+  } else {
+    this.visible = 1;
+  }
+
+  this.sizeRatioX = 1;
+  this.sizeRatioY = 1;
+  this.maxPosX = 0;
+  this.maxPosY = 0;
+  this.x = 0;
+  this.y = 0;
+
+  if (options.interactive) {
+    this._addDOMEvents();
+  }
+}
+
+Indicator.prototype.handleEvent = function (e) {
+  switch (e.type) {
+    case 'touchstart':
+    case 'mousedown':
+      this._start(e);
+      break;
+    case 'touchmove':
+    case 'mousemove':
+      this._move(e);
+      break;
+    case 'touchend':
+    case 'mouseup':
+    case 'touchcancel':
+    case 'mousecancel':
+      this._end(e);
+      break;
+  }
+};
+
+Indicator.prototype.refresh = function () {
+  this.transitionTime();
+  this._calculate();
+  this.updatePosition();
+};
+
+Indicator.prototype.fade = function (visible, hold) {
+  var _this2 = this;
+
+  if (hold && !this.visible) {
+    return;
+  }
+
+  var time = visible ? 250 : 500;
+
+  visible = visible ? '1' : '0';
+
+  this.wrapperStyle[style.transitionDuration] = time + 'ms';
+
+  clearTimeout(this.fadeTimeout);
+  this.fadeTimeout = setTimeout(function () {
+    _this2.wrapperStyle.opacity = visible;
+    _this2.visible = +visible;
+  }, 0);
+};
+
+Indicator.prototype.updatePosition = function () {
+  if (this.direction === 'vertical') {
+    var y = Math.round(this.sizeRatioY * this.scroller.y);
+
+    if (y < 0) {
+      this.transitionTime(500);
+      var height = Math.max(this.indicatorHeight + y * 3, INDICATOR_MIN_LEN);
+      this.indicatorStyle.height = height + 'px';
+      y = 0;
+    } else if (y > this.maxPosY) {
+      this.transitionTime(500);
+      var _height = Math.max(this.indicatorHeight - (y - this.maxPosY) * 3, INDICATOR_MIN_LEN);
+      this.indicatorStyle.height = _height + 'px';
+      y = this.maxPosY + this.indicatorHeight - _height;
+    } else {
+      this.indicatorStyle.height = this.indicatorHeight + 'px';
+    }
+    this.y = y;
+
+    if (this.scroller.options.useTransform) {
+      this.indicatorStyle[style.transform] = 'translateY(' + y + 'px)' + this.scroller.translateZ;
+    } else {
+      this.indicatorStyle.top = y + 'px';
+    }
+  } else {
+    var x = Math.round(this.sizeRatioX * this.scroller.x);
+
+    if (x < 0) {
+      this.transitionTime(500);
+      var width = Math.max(this.indicatorWidth + x * 3, INDICATOR_MIN_LEN);
+      this.indicatorStyle.width = width + 'px';
+      x = 0;
+    } else if (x > this.maxPosX) {
+      this.transitionTime(500);
+      var _width = Math.max(this.indicatorWidth - (x - this.maxPosX) * 3, INDICATOR_MIN_LEN);
+      this.indicatorStyle.width = _width + 'px';
+      x = this.maxPosX + this.indicatorWidth - _width;
+    } else {
+      this.indicatorStyle.width = this.indicatorWidth + 'px';
+    }
+
+    this.x = x;
+
+    if (this.scroller.options.useTransform) {
+      this.indicatorStyle[style.transform] = 'translateX(' + x + 'px)' + this.scroller.translateZ;
+    } else {
+      this.indicatorStyle.left = x + 'px';
+    }
+  }
+};
+
+Indicator.prototype.transitionTime = function () {
+  var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+  this.indicatorStyle[style.transitionDuration] = time + 'ms';
+};
+
+Indicator.prototype.transitionTimingFunction = function (easing) {
+  this.indicatorStyle[style.transitionTimingFunction] = easing;
+};
+
+Indicator.prototype.destroy = function () {
+  this._removeDOMEvents();
+  this.wrapper.parentNode.removeChild(this.wrapper);
+};
+
+Indicator.prototype._start = function (e) {
+  var point = e.touches ? e.touches[0] : e;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  this.transitionTime();
+
+  this.initiated = true;
+  this.moved = false;
+  this.lastPointX = point.pageX;
+  this.lastPointY = point.pageY;
+
+  this.startTime = getNow();
+
+  this._handleMoveEvents(addEvent);
+  this.scroller.trigger('beforeScrollStart');
+};
+
+Indicator.prototype._move = function (e) {
+  var point = e.touches ? e.touches[0] : e;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (!this.moved) {
+    this.scroller.trigger('scrollStart');
+  }
+
+  this.moved = true;
+
+  var deltaX = point.pageX - this.lastPointX;
+  this.lastPointX = point.pageX;
+
+  var deltaY = point.pageY - this.lastPointY;
+  this.lastPointY = point.pageY;
+
+  var newX = this.x + deltaX;
+  var newY = this.y + deltaY;
+
+  this._pos(newX, newY);
+};
+
+Indicator.prototype._end = function (e) {
+  if (!this.initiated) {
+    return;
+  }
+  this.initiated = false;
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  this._handleMoveEvents(removeEvent);
+
+  var snapOption = this.scroller.options.snap;
+  if (snapOption) {
+    var speed = snapOption.speed,
+        _snapOption$easing = snapOption.easing,
+        easing = _snapOption$easing === undefined ? ease.bounce : _snapOption$easing;
+
+    var snap = this.scroller._nearestSnap(this.scroller.x, this.scroller.y);
+
+    var time = speed || Math.max(Math.max(Math.min(Math.abs(this.scroller.x - snap.x), 1000), Math.min(Math.abs(this.scroller.y - snap.y), 1000)), 300);
+
+    if (this.scroller.x !== snap.x || this.scroller.y !== snap.y) {
+      this.scroller.directionX = 0;
+      this.scroller.directionY = 0;
+      this.scroller.currentPage = snap;
+      this.scroller.scrollTo(snap.x, snap.y, time, easing);
+    }
+  }
+
+  if (this.moved) {
+    this.scroller.trigger('scrollEnd', {
+      x: this.scroller.x,
+      y: this.scroller.y
+    });
+  }
+};
+
+Indicator.prototype._pos = function (x, y) {
+  if (x < 0) {
+    x = 0;
+  } else if (x > this.maxPosX) {
+    x = this.maxPosX;
+  }
+
+  if (y < 0) {
+    y = 0;
+  } else if (y > this.maxPosY) {
+    y = this.maxPosY;
+  }
+
+  x = Math.round(x / this.sizeRatioX);
+  y = Math.round(y / this.sizeRatioY);
+
+  this.scroller.scrollTo(x, y);
+  this.scroller.trigger('scroll', {
+    x: this.scroller.x,
+    y: this.scroller.y
+  });
+};
+
+Indicator.prototype._calculate = function () {
+  if (this.direction === 'vertical') {
+    var wrapperHeight = this.wrapper.clientHeight;
+    this.indicatorHeight = Math.max(Math.round(wrapperHeight * wrapperHeight / (this.scroller.scrollerHeight || wrapperHeight || 1)), INDICATOR_MIN_LEN);
+    this.indicatorStyle.height = this.indicatorHeight + 'px';
+
+    this.maxPosY = wrapperHeight - this.indicatorHeight;
+
+    this.sizeRatioY = this.maxPosY / this.scroller.maxScrollY;
+  } else {
+    var wrapperWidth = this.wrapper.clientWidth;
+    this.indicatorWidth = Math.max(Math.round(wrapperWidth * wrapperWidth / (this.scroller.scrollerWidth || wrapperWidth || 1)), INDICATOR_MIN_LEN);
+    this.indicatorStyle.width = this.indicatorWidth + 'px';
+
+    this.maxPosX = wrapperWidth - this.indicatorWidth;
+
+    this.sizeRatioX = this.maxPosX / this.scroller.maxScrollX;
+  }
+};
+
+Indicator.prototype._addDOMEvents = function () {
+  var eventOperation = addEvent;
+  this._handleDOMEvents(eventOperation);
+};
+
+Indicator.prototype._removeDOMEvents = function () {
+  var eventOperation = removeEvent;
+  this._handleDOMEvents(eventOperation);
+  this._handleMoveEvents(eventOperation);
+};
+
+Indicator.prototype._handleMoveEvents = function (eventOperation) {
+  if (!this.scroller.options.disableTouch) {
+    eventOperation(window, 'touchmove', this);
+  }
+  if (!this.scroller.options.disableMouse) {
+    eventOperation(window, 'mousemove', this);
+  }
+};
+
+Indicator.prototype._handleDOMEvents = function (eventOperation) {
+  if (!this.scroller.options.disableTouch) {
+    eventOperation(this.indicator, 'touchstart', this);
+    eventOperation(window, 'touchend', this);
+  }
+  if (!this.scroller.options.disableMouse) {
+    eventOperation(this.indicator, 'mousedown', this);
+    eventOperation(window, 'mouseup', this);
+  }
+};
+
+function pullDownMixin(BScroll) {
+  BScroll.prototype._initPullDown = function () {
+    // must watch scroll in real time
+    this.options.probeType = PROBE_REALTIME;
+  };
+
+  BScroll.prototype._checkPullDown = function () {
+    var _options$pullDownRefr = this.options.pullDownRefresh,
+        _options$pullDownRefr2 = _options$pullDownRefr.threshold,
+        threshold = _options$pullDownRefr2 === undefined ? 90 : _options$pullDownRefr2,
+        _options$pullDownRefr3 = _options$pullDownRefr.stop,
+        stop = _options$pullDownRefr3 === undefined ? 40 : _options$pullDownRefr3;
+
+    // check if a real pull down action
+
+    if (this.directionY !== DIRECTION_DOWN || this.y < threshold) {
+      return false;
+    }
+
+    if (!this.pulling) {
+      this.pulling = true;
+      this.trigger('pullingDown');
+    }
+    this.scrollTo(this.x, stop, this.options.bounceTime, ease.bounce);
+
+    return this.pulling;
+  };
+
+  BScroll.prototype.finishPullDown = function () {
+    this.pulling = false;
+    this.resetPosition(this.options.bounceTime, ease.bounce);
+  };
+
+  BScroll.prototype.openPullDown = function () {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+    this.options.pullDownRefresh = config;
+    this._initPullDown();
+  };
+
+  BScroll.prototype.closePullDown = function () {
+    this.options.pullDownRefresh = false;
+  };
+}
+
+function pullUpMixin(BScroll) {
+  BScroll.prototype._initPullUp = function () {
+    // must watch scroll in real time
+    this.options.probeType = PROBE_REALTIME;
+
+    this.pullupWatching = false;
+    this._watchPullUp();
+  };
+
+  BScroll.prototype._watchPullUp = function () {
+    if (this.pullupWatching) {
+      return;
+    }
+    this.pullupWatching = true;
+    this.on('scroll', this._checkToEnd);
+  };
+
+  BScroll.prototype._checkToEnd = function (pos) {
+    var _this = this;
+
+    var _options$pullUpLoad$t = this.options.pullUpLoad.threshold,
+        threshold = _options$pullUpLoad$t === undefined ? 0 : _options$pullUpLoad$t;
+
+    if (this.movingDirectionY === DIRECTION_UP && pos.y <= this.maxScrollY + threshold) {
+      // reset pullupWatching status after scroll end.
+      this.once('scrollEnd', function () {
+        _this.pullupWatching = false;
+      });
+      this.trigger('pullingUp');
+      this.off('scroll', this._checkToEnd);
+    }
+  };
+
+  BScroll.prototype.finishPullUp = function () {
+    var _this2 = this;
+
+    if (this.pullupWatching) {
+      this.once('scrollEnd', function () {
+        _this2._watchPullUp();
+      });
+    } else {
+      this._watchPullUp();
+    }
+  };
+
+  BScroll.prototype.openPullUp = function () {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+    this.options.pullUpLoad = config;
+    this._initPullUp();
+  };
+
+  BScroll.prototype.closePullUp = function () {
+    this.options.pullUpLoad = false;
+    if (!this.pullupWatching) {
+      return;
+    }
+    this.pullupWatching = false;
+    this.off('scroll', this._checkToEnd);
+  };
+}
+
+function mouseWheelMixin(BScroll) {
+  BScroll.prototype._initMouseWheel = function () {
+    var _this = this;
+
+    this._handleMouseWheelEvent(addEvent);
+
+    this.on('destroy', function () {
+      clearTimeout(_this.mouseWheelTimer);
+      _this._handleMouseWheelEvent(removeEvent);
+    });
+
+    this.firstWheelOpreation = true;
+  };
+
+  BScroll.prototype._handleMouseWheelEvent = function (eventOperation) {
+    eventOperation(this.wrapper, 'wheel', this);
+    eventOperation(this.wrapper, 'mousewheel', this);
+    eventOperation(this.wrapper, 'DOMMouseScroll', this);
+  };
+
+  BScroll.prototype._onMouseWheel = function (e) {
+    var _this2 = this;
+
+    if (!this.enabled) {
+      return;
+    }
+    e.preventDefault();
+
+    if (this.firstWheelOpreation) {
+      this.trigger('scrollStart');
+    }
+    this.firstWheelOpreation = false;
+
+    clearTimeout(this.mouseWheelTimer);
+    this.mouseWheelTimer = setTimeout(function () {
+      if (!_this2.options.snap) {
+        _this2.trigger('scrollEnd', {
+          x: _this2.x,
+          y: _this2.y
+        });
+      }
+      _this2.firstWheelOpreation = true;
+    }, 400);
+
+    var _options$mouseWheel = this.options.mouseWheel,
+        _options$mouseWheel$s = _options$mouseWheel.speed,
+        speed = _options$mouseWheel$s === undefined ? 20 : _options$mouseWheel$s,
+        _options$mouseWheel$i = _options$mouseWheel.invert,
+        invert = _options$mouseWheel$i === undefined ? false : _options$mouseWheel$i;
+
+    var wheelDeltaX = void 0;
+    var wheelDeltaY = void 0;
+
+    switch (true) {
+      case 'deltaX' in e:
+        if (e.deltaMode === 1) {
+          wheelDeltaX = -e.deltaX * speed;
+          wheelDeltaY = -e.deltaY * speed;
+        } else {
+          wheelDeltaX = -e.deltaX;
+          wheelDeltaY = -e.deltaY;
+        }
+        break;
+      case 'wheelDeltaX' in e:
+        wheelDeltaX = e.wheelDeltaX / 120 * speed;
+        wheelDeltaY = e.wheelDeltaY / 120 * speed;
+        break;
+      case 'wheelDelta' in e:
+        wheelDeltaX = wheelDeltaY = e.wheelDelta / 120 * speed;
+        break;
+      case 'detail' in e:
+        wheelDeltaX = wheelDeltaY = -e.detail / 3 * speed;
+        break;
+      default:
+        return;
+    }
+
+    var direction = invert ? -1 : 1;
+    wheelDeltaX *= direction;
+    wheelDeltaY *= direction;
+
+    if (!this.hasVerticalScroll) {
+      wheelDeltaX = wheelDeltaY;
+      wheelDeltaY = 0;
+    }
+
+    var newX = void 0;
+    var newY = void 0;
+    if (this.options.snap) {
+      newX = this.currentPage.pageX;
+      newY = this.currentPage.pageY;
+
+      if (wheelDeltaX > 0) {
+        newX--;
+      } else if (wheelDeltaX < 0) {
+        newX++;
+      }
+
+      if (wheelDeltaY > 0) {
+        newY--;
+      } else if (wheelDeltaY < 0) {
+        newY++;
+      }
+
+      this._goToPage(newX, newY);
+      return;
+    }
+
+    newX = this.x + Math.round(this.hasHorizontalScroll ? wheelDeltaX : 0);
+    newY = this.y + Math.round(this.hasVerticalScroll ? wheelDeltaY : 0);
+
+    this.directionX = wheelDeltaX > 0 ? -1 : wheelDeltaX < 0 ? 1 : 0;
+    this.directionY = wheelDeltaY > 0 ? -1 : wheelDeltaY < 0 ? 1 : 0;
+
+    if (newX > 0) {
+      newX = 0;
+    } else if (newX < this.maxScrollX) {
+      newX = this.maxScrollX;
+    }
+
+    if (newY > 0) {
+      newY = 0;
+    } else if (newY < this.maxScrollY) {
+      newY = this.maxScrollY;
+    }
+
+    this.scrollTo(newX, newY);
+    this.trigger('scroll', {
+      x: this.x,
+      y: this.y
+    });
+  };
+}
+
+function BScroll(el, options) {
+  this.wrapper = typeof el === 'string' ? document.querySelector(el) : el;
+  if (!this.wrapper) {
+    warn('Can not resolve the wrapper DOM.');
+  }
+  this.scroller = this.wrapper.children[0];
+  if (!this.scroller) {
+    warn('The wrapper need at least one child element to be scroller.');
+  }
+  // cache style for better performance
+  this.scrollerStyle = this.scroller.style;
+
+  this._init(el, options);
+}
+
+initMixin(BScroll);
+coreMixin(BScroll);
+eventMixin(BScroll);
+snapMixin(BScroll);
+wheelMixin(BScroll);
+scrollbarMixin(BScroll);
+pullDownMixin(BScroll);
+pullUpMixin(BScroll);
+mouseWheelMixin(BScroll);
+
+BScroll.Version = '1.9.1';
+
+/* harmony default export */ __webpack_exports__["default"] = (BScroll);
+
+
+/***/ }),
+/* 900 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "img/f5ec05bc9d7c9cfb388461913d849e95.png";
+
+/***/ }),
+/* 901 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77567,15 +80421,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(82);
 
-var _reduxSaga = __webpack_require__(900);
+var _reduxSaga = __webpack_require__(902);
 
 var _reduxSaga2 = _interopRequireDefault(_reduxSaga);
 
-var _reducer = __webpack_require__(906);
+var _reducer = __webpack_require__(908);
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
-var _sagas = __webpack_require__(910);
+var _sagas = __webpack_require__(912);
 
 var _sagas2 = _interopRequireDefault(_sagas);
 
@@ -77589,12 +80443,12 @@ sagaMiddleware.run(_sagas2.default);
 exports.default = store;
 
 /***/ }),
-/* 900 */
+/* 902 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__internal_middleware__ = __webpack_require__(901);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__internal_middleware__ = __webpack_require__(903);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__internal_runSaga__ = __webpack_require__(364);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "runSaga", function() { return __WEBPACK_IMPORTED_MODULE_1__internal_runSaga__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__internal_channel__ = __webpack_require__(108);
@@ -77613,7 +80467,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__internal_io__ = __webpack_require__(89);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "detach", function() { return __WEBPACK_IMPORTED_MODULE_6__internal_io__["i"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__effects__ = __webpack_require__(121);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(905);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__utils__ = __webpack_require__(907);
 /* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "effects", function() { return __WEBPACK_IMPORTED_MODULE_7__effects__; });
 /* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, "utils", function() { return __WEBPACK_IMPORTED_MODULE_8__utils__; });
 
@@ -77632,7 +80486,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 901 */
+/* 903 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77726,7 +80580,7 @@ function sagaMiddlewareFactory() {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
 
 /***/ }),
-/* 902 */
+/* 904 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77764,7 +80618,7 @@ function takeEvery(patternOrChannel, worker) {
 }
 
 /***/ }),
-/* 903 */
+/* 905 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77812,7 +80666,7 @@ function takeLatest(patternOrChannel, worker) {
 }
 
 /***/ }),
-/* 904 */
+/* 906 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77869,7 +80723,7 @@ function throttle(delayLength, pattern, worker) {
 }
 
 /***/ }),
-/* 905 */
+/* 907 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77892,7 +80746,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 906 */
+/* 908 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77904,11 +80758,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(82);
 
-var _collect = __webpack_require__(907);
+var _collect = __webpack_require__(909);
 
-var _fileSearch = __webpack_require__(908);
+var _fileSearch = __webpack_require__(910);
 
-var _iframe = __webpack_require__(909);
+var _iframe = __webpack_require__(911);
 
 //import {maintenance} from './maintenance.js';
 
@@ -77921,7 +80775,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 907 */
+/* 909 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77934,7 +80788,7 @@ exports.collects = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _collect = __webpack_require__(154);
+var _collect = __webpack_require__(155);
 
 var initialState = {
   mycollect: {
@@ -77993,7 +80847,7 @@ var collects = exports.collects = function collects() {
 };
 
 /***/ }),
-/* 908 */
+/* 910 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78123,7 +80977,7 @@ var files = exports.files = function files() {
 };
 
 /***/ }),
-/* 909 */
+/* 911 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78270,7 +81124,7 @@ var iframe = exports.iframe = function iframe() {
 };
 
 /***/ }),
-/* 910 */
+/* 912 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78287,13 +81141,13 @@ var _fileSearch = __webpack_require__(107);
 
 var _iframe = __webpack_require__(157);
 
-var _collect = __webpack_require__(154);
+var _collect = __webpack_require__(155);
 
-var _collect2 = __webpack_require__(911);
+var _collect2 = __webpack_require__(913);
 
-var _iframe2 = __webpack_require__(912);
+var _iframe2 = __webpack_require__(914);
 
-var _fileSearch2 = __webpack_require__(913);
+var _fileSearch2 = __webpack_require__(915);
 
 var _marked = /*#__PURE__*/regeneratorRuntime.mark(rootSaga);
 //import {SUBMIT} from '../action/maintenance.js';
@@ -78318,7 +81172,7 @@ function rootSaga() {
 }
 
 /***/ }),
-/* 911 */
+/* 913 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78336,7 +81190,7 @@ var _effects = __webpack_require__(121);
 
 var _selector = __webpack_require__(236);
 
-var _collect = __webpack_require__(154);
+var _collect = __webpack_require__(155);
 
 var _api = __webpack_require__(158);
 
@@ -78617,7 +81471,7 @@ function searchAsync() {
 }
 
 /***/ }),
-/* 912 */
+/* 914 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79001,7 +81855,7 @@ function wechatAsync() {
 }
 
 /***/ }),
-/* 913 */
+/* 915 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

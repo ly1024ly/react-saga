@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "create-portal": "^1.2.0",
     "es6-promise": "^4.1.1",
     "immutable": "^3.8.2",
     "locate-path": "^2.0.0",

@@ -34,14 +34,14 @@ import WeUI from 'react-weui';
 var wx = require("weixin-js-sdk");
 //import styles
 import 'weui';
+var $ = require('jquery');
+var wx = require("weixin-js-sdk");
+import Collect from './Collect.jsx';
+import {  } from "../redux/action/fileSearch.js";
 import 'react-weui/build/packages/react-weui.css';
 require("../../font/iconfont.css");
 require("../../css/common.css");
 require("../../css/iframe.css");
-var jQuery = require('jquery');
-var wx = require("weixin-js-sdk");
-import Collect from './Collect.jsx';
-import {  } from "../redux/action/fileSearch.js";
 import {
     isCollectAction,
     likeAction,
@@ -54,8 +54,9 @@ import {
 import {ajaxCollect} from '../redux/sagas/api.js';
 var firstGuid = require('../../img/share-it.png');
 import { is } from 'immutable';
-import LimitedInfiniteScroll from 'react-limited-infinite-scroll';
-import BScroll from 'better-scroll'
+import  iScroll from 'iscroll/build/iscroll-probe';
+import ReactIScroll from 'reactjs-iscroll';
+
 
 class Iframe extends Component {
     static propTypes = {
@@ -84,7 +85,6 @@ class Iframe extends Component {
             pageY:0,
             iscollect:[],
             id:[],
-            height:"100vh",
             user:{},
             mouseX:0,
             mouseY:0,
@@ -93,7 +93,6 @@ class Iframe extends Component {
             shareUrl:"",
             message:""
         }
-        this.scroll = null;
         this.like = this.like.bind(this);
         this.collect = this.collect.bind(this);
         this.delcollect = this.delcollect.bind(this);
@@ -174,48 +173,8 @@ class Iframe extends Component {
     componentWillMount(){
         this.props.wechatAction();
     }
-    scrollev(){
-       
-    }
-    scrollend(){
-        if(this.state.one.length>0){
-            let obj = {
-                title:this.state.one[this.state.one.length-1].title,
-                bookid:this.props.location.query.bookid,
-                topicid:this.state.one[this.state.one.length-1].topicid
-            }
-            if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
-                this.props.getpageAction(obj);
-            }
-            this.setState({
-                searchTitle:this.state.one[this.state.one.length-1].title
-            })
-        }
-        this.setState({
-           searchTitle:this.state.one.length>0 ? this.state.one[this.state.one.length-1].title : ""
-        })
-    }
-    pullingup(){
-        alert("pullingdown")
-    }
-    finishpull(){
-        alert("finish")
-    }
     componentDidMount(){
         this.swiperChange("1");
-        const option = {
-            scrollY: true,
-            useTransition:false,
-            probeType:1,
-            click:true
-        }
-    
-        let wrapper = document.getElementById("wrap");
-        this.scroll = new BScroll(wrapper,option);
-        this.scroll.on("scroll",this.scrollev.bind(this))
-        this.scroll.on("pullingDown",this.pullingup.bind(this));
-        this.scroll.on("scrollEnd",this.scrollend.bind(this));
-        this.scroll.on("finishPullDown",this.finishpull.bind(this))
         if(sessionStorage.user){
             this.setState({
                 user:JSON.parse(sessionStorage.user)
@@ -277,7 +236,6 @@ class Iframe extends Component {
         }
         
     }
-    
     collect =(id,type,title,index) => {
         if(type===undefined){
             type = "其他";
@@ -407,7 +365,6 @@ class Iframe extends Component {
     }
     shouldComponentUpdate = (nextProps = {}, nextState = {}) => {
        const thisProps = this.props || {}, thisState = this.state || {};
-
         if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
             Object.keys(thisState).length !== Object.keys(nextState).length) {
             return true;
@@ -432,17 +389,13 @@ class Iframe extends Component {
     componentDidUpdate(){
         $(window).scrollTop(1000); 
     }
-   
+    onScrollStart(){
+        console.log("scroll start")
+    }
     componentWillReceiveProps(nextProps){
         let page = this.state.one;
         let addPage = [];
         let that = this;
-        let height = $(this.refs.content).height();
-        this.setState({
-            height:height
-        });
-        //this.scroll.refresh();
-        console.log(this.scroll);
         if(nextProps.iframe.page.data!==null&&nextProps.iframe.page.data.result&&nextProps.iframe.page.data.result=="success"){
             if(page.length==0){
                 if(nextProps.iframe.page.data.message[0].OtherPages.length<5){
@@ -712,14 +665,8 @@ class Iframe extends Component {
             });
         }        
         let page = [];
-        let bh = this.state.height;
         if(iframe.page.data!==null&&iframe.page.data.result=="success"){
             page = iframe.page.data.message.OtherPages;
-            if(this.state.height==0){
-                bh = "100vh";
-            }else{
-                bh = this.state.height + "px";
-            }
         }
         let height = window.innerHeight;
         let menuHeight = (window.innerHeight - 35) + "px";
@@ -732,6 +679,7 @@ class Iframe extends Component {
             overflowX: "hidden",
             paddingBottom:"20px"
         }
+        
         return (
             <div className="iframe">
                 <div id="shareit" style={{display:show}} onClick={(e) => this.hideFlow("none")}>
@@ -740,15 +688,43 @@ class Iframe extends Component {
                         点击右上角按钮，开始分享
                     </div>
                 </div>
-
+            <InfiniteLoader
+                onLoadMore={ (resolve, finish) => {
+                    //mock request
+                        if(1==2){
+                            finish()
+                        }else{
+                            if(this.state.one.length>0){
+                                let obj = {
+                                    title:this.state.one[this.state.one.length-1].title,
+                                    bookid:this.props.location.query.bookid,
+                                    topicid:this.state.one[this.state.one.length-1].topicid
+                                }
+                                if(this.state.one[this.state.one.length-1].title!==this.state.searchTitle){
+                                    this.props.getpageAction(obj);
+                                }
+                                this.setState({
+                                    searchTitle:this.state.one[this.state.one.length-1].title
+                                })
+                            }
+                            this.setState({
+                               searchTitle:this.state.one.length>0 ? this.state.one[this.state.one.length-1].title : ""
+                            }, ()=> resolve())
+                        }
+                   
+                }}
+            >
                 <i className="iconfont icon-tag" onClick={()=>this.openPop()}>&#xe639;</i>
                 <Panel>
                     <PanelHeader  style={{width:'22px',position:"fixed",height:"22px",background:"#fff"}}>
                     </PanelHeader>
                     <PanelBody>
-                       <div style={{height:height,overFlow:"auto"}} id="frabox">
-                       <div id="wrap" ref="content" style={{height:"100vh"}}>
-                       <div>
+                       <div style={{height:height,overFlow:"auto"}} id="frabox" >
+                        <ReactIScroll 
+                            iScroll={iScroll}
+                            id="wrap"
+                            onScrollStart={() => this.onScrollStart()} 
+                        >
                         {
                            this.state.innerHtml.map(function(item,index){
                                 let topicid = item.split("body")[1].split(">")[0].split("=")[1].split("\"")[1];
@@ -783,8 +759,7 @@ class Iframe extends Component {
                                 }
                             },this)
                         }
-                        </div>
-                        </div>
+                        </ReactIScroll>
                         <div className="none" style={{display:iframe.page.data!==null&&iframe.page.data.result=="fail" ? "block" : "none"}}>{iframe.page.data!==null&&iframe.page.data.result=="fail" ? iframe.page.data.message : ""}</div>
                         </div>
                     </PanelBody>
@@ -806,6 +781,7 @@ class Iframe extends Component {
                             </Article>
                         </div>
                     </div>
+                 </InfiniteLoader>
             </div>
             )
     }

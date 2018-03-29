@@ -1,5 +1,14 @@
 import React, { Component,PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import 'react-weui/build/packages/react-weui.css';
+require("../../font/iconfont.css");
+require("../../css/common.css");
+require("../../css/fileSearch.css");
+import { is } from 'immutable';
+let Iconsearch = require("../../img/search.png");
+let Iconar = require("../../img/ar.png");
+let Iconman = require("../../img/nman.png");
+let Iconcn = require("../../img/collectno.png");
 import {
   Link,
   hashHistory
@@ -34,15 +43,7 @@ import 'weui';
 var jQuery = require('jquery');
 import {findFileAction,addFileAction,saveTabAction,filterAction,brandAction,saveAction,bookAction} from "../redux/action/fileSearch.js";
 import Collect from './Collect.jsx';
-import 'react-weui/build/packages/react-weui.css';
-require("../../font/iconfont.css");
-require("../../css/common.css");
-require("../../css/fileSearch.css");
-import { is } from 'immutable';
-let Iconsearch = require("../../img/search.png");
-let Iconar = require("../../img/ar.png");
-let Iconman = require("../../img/nman.png");
-let Iconcn = require("../../img/collectno.png");
+
 
 class FileSearch extends Component {
   static propTypes = {
